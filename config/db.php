@@ -1,9 +1,7 @@
 <?php
 
-return [
+$sensitive = require(__DIR__.'/sensitive.php');
+return array_merge([
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=localhost;dbname=yii2basic',
-    'username' => 'root',
-    'password' => '',
     'charset' => 'utf8',
-];
+], $sensitive);
