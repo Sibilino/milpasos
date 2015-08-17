@@ -7,10 +7,6 @@ $config = yii\helpers\ArrayHelper::merge([
         'basePath' => dirname(__DIR__),
         'bootstrap' => ['log'],
         'components' => [
-            'request' => [
-                // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
-                'cookieValidationKey' => 'KzZXK2hprO2Ct0epy11Dno3X4pw2oq_Q',
-            ],
             'cache' => [
                 'class' => 'yii\caching\FileCache',
             ],
