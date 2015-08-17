@@ -20,7 +20,7 @@ modules:
     config:
         WebDriver:
 # PLEASE ADJUST IT TO THE ACTUAL ENTRY POINT WITHOUT PATH INFO
-            url: http://localhost/web
+            url: http://localhost
             browser: firefox
 #        WebDriver:
 #            url: http://localhost:8080
