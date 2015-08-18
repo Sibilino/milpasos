@@ -34,6 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'end_date',
             'city',
             'venue',
+            'passPriceFrom',
         ],
     ]) ?>
 

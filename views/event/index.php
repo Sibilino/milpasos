@@ -29,6 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'start_date:date',
             'end_date:date',
             'city',
+            'passPriceFrom',
             // 'venue',
 
             ['class' => 'yii\grid\ActionColumn'],
