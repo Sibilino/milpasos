@@ -2,7 +2,7 @@
 
 namespace tests\codeception\fixtures;
 
-use tests\codeception\common\fixtures\UserFixture;
+use tests\codeception\fixtures\UserFixture;
 use Codeception\Module;
 use yii\test\FixtureTrait;
 
@@ -44,5 +44,17 @@ class FixtureHelper extends Module
     public function _afterSuite()
     {
         $this->unloadFixtures();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function fixtures()
+    {
+        return [
+            'user' => [
+                'class' => UserFixture::className(),
+            ],
+        ];
     }
 }

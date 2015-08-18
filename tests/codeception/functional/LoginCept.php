@@ -18,11 +18,11 @@ $I->see('Username cannot be blank.');
 $I->see('Password cannot be blank.');
 
 $I->amGoingTo('try to login with wrong credentials');
-$loginPage->login('admin', 'wrong');
+$loginPage->login('erau', 'wrong');
 $I->expectTo('see validations errors');
 $I->see('Incorrect username or password.');
 
 $I->amGoingTo('try to login with correct credentials');
-$loginPage->login('admin', 'admin');
+$loginPage->login('erau', 'password_0');
 $I->expectTo('see user info');
-$I->see('Logout (admin)');
+$I->see('Logout (erau)');
