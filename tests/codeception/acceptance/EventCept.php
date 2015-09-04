@@ -17,6 +17,12 @@ $I->see('Update');
 $I->click('Update');
 $I->expectTo('See an Event Editor page');
 $I->seeInField('Name', 'Salsea');
+
+$I->amGoingTo("Try to enter an invalid value");
+$I->fillField("Name", '');
+$I->click('Update');
+$I->waitForText("Name cannot be blank");
+
 $I->fillField('Name', 'Salsatorium');
 $I->click('Update');
 $I->expectTo('See updated name for the Event');
