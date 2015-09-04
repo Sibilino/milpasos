@@ -32,4 +32,12 @@ return [
 		'available_to' => "2015-12-01",
 		'event_id' => 2,
 	],
+    [
+        'id' => 5,
+        'price' => 185.99,
+        'description' => "MASTER PASS",
+        'available_from' => NULL,
+        'available_to' => "2015-12-03",
+        'event_id' => 2,
+    ],
 ];
