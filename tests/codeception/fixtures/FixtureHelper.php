@@ -55,6 +55,12 @@ class FixtureHelper extends Module
             'user' => [
                 'class' => UserFixture::className(),
             ],
+            'event' => [
+                'class' => EventFixture::className(),
+            ],
+            'pass' => [
+                'class' => PassFixture::className(),
+            ],
         ];
     }
 }
