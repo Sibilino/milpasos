@@ -22,8 +22,6 @@ use Yii;
  */
 class Event extends \yii\db\ActiveRecord
 {
-    public $passPriceFrom;
-
     /**
      * @inheritdoc
      */
@@ -56,21 +54,9 @@ class Event extends \yii\db\ActiveRecord
             'end_date' => Yii::t('app', 'End Date'),
             'city' => Yii::t('app', 'City'),
             'venue' => Yii::t('app', 'Venue'),
-            'passPriceFrom' => Yii::t('app', 'Passes from'),
         ];
     }
-
-    public static function find()
-    {
-        return parent::find()
-            ->select([
-                '{{event}}.*',
-                'min({{pass}}.price) AS passPriceFrom',
-                // TODO: Add max
-            ])
-            ->joinWith('passes');
-    }
-
+    
     /**
      * @return \yii\db\ActiveQuery
      */
