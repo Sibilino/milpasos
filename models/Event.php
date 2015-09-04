@@ -11,8 +11,9 @@ use Yii;
  * @property string $name
  * @property string $start_date
  * @property string $end_date
- * @property string $city
- * @property string $venue
+ * @property string $address
+ * @property double $lon
+ * @property double $lat
  *
  * @property Artist[] $artists
  * @property Dance[] $dances
@@ -36,9 +37,12 @@ class Event extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'start_date', 'end_date', 'city'], 'required'],
-            [['start_date', 'end_date'], 'date', 'format' => 'yyyy-MM-dd'],
-            [['name', 'city', 'venue'], 'string', 'max' => 250]
+            [['name', 'start_date', 'end_date', 'address', 'lon', 'lat'], 'required'],
+            [['start_date', 'end_date'], 'safe'],
+            [['lon'], 'number', 'min' => -180, 'max' => 180],
+            [['lat'], 'number', 'min' => -90, 'max' => 90],
+            [['name'], 'string', 'max' => 250],
+            [['address'], 'string', 'max' => 500],
         ];
     }
 
@@ -52,8 +56,9 @@ class Event extends \yii\db\ActiveRecord
             'name' => Yii::t('app', 'Name'),
             'start_date' => Yii::t('app', 'Start Date'),
             'end_date' => Yii::t('app', 'End Date'),
-            'city' => Yii::t('app', 'City'),
-            'venue' => Yii::t('app', 'Venue'),
+            'address' => Yii::t('app', 'Address'),
+            'lon' => Yii::t('app', 'Lon'),
+            'lat' => Yii::t('app', 'Lat'),
         ];
     }
     
