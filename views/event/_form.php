@@ -23,7 +23,11 @@ use yii\widgets\ActiveForm;
         'dateFormat' => 'yyyy-MM-dd',
     ]) ?>
 
-    <?= $form->field($model, 'address')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'address')->widget(app\widgets\GeoComplete::className(), [
+        'clientOptions' => [
+            'source' => ['Badalona, Spain', 'Badalona Nueva, Australia'],
+        ],
+    ]) ?>
 
     <?= $form->field($model, 'lon')->textInput() ?>
 
@@ -36,3 +40,5 @@ use yii\widgets\ActiveForm;
     <?php ActiveForm::end(); ?>
 
 </div>
+
+<?php

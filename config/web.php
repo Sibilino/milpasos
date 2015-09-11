@@ -47,6 +47,13 @@ $config = yii\helpers\ArrayHelper::merge([
                 'class' => 'yii\db\Connection',
                 'charset' => 'utf8',
             ],
+            'assetManager' => [
+                'bundles' => [
+                    'app\widgets\MapsAsset' => [
+                        'key' => 'AIzaSyBEr0tOImJExGdG9hriZazaa1zgZbLhu7Y',
+                    ],
+                ]
+            ],
         ],
         'params' => $params,
     ],
