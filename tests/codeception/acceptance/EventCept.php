@@ -43,10 +43,10 @@ $I->fillField('Start Date', '2015-12-01');
 $I->fillField('End Date', '2015-12-05');
 $I->fillField('Address', 'Badalona');
 $I->waitForText("Spain"); // Wait for suggestions from Google
-$I->click(".suggest:nth-of-type(1)"); // Click on first suggestion
-$I->waitForText('Badalona, Spain', 30, '#event-address');
+$I->click(".ui-menu-item:nth-of-type(1)"); // Click on first suggestion
+
 $I->click('Create');
 $I->expectTo('see created event');
 $I->waitForText('Delete'); // Wait for page change after JS validation of fields
 $I->see('Newest test Event');
-$I->see('Badalona, Spain');
+$I->see('Badalona, Barcelona, Spain');
