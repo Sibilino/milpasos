@@ -37,3 +37,12 @@ $I->expect('Pass to be gone');
 $I->see('Create Pass');
 $I->see('MASTER PASS');
 $I->dontSee('BEGINNER PASS');
+
+$I->click('Create Pass');
+$I->fillField('Price', '71.59');
+$I->fillField('Description', 'Newest test pass');
+$I->click('Create');
+$I->expectTo('see created pass');
+$I->waitForText('Delete'); // Wait for page change after JS validation of fields
+$I->see('Newest test pass');
+$I->see('71.59');
