@@ -33,6 +33,16 @@ $config = yii\helpers\ArrayHelper::merge([
                     ],
                 ],
             ],
+            'urlManager' => [
+                'class' => yii\web\UrlManager::className(),
+                'enablePrettyUrl' => true,
+                'showScriptName' => false,
+                'rules' => [
+                    '<controller:\w+>/<id:\d+>' => '<controller>/view',
+                    '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
+                    '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
+                ],
+            ],
             'db' => [
                 'class' => 'yii\db\Connection',
                 'charset' => 'utf8',
