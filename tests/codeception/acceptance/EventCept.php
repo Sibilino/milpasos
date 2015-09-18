@@ -41,10 +41,19 @@ $I->click('Create Event');
 $I->fillField('Name', 'Newest test Event');
 $I->fillField('Start Date', '2015-12-01');
 $I->fillField('End Date', '2015-12-05');
-$I->fillField('Address', 'Badalona');
-$I->waitForText("Spain"); // Wait for suggestions from Google
-$I->click(".ui-menu-item:nth-of-type(1)"); // Click on first suggestion
 
+$I->amGoingTo("Type an incomplete address");
+$I->fillField('Address', 'Badalona');
+$I->waitForText("Spain"); // Wait for suggestions from Google, but dont click on any
+$I->click("Create");
+$I->expectTo("see validation errors");
+$I->dontSee("Delete");
+$I->seeInField("Address", "");
+
+$I->amGoingTo("Choose a valid address");
+$I->fillField('Address', 'Badalona');
+$I->waitForText("Spain");
+$I->click(".ui-menu-item:nth-of-type(1)"); // Click on first suggestion
 $I->click('Create');
 $I->expectTo('see created event');
 $I->waitForText('Delete'); // Wait for page change after JS validation of fields
