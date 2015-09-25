@@ -37,12 +37,13 @@ class Event extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'start_date', 'end_date', 'address', 'lon', 'lat'], 'required'],
+            [['name', 'start_date', 'end_date', 'lon', 'lat'], 'required'],
             [['start_date', 'end_date'], 'safe'],
             [['lon'], 'number', 'min' => -180, 'max' => 180],
             [['lat'], 'number', 'min' => -90, 'max' => 90],
             [['name'], 'string', 'max' => 250],
             [['address'], 'string', 'max' => 500],
+            [['address'], 'required', 'message' => "Please select an address from the list of suggestions."],
         ];
     }
 

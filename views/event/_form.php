@@ -23,11 +23,7 @@ use yii\widgets\ActiveForm;
         'dateFormat' => 'yyyy-MM-dd',
     ]) ?>
 
-    <?= $form->field($model, 'address')->widget(app\widgets\GeoComplete::className(), [
-        'clientOptions' => [
-            'source' => ['Badalona, Spain', 'Badalona Nueva, Australia'],
-        ],
-    ]) ?>
+    <?= $form->field($model, 'address')->widget(app\widgets\GeoComplete::className()) ?>
 
     <div id="hidden-coords"></div>
 

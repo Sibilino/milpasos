@@ -47,6 +47,7 @@ $I->fillField('Address', 'Badalona');
 $I->waitForText("Spain"); // Wait for suggestions from Google, but dont click on any
 $I->click("Create");
 $I->expectTo("see validation errors");
+$I->waitForText("Please select an address from the list of suggestions.");
 $I->dontSee("Delete");
 $I->seeInField("Address", "");
 
