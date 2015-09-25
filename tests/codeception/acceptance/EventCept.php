@@ -63,16 +63,15 @@ $I->see('Badalona, Barcelona, Spain');
 
 $I->amGoingTo("Add some links to an Event");
 $I->click("Update");
-$I->see("+", "button");
-$I->dontSeeElement('input[name^=Link]');
-$I->click("+");
+$I->see("Add", "button");
 $I->seeInField("Title", "");
 $I->fillField("Title", "Test link 1");
 $I->fillField("Url", "www.google.com");
-$I->click("+");
-$I->waitForElement('input[name^=Link\[1\]');
+$I->click("Add");
+$I->waitForElement('input[name^=Link\[0\]');
 $I->fillField('input[name=Link\[1\]\[Title\]]', "Link 2");
 $I->fillField('input[name=Link\[1\]\[Url\]]', "www.yahoo.com");
+$I->expect("Second link to be created even without clicking Add.");
 $I->click("Update");
 
 $I->expectTo("See the links in the Event.");
