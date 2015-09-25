@@ -8,7 +8,7 @@ use Yii;
  * This is the model class for table "link".
  *
  * @property string $id
- * @property string $label
+ * @property string $title
  * @property string $url
  * @property string $event_id
  *
@@ -30,9 +30,9 @@ class Link extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['label', 'url', 'event_id'], 'required'],
+            [['title', 'url', 'event_id'], 'required'],
             [['event_id'], 'integer'],
-            [['label', 'url'], 'string', 'max' => 250]
+            [['title', 'url'], 'string', 'max' => 250]
         ];
     }
 
@@ -43,7 +43,7 @@ class Link extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'label' => Yii::t('app', 'Label'),
+            'title' => Yii::t('app', 'Title'),
             'url' => Yii::t('app', 'Url'),
             'event_id' => Yii::t('app', 'Event ID'),
         ];
@@ -54,6 +54,7 @@ class Link extends \yii\db\ActiveRecord
      */
     public function getEvent()
     {
-        return $this->hasOne(Event::className(), ['id' => 'event_id']);
+        return $this->hasOne(Event::className(), ['id' => 'event_id'])
+            ->inverseOf("links");
     }
 }
