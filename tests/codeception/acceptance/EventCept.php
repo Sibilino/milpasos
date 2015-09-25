@@ -60,3 +60,23 @@ $I->expectTo('see created event');
 $I->waitForText('Delete'); // Wait for page change after JS validation of fields
 $I->see('Newest test Event');
 $I->see('Badalona, Barcelona, Spain');
+
+$I->amGoingTo("Add some links to an Event");
+$I->click("Update");
+$I->see("+", "button");
+$I->dontSeeElement('input[name^=Link]');
+$I->click("+");
+$I->seeInField("Title", "");
+$I->fillField("Title", "Test link 1");
+$I->fillField("Url", "www.google.com");
+$I->click("+");
+$I->waitForElement('input[name^=Link\[1\]');
+$I->fillField('input[name=Link\[1\]\[Title\]]', "Link 2");
+$I->fillField('input[name=Link\[1\]\[Url\]]', "www.yahoo.com");
+$I->click("Update");
+
+$I->expectTo("See the links in the Event.");
+$I->waitForText("Delete"); // Wait for page change after JS validation of fields
+$I->see("www.google.com");
+$I->see("www.yahoo.com");
+
