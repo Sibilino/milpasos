@@ -1,8 +1,11 @@
 <?php
 
 use app\models\Link;
-use app\models\LinkSearch;
-use yii\grid\GridView;
+use app\widgets\crudgrid\CrudGrid;
+use app\widgets\crudgrid\NewRowActionColumn;
+use yii\data\ActiveDataProvider;
+use yii\grid\ActionColumn;
+use yii\grid\SerialColumn;
 use yii\helpers\Html;
 use yii\jui\DatePicker;
 use yii\widgets\ActiveForm;
@@ -32,40 +35,26 @@ use yii\widgets\ActiveForm;
         <div class="panel-body">
             <label>Links</label>
 
-            <?php $this->beginBlock('link-grid-footer'); ?>
-                <div id="new-link" class="form-inline">
-                    <?php
-                    $newLink = new Link();
-                    $i = count($model->links) + 1;
-                    echo $form->field($newLink, "[$i]title")->textInput();
-                    echo $form->field($newLink, "[$i]url")->textInput();
-                    ?>
-                    <?= Html::button("Add", [
-                        "onclick" => "addLink()",
-                        "class" => "btn btn-sm btn-success form-control",
-                    ]) ?>
-                </div>
-            <?php $this->endBlock(); ?>
-
-            <?php
-            $linkSearch = new LinkSearch();
-            $linkSearch->event_id = $model->id;
-            echo GridView::widget([
-                "dataProvider" => $linkSearch->search([]),
+            <?= CrudGrid::widget([
+                'dataProvider' => new ActiveDataProvider([
+                    'query' => $model->getLinks(),
+                ]),
+                'newRowModel' => new Link(),
                 "columns" => [
-                    ['class' => 'yii\grid\SerialColumn'],
+                    [
+                        'class' => SerialColumn::className(),
+                    ],
                     'title',
                     [
                         'attribute' => 'url',
                         "format" => 'url',
                     ],
                     [
-                        'class' => 'yii\grid\ActionColumn',
+                        'class' => NewRowActionColumn::className(),
                         'header' => 'delete',
                         'template' => '{delete}',
                     ],
                 ],
-                "layout" => "{summary}\n{items}\n".$this->blocks['link-grid-footer']."\n{pager}",
             ]) ?>
 
         </div>
