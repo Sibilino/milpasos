@@ -2,7 +2,6 @@
 
 use app\models\Link;
 use app\widgets\crudgrid\CrudGrid;
-use app\widgets\crudgrid\NewRowActionColumn;
 use yii\data\ActiveDataProvider;
 use yii\grid\ActionColumn;
 use yii\grid\SerialColumn;
@@ -31,35 +30,6 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'address')->widget(app\widgets\GeoComplete::className()) ?>
 
-    <div class="panel panel-default">
-        <div class="panel-body">
-            <label>Links</label>
-
-            <?= CrudGrid::widget([
-                'dataProvider' => new ActiveDataProvider([
-                    'query' => $model->getLinks(),
-                ]),
-                'newRowModel' => new Link(),
-                "columns" => [
-                    [
-                        'class' => SerialColumn::className(),
-                    ],
-                    'title',
-                    [
-                        'attribute' => 'url',
-                        "format" => 'url',
-                    ],
-                    [
-                        'class' => NewRowActionColumn::className(),
-                        'header' => 'delete',
-                        'template' => '{delete}',
-                    ],
-                ],
-            ]) ?>
-
-        </div>
-    </div>
-
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), [
             'class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
@@ -67,6 +37,34 @@ use yii\widgets\ActiveForm;
     </div>
 
     <?php ActiveForm::end(); ?>
+
+    <div class="panel-body">
+        <label>Links</label>
+
+        <?= CrudGrid::widget([
+            'dataProvider' => new ActiveDataProvider([
+                'query' => $model->getLinks(),
+            ]),
+            'newRowModel' => new Link(),
+            'filterModel' => new Link(),
+            "columns" => [
+                [
+                    'class' => SerialColumn::className(),
+                ],
+                'title',
+                [
+                    'attribute' => 'url',
+                    "format" => 'url',
+                ],
+                [
+                    'class' => ActionColumn::className(),
+                    'header' => 'delete',
+                    'template' => '{delete}',
+                ],
+            ],
+        ]) ?>
+
+    </div>
 
 </div>
 
