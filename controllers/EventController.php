@@ -6,6 +6,7 @@ use Yii;
 use app\models\Event;
 use app\models\EventSearch;
 use yii\web\Controller;
+use app\models\Link;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -117,5 +118,15 @@ class EventController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    public function actionCreateLink()
+    {
+        $link = new Link();
+        $link->load(Yii::$app->request->post());
+        $link->save();
+        $this->render("create", [
+            'model' => new Event(),
+        ]);
     }
 }

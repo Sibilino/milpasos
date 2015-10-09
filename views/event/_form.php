@@ -1,13 +1,15 @@
 <?php
 
 use app\models\Link;
-use app\widgets\crudgrid\CrudGrid;
 use yii\data\ActiveDataProvider;
 use yii\grid\ActionColumn;
+use yii\grid\GridView;
 use yii\grid\SerialColumn;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\jui\DatePicker;
 use yii\widgets\ActiveForm;
+use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Event */
@@ -41,12 +43,29 @@ use yii\widgets\ActiveForm;
     <div class="panel-body">
         <label>Links</label>
 
-        <?= CrudGrid::widget([
+        <?php Pjax::begin(); ?>
+        <?php
+            $form = ActiveForm::begin([
+                'action' => Url::to(['create-link']),
+                'options' => [
+                    'data-pjax' => true,
+                ],
+            ]);
+            $newLink = new Link(['event_id' => $model->id]);
+        ?>
+
+        <?= $form->field($newLink, 'title')->textInput() ?>
+        <?= $form->field($newLink, 'url')->textInput() ?>
+        <?= Html::submitButton("Add", ['class' => 'btn btn-danger']) ?>
+
+        <?php ActiveForm::end() ?>
+        <?php Pjax::end(); ?>
+
+        <?php Pjax::begin(); ?>
+        <?= GridView::widget([
             'dataProvider' => new ActiveDataProvider([
                 'query' => $model->getLinks(),
             ]),
-            'newRowModel' => new Link(),
-            'filterModel' => new Link(),
             "columns" => [
                 [
                     'class' => SerialColumn::className(),
@@ -63,6 +82,7 @@ use yii\widgets\ActiveForm;
                 ],
             ],
         ]) ?>
+        <?php Pjax::end(); ?>
 
     </div>
 
