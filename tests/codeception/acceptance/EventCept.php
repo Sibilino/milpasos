@@ -67,7 +67,7 @@ $I->seeInField("Title", "");
 $I->fillField("Title", "Test link 1");
 $I->fillField("Url", "www.google.com");
 $I->click("Add");
-$I->waitForElement('input[name^=Link\[0\]');
+$I->waitForText("www.google.com", 5, ".grid-view td");
 $I->fillField('input[name=Link\[1\]\[Title\]]', "Link 2");
 $I->fillField('input[name=Link\[1\]\[Url\]]', "www.yahoo.com");
 $I->expect("Second link to be created even without clicking Add.");

@@ -32,8 +32,9 @@ $this->params['breadcrumbs'][] = $this->title;
             'name',
             'start_date',
             'end_date',
-            'city',
-            'venue',
+            'address',
+            'lon',
+            'lat',
         ],
     ]) ?>
 

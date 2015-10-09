@@ -28,8 +28,9 @@ $this->params['breadcrumbs'][] = $this->title;
             'name',
             'start_date:date',
             'end_date:date',
-            'city',
-            // 'venue',
+            'address',
+            // 'lon',
+            // 'lat',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
