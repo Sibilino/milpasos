@@ -26,9 +26,8 @@ $I->waitForText("Name cannot be blank");
 $I->fillField('Name', 'Salsatorium');
 $I->click('Update');
 $I->expectTo('See updated name for the Event');
-$I->waitForText('Delete'); // Wait for page change after JS validation of fields
-$I->see('Salsatorium');
-$I->see('Delete');
+$I->wait(5); // Wait for page change after JS validation of fields
+$I->see('Salsatorium', 'td');
 
 $I->click('Delete');
 $I->acceptPopup();
@@ -48,7 +47,7 @@ $I->waitForText("Spain"); // Wait for suggestions from Google, but dont click on
 $I->click("Create");
 $I->expectTo("see validation errors");
 $I->waitForText("Please select an address from the list of suggestions.");
-$I->dontSee("Delete");
+$I->dontSee("Delete", ['css' => 'a.btn']);
 $I->seeInField("Address", "");
 
 $I->amGoingTo("Choose a valid address");
@@ -57,8 +56,8 @@ $I->waitForText("Spain");
 $I->click(".ui-menu-item:nth-of-type(1)"); // Click on first suggestion
 $I->click('Create');
 $I->expectTo('see created event');
-$I->waitForText('Delete'); // Wait for page change after JS validation of fields
-$I->see('Newest test Event');
+$I->wait(5); // Wait for page change after JS validation of fields
+$I->see('Newest test Event', 'td');
 $I->see('Badalona, Barcelona, Spain');
 
 $I->amGoingTo("Add some links to an Event");
@@ -75,7 +74,7 @@ $I->expect("Second link to be created even without clicking Add.");
 $I->click("Update");
 
 $I->expectTo("See the links in the Event.");
-$I->waitForText("Delete"); // Wait for page change after JS validation of fields
+$I->wait(5); // Wait for page change after JS validation of fields
 $I->see("www.google.com");
 $I->see("www.yahoo.com");
 
