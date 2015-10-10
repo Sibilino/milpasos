@@ -23,6 +23,12 @@ use Yii;
  */
 class Event extends \yii\db\ActiveRecord
 {
+
+    /**
+     * @var Link
+     */
+    private $_newLink;
+
     /**
      * @inheritdoc
      */
@@ -106,6 +112,18 @@ class Event extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Pass::className(), ['event_id' => 'id'])
             ->inverseOf('event');
+    }
+
+    public function getNewLink()
+    {
+        if (!isset($this->_newLink))
+            $this->_newLink = new Link(['event_id' => $this->id]);
+        return $this->_newLink;
+    }
+
+    public function setNewLink(Link $value)
+    {
+        $this->_newLink = $value;
     }
 
 }

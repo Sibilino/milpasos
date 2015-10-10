@@ -126,7 +126,7 @@ class EventController extends Controller
         $link->load(Yii::$app->request->post());
         $link->save();
         $this->render("create", [
-            'model' => new Event(),
+            'model' => new Event(['newLink' => $link]),
         ]);
     }
 }

@@ -44,18 +44,16 @@ use yii\widgets\Pjax;
         <label>Links</label>
 
         <?php Pjax::begin(); ?>
-        <?php
-            $form = ActiveForm::begin([
+        <?php $form = ActiveForm::begin([
                 'action' => Url::to(['create-link']),
                 'options' => [
                     'data-pjax' => true,
                 ],
-            ]);
-            $newLink = new Link(['event_id' => $model->id]);
-        ?>
+            ]); ?>
 
-        <?= $form->field($newLink, 'title')->textInput() ?>
-        <?= $form->field($newLink, 'url')->textInput() ?>
+        <?= Html::activeHiddenInput($model->newLink, 'event_id') ?>
+        <?= $form->field($model->newLink, 'title')->textInput() ?>
+        <?= $form->field($model->newLink, 'url')->textInput() ?>
         <?= Html::submitButton("Add", ['class' => 'btn btn-danger']) ?>
 
         <?php ActiveForm::end() ?>

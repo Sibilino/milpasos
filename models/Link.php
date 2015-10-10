@@ -31,7 +31,7 @@ class Link extends \yii\db\ActiveRecord
     {
         return [
             [['title', 'url', 'event_id'], 'required'],
-            [['event_id'], 'exist', 'targetClass' => 'Event', 'targetAttribute' => 'id'],
+            [['event_id'], 'exist', 'targetClass' => Event::className(), 'targetAttribute' => 'id'],
             [['title', 'url'], 'string', 'max' => 250],
             [['url'], 'unique', 'targetAttribute' => ['url', 'event_id']],
         ];
