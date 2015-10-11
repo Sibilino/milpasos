@@ -1,12 +1,10 @@
 <?php
 
-use app\models\Link;
 use yii\data\ActiveDataProvider;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
 use yii\grid\SerialColumn;
 use yii\helpers\Html;
-use yii\helpers\Url;
 use yii\jui\DatePicker;
 use yii\widgets\ActiveForm;
 use yii\widgets\Pjax;
@@ -14,6 +12,7 @@ use yii\widgets\Pjax;
 /* @var $this yii\web\View */
 /* @var $model app\models\Event */
 /* @var $form yii\widgets\ActiveForm */
+/* @var $newLink app\models\Link */
 ?>
 
 <div class="event-form">
@@ -40,50 +39,50 @@ use yii\widgets\Pjax;
 
     <?php ActiveForm::end(); ?>
 
-    <div class="panel-body">
-        <label>Links</label>
+    <?php if (!$model->isNewRecord && isset($newLink)): ?>
+        <div class="panel-body">
+            <label>Links</label>
 
-        <?php Pjax::begin(); ?>
-        <?php $form = ActiveForm::begin([
-                'action' => Url::to(['create-link']),
-                'options' => [
-                    'data-pjax' => true,
+            <?php Pjax::begin(); ?>
+            <?php $form = ActiveForm::begin([
+                    'options' => [
+                        'data-pjax' => true,
+                    ],
+                ]); ?>
+
+            <?= Html::activeHiddenInput($newLink, 'event_id') ?>
+            <?= $form->field($newLink, 'title')->textInput() ?>
+            <?= $form->field($newLink, 'url')->textInput() ?>
+            <?= Html::submitButton("Add", ['class' => 'btn btn-danger']) ?>
+
+            <?php ActiveForm::end() ?>
+            <?php Pjax::end(); ?>
+
+            <?php Pjax::begin(); ?>
+            <?= GridView::widget([
+                'dataProvider' => new ActiveDataProvider([
+                    'query' => $model->getLinks(),
+                ]),
+                "columns" => [
+                    [
+                        'class' => SerialColumn::className(),
+                    ],
+                    'title',
+                    [
+                        'attribute' => 'url',
+                        "format" => 'url',
+                    ],
+                    [
+                        'class' => ActionColumn::className(),
+                        'header' => 'delete',
+                        'template' => '{delete}',
+                    ],
                 ],
-            ]); ?>
+            ]) ?>
+            <?php Pjax::end(); ?>
 
-        <?= Html::activeHiddenInput($model->newLink, 'event_id') ?>
-        <?= $form->field($model->newLink, 'title')->textInput() ?>
-        <?= $form->field($model->newLink, 'url')->textInput() ?>
-        <?= Html::submitButton("Add", ['class' => 'btn btn-danger']) ?>
-
-        <?php ActiveForm::end() ?>
-        <?php Pjax::end(); ?>
-
-        <?php Pjax::begin(); ?>
-        <?= GridView::widget([
-            'dataProvider' => new ActiveDataProvider([
-                'query' => $model->getLinks(),
-            ]),
-            "columns" => [
-                [
-                    'class' => SerialColumn::className(),
-                ],
-                'title',
-                [
-                    'attribute' => 'url',
-                    "format" => 'url',
-                ],
-                [
-                    'class' => ActionColumn::className(),
-                    'header' => 'delete',
-                    'template' => '{delete}',
-                ],
-            ],
-        ]) ?>
-        <?php Pjax::end(); ?>
-
-    </div>
-
+        </div>
+    <?php endif; ?>
 </div>
 
 <?php

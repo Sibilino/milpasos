@@ -81,14 +81,25 @@ class EventController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $newLink = new Link(['event_id' => $id]);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+        if ($newLink->load(Yii::$app->request->post())) {
+            if ($newLink->save()) {
+                // Clear new Link inputs so the user can add another new link
+                $newLink = new Link(['event_id' => $id]);
+            }
         }
+
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->save() && !$newLink->hasErrors()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
+        }
+
+        return $this->render('update', [
+            'model' => $model,
+            'newLink' => $newLink,
+        ]);
     }
 
     /**
@@ -118,15 +129,5 @@ class EventController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
-    }
-
-    public function actionCreateLink()
-    {
-        $link = new Link();
-        $link->load(Yii::$app->request->post());
-        $link->save();
-        $this->render("create", [
-            'model' => new Event(['newLink' => $link]),
-        ]);
     }
 }

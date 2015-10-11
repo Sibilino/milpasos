@@ -23,12 +23,6 @@ use Yii;
  */
 class Event extends \yii\db\ActiveRecord
 {
-
-    /**
-     * @var Link
-     */
-    private $_newLink;
-
     /**
      * @inheritdoc
      */
