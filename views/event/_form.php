@@ -76,6 +76,7 @@ use yii\widgets\Pjax;
                         'class' => ActionColumn::className(),
                         'header' => 'delete',
                         'template' => '{delete}',
+                        'controller' => 'link',
                     ],
                 ],
             ]) ?>
