@@ -5,6 +5,7 @@ namespace app\controllers;
 use Yii;
 use app\models\Event;
 use app\models\EventSearch;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use app\models\Link;
 use yii\web\NotFoundHttpException;
@@ -18,6 +19,15 @@ class EventController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [

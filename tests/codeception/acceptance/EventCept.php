@@ -2,9 +2,14 @@
 
 /* @var $scenario Codeception\Scenario */
 
-$I = new AcceptanceTester($scenario);
+use AcceptanceTester\RegisteredUserSteps as RegisteredTester;
+
+$I = new RegisteredTester($scenario);
 $I->wantTo('Ensure Event CRUD works');
 $I->amOnPage(Yii::$app->getUrlManager()->createUrl(['event/index']));
+
+$I->mustPerformLogin();
+
 $I->see('Create Event');
 $I->see('Salsea');
 $I->see('Bachatea');
