@@ -1,13 +1,12 @@
 <?php
 
+use app\widgets\GridForm;
 use yii\data\ActiveDataProvider;
 use yii\grid\ActionColumn;
-use yii\grid\GridView;
 use yii\grid\SerialColumn;
 use yii\helpers\Html;
 use yii\jui\DatePicker;
 use yii\widgets\ActiveForm;
-use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Event */
@@ -43,51 +42,36 @@ use yii\widgets\Pjax;
         <div class="panel-body">
             <label>Links</label>
 
-            <?php Pjax::begin(['id' => 'link-form']); ?>
-            <?php $form = ActiveForm::begin([
-                    'options' => [
-                        'data-pjax' => true,
+            <?php $form = GridForm::begin([
+                'gridOptions' => [
+                    'dataProvider' => new ActiveDataProvider([
+                        'query' => $model->getLinks(),
+                    ]),
+                    "columns" => [
+                        [
+                            'class' => SerialColumn::className(),
+                        ],
+                        'title',
+                        [
+                            'attribute' => 'url',
+                            "format" => 'url',
+                        ],
+                        [
+                            'class' => ActionColumn::className(),
+                            'header' => 'delete',
+                            'template' => '{delete}',
+                            'controller' => 'link',
+                        ],
                     ],
-                ]); ?>
+                ],
+            ]); ?>
 
             <?= Html::activeHiddenInput($newLink, 'event_id') ?>
             <?= $form->field($newLink, 'title')->textInput() ?>
             <?= $form->field($newLink, 'url')->textInput() ?>
             <?= Html::submitButton("Add", ['class' => 'btn btn-danger']) ?>
 
-            <?php ActiveForm::end() ?>
-            <?php Pjax::end(); ?>
-
-            <?php $this->registerJs("
-                // Reload link grid after submitting a new link
-                $('#link-form').on('pjax:end', function () {
-                    $.pjax.reload({container: '#link-grid'});
-                });
-            "); ?>
-
-            <?php Pjax::begin(['id' => 'link-grid']); ?>
-            <?= GridView::widget([
-                'dataProvider' => new ActiveDataProvider([
-                    'query' => $model->getLinks(),
-                ]),
-                "columns" => [
-                    [
-                        'class' => SerialColumn::className(),
-                    ],
-                    'title',
-                    [
-                        'attribute' => 'url',
-                        "format" => 'url',
-                    ],
-                    [
-                        'class' => ActionColumn::className(),
-                        'header' => 'delete',
-                        'template' => '{delete}',
-                        'controller' => 'link',
-                    ],
-                ],
-            ]) ?>
-            <?php Pjax::end(); ?>
+            <?php GridForm::end() ?>
 
         </div>
     <?php endif; ?>
