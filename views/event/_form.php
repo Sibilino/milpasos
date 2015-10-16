@@ -43,7 +43,7 @@ use yii\widgets\Pjax;
         <div class="panel-body">
             <label>Links</label>
 
-            <?php Pjax::begin(); ?>
+            <?php Pjax::begin(['id' => 'link-form']); ?>
             <?php $form = ActiveForm::begin([
                     'options' => [
                         'data-pjax' => true,
@@ -58,7 +58,14 @@ use yii\widgets\Pjax;
             <?php ActiveForm::end() ?>
             <?php Pjax::end(); ?>
 
-            <?php Pjax::begin(); ?>
+            <?php $this->registerJs("
+                // Reload link grid after submitting a new link
+                $('#link-form').on('pjax:end', function () {
+                    $.pjax.reload({container: '#link-grid'});
+                });
+            "); ?>
+
+            <?php Pjax::begin(['id' => 'link-grid']); ?>
             <?= GridView::widget([
                 'dataProvider' => new ActiveDataProvider([
                     'query' => $model->getLinks(),
