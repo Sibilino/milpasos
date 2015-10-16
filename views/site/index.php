@@ -15,13 +15,10 @@ $this->title = 'Milpasos';
 
         <div class="row">
             <div class="col-lg-4">
-                <h2>Salsa</h2>
             </div>
             <div class="col-lg-4">
-                <h2>Bachata</h2>
             </div>
             <div class="col-lg-4">
-                <h2>Kizomba</h2>
             </div>
         </div>
 
