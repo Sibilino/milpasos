@@ -40,7 +40,7 @@ use yii\widgets\ActiveForm;
 
     <?php if (!$model->isNewRecord && isset($newLink)): ?>
         <div class="panel-body">
-            <label>Links</label>
+            <h2>Links</h2>
 
             <?php $form = GridForm::begin([
                 'gridOptions' => [

@@ -67,14 +67,17 @@ $I->seeInField("Title", "");
 $I->fillField("Title", "Test link 1");
 $I->fillField("Url", "www.google.com");
 $I->click("Add");
-$I->waitForText("www.google.com", 5, ".grid-view td");
-$I->fillField('input[name=Link\[1\]\[Title\]]', "Link 2");
-$I->fillField('input[name=Link\[1\]\[Url\]]', "www.yahoo.com");
-$I->expect("Second link to be created even without clicking Add.");
-$I->click("Update");
+$I->waitForText("Showing 1-1 of 1 item.");
+$I->fillField('Title', "Link 2");
+$I->fillField('Url', "www.yahoo.com");
+$I->expect("Second link to be added.");
+$I->click("Add");
+$I->waitForText("Showing 1-2 of 2 items.");
+$I->see("www.google.com");
+$I->see("www.yahoo.com");
 
+$I->amOnPage(Yii::$app->getUrlManager()->createUrl(['event/view', 'id'=>3]));
 $I->expectTo("See the links in the Event.");
-$I->wait(5); // Wait for page change after JS validation of fields
 $I->see("www.google.com");
 $I->see("www.yahoo.com");
 

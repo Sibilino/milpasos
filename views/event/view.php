@@ -1,5 +1,9 @@
 <?php
 
+use yii\data\ActiveDataProvider;
+use yii\grid\ActionColumn;
+use yii\grid\GridView;
+use yii\grid\SerialColumn;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -38,4 +42,28 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]) ?>
 
+    <div class="panel-body">
+        <h2>Links</h2>
+        <?= GridView::widget([
+                'dataProvider' => new ActiveDataProvider([
+                    'query' => $model->getLinks(),
+                ]),
+                "columns" => [
+                    [
+                        'class' => SerialColumn::className(),
+                    ],
+                    'title',
+                    [
+                        'attribute' => 'url',
+                        "format" => 'url',
+                    ],
+                    [
+                        'class' => ActionColumn::className(),
+                        'header' => 'delete',
+                        'template' => '{delete}',
+                        'controller' => 'link',
+                    ],
+                ]
+            ]) ?>
+    </div>
 </div>
