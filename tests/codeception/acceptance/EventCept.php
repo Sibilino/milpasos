@@ -67,17 +67,17 @@ $I->see('Badalona, Barcelona, Spain');
 
 $I->amGoingTo("Add some links to an Event");
 $I->click("Update");
-$I->see("Add", "button");
+$I->see("Add", "//*[@id='links']//button");
 $I->seeInField("Title", "");
 $I->fillField("Title", "Test link 1");
 $I->fillField("Url", "www.google.com");
-$I->click("Add");
-$I->waitForText("Showing 1-1 of 1 item.");
+$I->click("//*[@id='links']//button");
+$I->waitForText("Showing 1-1 of 1 item.", null, "#links .summary");
 $I->fillField('Title', "Link 2");
 $I->fillField('Url', "www.yahoo.com");
 $I->expect("Second link to be added.");
-$I->click("Add");
-$I->waitForText("Showing 1-2 of 2 items.");
+$I->click("//*[@id='links']//button");
+$I->waitForText("Showing 1-2 of 2 items.", null, "#links .summary");
 $I->see("www.google.com");
 $I->see("www.yahoo.com");
 
@@ -86,3 +86,10 @@ $I->expectTo("See the links in the Event.");
 $I->see("www.google.com");
 $I->see("www.yahoo.com");
 
+$I->amGoingTo("Add passes to an event");
+$I->amOnPage(Yii::$app->urlManager->createUrl(['event/update', 'id'=>2]));
+$I->see("Add", "//*[@id='passes']//button");
+$I->dontSee("Pass test via event update");
+$I->fillField("Price", "222.99");
+$I->fillField("Description", "Pass test via event update");
+$I->click("//*[@id='passes']//button");

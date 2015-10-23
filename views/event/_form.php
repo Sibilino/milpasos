@@ -39,7 +39,7 @@ use yii\widgets\ActiveForm;
     <?php ActiveForm::end(); ?>
 
     <?php if (!$model->isNewRecord && isset($newLink)): ?>
-        <div class="panel-body">
+        <div class="panel-body" id="links">
             <h2>Links</h2>
 
             <?php $form = GridForm::begin([
@@ -70,6 +70,38 @@ use yii\widgets\ActiveForm;
             <?= $form->field($newLink, 'title')->textInput() ?>
             <?= $form->field($newLink, 'url')->textInput() ?>
             <?= Html::submitButton("Add", ['class' => 'btn btn-danger']) ?>
+
+            <?php GridForm::end() ?>
+
+        </div>
+
+        <div class="panel-body" id="passes">
+            <h2>Passes</h2>
+
+            <?php $form = GridForm::begin([
+                'gridOptions' => [
+                    'dataProvider' => new ActiveDataProvider([
+                        'query' => $model->getPasses(),
+                    ]),
+                    "columns" => [
+                        [
+                            'class' => SerialColumn::className(),
+                        ],
+                        'description',
+                        [
+                            'attribute' => 'price',
+                            "format" => 'currency',
+                        ],
+                        [
+                            'class' => ActionColumn::className(),
+                            'header' => 'delete',
+                            'template' => '{delete}',
+                            'controller' => 'link',
+                        ],
+                    ],
+                ],
+            ]); ?>
+
 
             <?php GridForm::end() ?>
 
