@@ -93,3 +93,14 @@ $I->dontSee("Pass test via event update");
 $I->fillField("Price", "222.99");
 $I->fillField("Description", "Pass test via event update");
 $I->click("//*[@id='passes']//button");
+$I->waitForText("Showing 1-1 of 1 item.", null, "#passes .summary");
+$I->dontSee("Pass test 2 via event update");
+$I->fillField("Price", "42.99");
+$I->fillField("Description", "Pass test 2 via event update");
+$I->click("//*[@id='passes']//button");
+$I->waitForText("Showing 1-2 of 2 items.", null, "#passes .summary");
+
+$I->amOnPage(Yii::$app->getUrlManager()->createUrl(['event/view', 'id'=>2]));
+$I->expectTo("See the passes in the Event.");
+$I->see("Pass test via event update");
+$I->see("Pass test 2 via event update");
