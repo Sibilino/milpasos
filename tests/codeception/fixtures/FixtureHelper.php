@@ -2,6 +2,7 @@
 
 namespace tests\codeception\fixtures;
 
+use Codeception\TestCase;
 use tests\codeception\fixtures\UserFixture;
 use Codeception\Module;
 use yii\test\FixtureTrait;
@@ -29,9 +30,7 @@ class FixtureHelper extends Module
     }
 
     /**
-     * Method called before any suite tests run. Loads User fixture login user
-     * to use in acceptance and functional tests.
-     * @param array $settings
+     * @inheritdoc
      */
     public function _beforeSuite($settings = [])
     {
@@ -39,9 +38,22 @@ class FixtureHelper extends Module
     }
 
     /**
-     * Method is called after all suite tests run
+     * Sets up the database with the given fixtures.
+     * @param array $config
+     * @return string
      */
-    public function _afterSuite()
+    public function setUpDb(array $config = [])
+    {
+        $fixtures = $this->createFixtures($config);
+        $this->loadFixtures($fixtures);
+        return "I set up the database.";
+    }
+
+    /**
+     * Unload fixtures after each test
+     * @param TestCase $test
+     */
+    public function _after(TestCase $test)
     {
         $this->unloadFixtures();
     }
@@ -49,18 +61,10 @@ class FixtureHelper extends Module
     /**
      * @inheritdoc
      */
-    public function fixtures()
+    public function globalFixtures()
     {
         return [
-            'user' => [
-                'class' => UserFixture::className(),
-            ],
-            'event' => [
-                'class' => EventFixture::className(),
-            ],
-            'pass' => [
-                'class' => PassFixture::className(),
-            ],
+            'user' => UserFixture::className(),
         ];
     }
 }
