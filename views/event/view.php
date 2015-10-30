@@ -42,7 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]) ?>
 
-    <div class="panel-body">
+    <div id="links">
         <h2>Links</h2>
         <?= GridView::widget([
                 'dataProvider' => new ActiveDataProvider([
@@ -62,6 +62,31 @@ $this->params['breadcrumbs'][] = $this->title;
                         'header' => 'delete',
                         'template' => '{delete}',
                         'controller' => 'link',
+                    ],
+                ]
+            ]) ?>
+    </div>
+
+    <div id="passes">
+        <h2>Passes</h2>
+        <?= GridView::widget([
+                'dataProvider' => new ActiveDataProvider([
+                    'query' => $model->getPasses(),
+                ]),
+                "columns" => [
+                    [
+                        'class' => SerialColumn::className(),
+                    ],
+                    'description',
+                    [
+                        'attribute' => 'price',
+                        "format" => 'currency',
+                    ],
+                    [
+                        'class' => ActionColumn::className(),
+                        'header' => 'delete',
+                        'template' => '{delete}',
+                        'controller' => 'pass',
                     ],
                 ]
             ]) ?>

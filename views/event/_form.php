@@ -12,6 +12,7 @@ use yii\widgets\ActiveForm;
 /* @var $model app\models\Event */
 /* @var $form yii\widgets\ActiveForm */
 /* @var $newLink app\models\Link */
+/* @var $newPass app\models\Pass */
 ?>
 
 <div class="event-form">
@@ -38,74 +39,87 @@ use yii\widgets\ActiveForm;
 
     <?php ActiveForm::end(); ?>
 
-    <?php if (!$model->isNewRecord && isset($newLink)): ?>
-        <div class="panel-body" id="links">
-            <h2>Links</h2>
+    <?php if (!$model->isNewRecord):?>
+        <?php if (isset($newLink)): ?>
+            <div id="links">
+                <h2>Links</h2>
 
-            <?php $form = GridForm::begin([
-                'gridOptions' => [
-                    'dataProvider' => new ActiveDataProvider([
-                        'query' => $model->getLinks(),
-                    ]),
-                    "columns" => [
-                        [
-                            'class' => SerialColumn::className(),
-                        ],
-                        'title',
-                        [
-                            'attribute' => 'url',
-                            "format" => 'url',
-                        ],
-                        [
-                            'class' => ActionColumn::className(),
-                            'header' => 'delete',
-                            'template' => '{delete}',
-                            'controller' => 'link',
-                        ],
-                    ],
-                ],
-            ]); ?>
-
-            <?= Html::activeHiddenInput($newLink, 'event_id') ?>
-            <?= $form->field($newLink, 'title')->textInput() ?>
-            <?= $form->field($newLink, 'url')->textInput() ?>
-            <?= Html::submitButton("Add", ['class' => 'btn btn-danger']) ?>
-
-            <?php GridForm::end() ?>
-
-        </div>
-
-        <div class="panel-body" id="passes">
-            <h2>Passes</h2>
-
-            <?php $form = GridForm::begin([
-                'gridOptions' => [
-                    'dataProvider' => new ActiveDataProvider([
-                        'query' => $model->getPasses(),
-                    ]),
-                    "columns" => [
-                        [
-                            'class' => SerialColumn::className(),
-                        ],
-                        'description',
-                        [
-                            'attribute' => 'price',
-                            "format" => 'currency',
-                        ],
-                        [
-                            'class' => ActionColumn::className(),
-                            'header' => 'delete',
-                            'template' => '{delete}',
-                            'controller' => 'link',
+                <?php $form = GridForm::begin([
+                    'gridOptions' => [
+                        'dataProvider' => new ActiveDataProvider([
+                            'query' => $model->getLinks(),
+                        ]),
+                        "columns" => [
+                            [
+                                'class' => SerialColumn::className(),
+                            ],
+                            'title',
+                            [
+                                'attribute' => 'url',
+                                "format" => 'url',
+                            ],
+                            [
+                                'class' => ActionColumn::className(),
+                                'header' => 'delete',
+                                'template' => '{delete}',
+                                'controller' => 'link',
+                            ],
                         ],
                     ],
-                ],
-            ]); ?>
+                ]); ?>
 
+                <?= Html::activeHiddenInput($newLink, 'event_id') ?>
+                <?= $form->field($newLink, 'title')->textInput() ?>
+                <?= $form->field($newLink, 'url')->textInput() ?>
+                <?= Html::submitButton("Add", ['class' => 'btn btn-danger']) ?>
 
-            <?php GridForm::end() ?>
+                <?php GridForm::end() ?>
 
-        </div>
+            </div>
+        <?php endif;?>
+        <?php if (isset($newPass)): ?>
+            <div id="passes">
+                <h2>Passes</h2>
+
+                <?php $form = GridForm::begin([
+                    'gridOptions' => [
+                        'dataProvider' => new ActiveDataProvider([
+                            'query' => $model->getPasses(),
+                        ]),
+                        "columns" => [
+                            [
+                                'class' => SerialColumn::className(),
+                            ],
+                            'description',
+                            [
+                                'attribute' => 'price',
+                                "format" => 'currency',
+                            ],
+                            [
+                                'class' => ActionColumn::className(),
+                                'header' => 'delete',
+                                'template' => '{delete}',
+                                'controller' => 'link',
+                            ],
+                        ],
+                    ],
+                ]); ?>
+
+                <?= Html::activeHiddenInput($newPass, 'event_id') ?>
+                <?= $form->field($newPass, 'price')->textInput(['maxlength' => true]) ?>
+                <?= $form->field($newPass, 'description')->textInput(['maxlength' => true]) ?>
+                <?= $form->field($newPass, 'available_from')->widget(DatePicker::className(), [
+                    'dateFormat' => 'yyyy-MM-dd',
+                ]) ?>
+                <?= $form->field($newPass, 'available_to')->widget(DatePicker::className(), [
+                    'dateFormat' => 'yyyy-MM-dd',
+                ]) ?>
+                <?= Html::submitButton("Add", ['class' => 'btn btn-danger']) ?>
+
+                <?php GridForm::end() ?>
+
+            </div>
+        <?php endif; ?>
     <?php endif; ?>
 </div>
 

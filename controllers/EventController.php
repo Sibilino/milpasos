@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Pass;
 use Yii;
 use app\models\Event;
 use app\models\EventSearch;
@@ -92,6 +93,7 @@ class EventController extends Controller
     {
         $model = $this->findModel($id);
         $newLink = new Link(['event_id' => $id]);
+        $newPass = new Pass(['event_id' => $id]);
 
         if ($newLink->load(Yii::$app->request->post())) {
             if ($newLink->save()) {
@@ -99,9 +101,15 @@ class EventController extends Controller
                 $newLink = new Link(['event_id' => $id]);
             }
         }
+        if ($newPass->load(Yii::$app->request->post())) {
+            if ($newPass->save()) {
+                // Clear new Pass inputs so the user can add another new Pass
+                $newPass = new Pass(['event_id' => $id]);
+            }
+        }
 
         if ($model->load(Yii::$app->request->post())) {
-            if ($model->save() && !$newLink->hasErrors()) {
+            if ($model->save() && !$newLink->hasErrors() && !$newPass->hasErrors()) {
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         }
@@ -109,6 +117,7 @@ class EventController extends Controller
         return $this->render('update', [
             'model' => $model,
             'newLink' => $newLink,
+            'newPass' => $newPass,
         ]);
     }
 
