@@ -25,8 +25,13 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            'price',
             'description',
+            [
+                'attribute' => 'price',
+                'value' => function ($model, $key, $index) {
+                    return Yii::$app->formatter->asCurrency($model->price, $model->currency);
+                } ,
+            ],
             'available_from:date',
             'available_to:date',
             [

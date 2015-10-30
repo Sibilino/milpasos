@@ -1,5 +1,6 @@
 <?php
 
+use app\models\Pass;
 use app\widgets\GridForm;
 use yii\data\ActiveDataProvider;
 use yii\grid\ActionColumn;
@@ -106,8 +107,9 @@ use yii\widgets\ActiveForm;
                 ]); ?>
 
                 <?= Html::activeHiddenInput($newPass, 'event_id') ?>
-                <?= $form->field($newPass, 'price')->textInput(['maxlength' => true]) ?>
                 <?= $form->field($newPass, 'description')->textInput(['maxlength' => true]) ?>
+                <?= $form->field($newPass, 'price')->textInput(['maxlength' => true]) ?>
+                <?= $form->field($newPass, 'currency')->dropDownList(Pass::$currencies) ?>
                 <?= $form->field($newPass, 'available_from')->widget(DatePicker::className(), [
                     'dateFormat' => 'yyyy-MM-dd',
                 ]) ?>

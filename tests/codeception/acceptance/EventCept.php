@@ -76,13 +76,13 @@ $I->fillField('Address', 'Badalona');
 $I->waitForText("Spain");
 $I->click(".ui-menu-item:nth-of-type(1)"); // Click on first suggestion
 $I->click('Create');
-$I->expectTo('see created event');
-$I->wait(5); // Wait for page change after JS validation of fields
-$I->see('Newest test Event', 'td');
-$I->see('Badalona, Barcelona, Spain');
+$I->expectTo('see created event and link creator');
+$I->waitForText("Links", null, "h2");
+$I->see("Add","button");
+$I->seeInField('Name','Newest test Event');
+$I->seeInField("Address", 'Badalona, Barcelona, Spain');
 
 $I->amGoingTo("Add some links to an Event");
-$I->click("Update");
 $I->see("Add", "//*[@id='links']//button");
 $I->seeInField("Title", "");
 $I->fillField("Title", "Test link 1");

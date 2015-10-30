@@ -1,6 +1,7 @@
 <?php
 
 use app\models\Event;
+use app\models\Pass;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
@@ -15,9 +16,13 @@ use yii\jui\DatePicker;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'price')->textInput(['maxlength' => true]) ?>
+
 
     <?= $form->field($model, 'description')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'price')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'currency')->dropDownList(Pass::$currencies) ?>
 
     <?= $form->field($model, 'available_from')->widget(DatePicker::className(), [
         'dateFormat' => 'yyyy-MM-dd',

@@ -3,6 +3,7 @@ return [
     [
         'id' => 1,
 		'price' => 298.00,
+        'currency' => 'EUR',
 		'description' => "2 NOCHES DE HOTEL + 2 FULL PASS",
 		'available_from' => NULL,
 		'available_to' => "2015-08-31",
@@ -11,6 +12,7 @@ return [
 	[
         'id' => 2,
 		'price' => 57.13,
+        'currency' => 'CHF',
 		'description' => "FULL PASS",
 		'available_from' => NULL,
 		'available_to' => NULL,
@@ -19,6 +21,7 @@ return [
 	[
         'id' => 3,
 		'price' => 72.50,
+        'currency' => 'EUR',
 		'description' => "VIP FULL PASS",
 		'available_from' => NULL,
 		'available_to' => "2015-11-10",
@@ -27,6 +30,7 @@ return [
 	[
         'id' => 4,
 		'price' => 119.50,
+        'currency' => 'USD',
 		'description' => "BEGINNER PASS",
 		'available_from' => NULL,
 		'available_to' => "2015-12-01",
@@ -35,6 +39,7 @@ return [
     [
         'id' => 5,
         'price' => 185.99,
+        'currency' => 'EUR',
         'description' => "MASTER PASS",
         'available_from' => NULL,
         'available_to' => "2015-12-03",
