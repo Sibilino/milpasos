@@ -22,7 +22,7 @@ use yii\jui\DatePicker;
 
     <?= $form->field($model, 'price')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'currency')->dropDownList(Pass::$currencies) ?>
+    <?= $form->field($model, 'currency')->dropDownList(Pass::CURRENCIES) ?>
 
     <?= $form->field($model, 'available_from')->widget(DatePicker::className(), [
         'dateFormat' => 'yyyy-MM-dd',

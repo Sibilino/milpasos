@@ -22,7 +22,7 @@ class Pass extends \yii\db\ActiveRecord
     /**
      * @var array The possible currencies for price, as "3-letterCode" => "displaySymbol".
      */
-    public static $currencies = [
+    const CURRENCIES = [
         'EUR' => '€',
         'CHF' => 'CHF',
         'USD' => '$',
@@ -46,7 +46,7 @@ class Pass extends \yii\db\ActiveRecord
             [['price'], 'number'],
             [['available_from', 'available_to'], 'default', 'value' => null],
             [['available_from', 'available_to'], 'date', 'format' => 'yyyy-MM-dd'],
-            [['currency'], 'in', 'range' => array_keys(static::$currencies), 'strict' => true],
+            [['currency'], 'in', 'range' => array_keys(static::CURRENCIES), 'strict' => true],
             [['event_id'], 'integer'],
             [['description'], 'string', 'max' => 1000]
         ];
