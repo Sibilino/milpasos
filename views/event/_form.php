@@ -96,6 +96,8 @@ use yii\widgets\ActiveForm;
                                 'attribute' => 'price',
                                 "format" => 'currency',
                             ],
+                            'available_from:date',
+                            'available_to:date',
                             [
                                 'class' => ActionColumn::className(),
                                 'header' => 'delete',

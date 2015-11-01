@@ -34,8 +34,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'price',
                 'value' => Yii::$app->formatter->asCurrency($model->price, $model->currency),
             ],
-            'available_from',
-            'available_to',
+            'available_from:date',
+            'available_to:date',
             [
                 'format' => 'raw',
                 'value' => Html::a($model->event->name, ['event/view', 'id' => $model->event->id]),
