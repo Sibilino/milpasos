@@ -78,45 +78,7 @@ $I->click(".ui-menu-item:nth-of-type(1)"); // Click on first suggestion
 $I->click('Create');
 $I->expectTo('see created event and link creator');
 $I->waitForText("Links", null, "h2");
+$I->see("Passes", 'h2');
 $I->see("Add","button");
 $I->seeInField('Name','Newest test Event');
 $I->seeInField("Address", 'Badalona, Barcelona, Spain');
-
-$I->amGoingTo("Add some links to an Event");
-$I->see("Add", "//*[@id='links']//button");
-$I->seeInField("Title", "");
-$I->fillField("Title", "Test link 1");
-$I->fillField("Url", "www.google.com");
-$I->click("//*[@id='links']//button");
-$I->waitForText("Showing 1-1 of 1 item.", null, "#links .summary");
-$I->fillField('Title', "Link 2");
-$I->fillField('Url', "www.yahoo.com");
-$I->expect("Second link to be added.");
-$I->click("//*[@id='links']//button");
-$I->waitForText("Showing 1-2 of 2 items.", null, "#links .summary");
-$I->see("www.google.com");
-$I->see("www.yahoo.com");
-
-$I->amOnPage(Yii::$app->getUrlManager()->createUrl(['event/view', 'id'=>3]));
-$I->expectTo("See the links in the Event.");
-$I->see("www.google.com");
-$I->see("www.yahoo.com");
-
-$I->amGoingTo("Add passes to an event");
-$I->amOnPage(Yii::$app->urlManager->createUrl(['event/update', 'id'=>3]));
-$I->see("Add", "//*[@id='passes']//button");
-$I->dontSee("Pass test via event update");
-$I->fillField("Price", "222.99");
-$I->fillField("Description", "Pass test via event update");
-$I->click("//*[@id='passes']//button");
-$I->waitForText("Showing 1-1 of 1 item.", null, "#passes .summary");
-$I->dontSee("Pass test 2 via event update");
-$I->fillField("Price", "42.99");
-$I->fillField("Description", "Pass test 2 via event update");
-$I->click("//*[@id='passes']//button");
-$I->waitForText("Showing 1-2 of 2 items.", null, "#passes .summary");
-
-$I->amOnPage(Yii::$app->getUrlManager()->createUrl(['event/view', 'id'=>3]));
-$I->expectTo("See the passes in the Event.");
-$I->see("Pass test via event update");
-$I->see("Pass test 2 via event update");
