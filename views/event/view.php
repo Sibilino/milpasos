@@ -59,8 +59,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                     [
                         'class' => ActionColumn::className(),
-                        'header' => 'delete',
-                        'template' => '{delete}',
+                        'header' => 'actions',
+                        'template' => '{update}{delete}',
                         'controller' => 'link',
                     ],
                 ]
@@ -84,8 +84,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                     [
                         'class' => ActionColumn::className(),
-                        'header' => 'delete',
-                        'template' => '{delete}',
+                        'header' => 'actions',
+                        'template' => '{update}{delete}',
                         'controller' => 'pass',
                     ],
                 ]

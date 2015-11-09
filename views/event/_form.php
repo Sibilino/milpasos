@@ -61,8 +61,8 @@ use yii\widgets\ActiveForm;
                             ],
                             [
                                 'class' => ActionColumn::className(),
-                                'header' => 'delete',
-                                'template' => '{delete}',
+                                'header' => 'actions',
+                                'template' => '{update}{delete}',
                                 'controller' => 'link',
                             ],
                         ],
@@ -100,9 +100,9 @@ use yii\widgets\ActiveForm;
                             'available_to:date',
                             [
                                 'class' => ActionColumn::className(),
-                                'header' => 'delete',
-                                'template' => '{delete}',
-                                'controller' => 'link',
+                                'header' => 'actions',
+                                'template' => '{update}{delete}',
+                                'controller' => 'pass',
                             ],
                         ],
                     ],
