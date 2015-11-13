@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "df08a8984c3e23c1093db6aa035a1765",
-    "content-hash": "8432d8ed9ef12c8160ad0db38abc37cb",
+    "hash": "07e7b3bac25c44c5e2fafb51c4892df3",
+    "content-hash": "b16e82f3b351d987097d910c98fac9cf",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -207,16 +207,16 @@
         },
         {
             "name": "bower-asset/yii2-pjax",
-            "version": "v2.0.4",
+            "version": "v2.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/jquery-pjax.git",
-                "reference": "3f20897307cca046fca5323b318475ae9dac0ca0"
+                "reference": "6818718408086db6bdcf33649cecb86b6b4f9b67"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/jquery-pjax/zipball/3f20897307cca046fca5323b318475ae9dac0ca0",
-                "reference": "3f20897307cca046fca5323b318475ae9dac0ca0",
+                "url": "https://api.github.com/repos/yiisoft/jquery-pjax/zipball/6818718408086db6bdcf33649cecb86b6b4f9b67",
+                "reference": "6818718408086db6bdcf33649cecb86b6b4f9b67",
                 "shasum": ""
             },
             "require": {
@@ -341,6 +341,51 @@
                 "html"
             ],
             "time": "2013-11-30 08:25:19"
+        },
+        {
+            "name": "sibilino/yii2-openlayers",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Sibilino/yii2-openlayers.git",
+                "reference": "217b57adbac03f008a259ac3ed24dc1745455073"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Sibilino/yii2-openlayers/zipball/217b57adbac03f008a259ac3ed24dc1745455073",
+                "reference": "217b57adbac03f008a259ac3ed24dc1745455073",
+                "shasum": ""
+            },
+            "require": {
+                "yiisoft/yii2": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "sibilino\\yii2\\openlayers\\": "widget/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Luis Hernández Hernández",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Map widget encapsulating the OpenLayers 3 library for easy use in Yii 2.",
+            "homepage": "https://github.com/Sibilino/yii2-openlayers",
+            "keywords": [
+                "OpenLayers",
+                "map",
+                "openlayers3",
+                "widget",
+                "yii",
+                "yii2"
+            ],
+            "time": "2015-11-13 11:25:50"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -990,7 +1035,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "sibilino/yii2-openlayers": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
