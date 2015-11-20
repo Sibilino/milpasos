@@ -12,8 +12,7 @@ $this->title = 'Milpasos';
 
 $coords = array_map(function (Event $e) { return [$e->lon, $e->lat]; }, Event::find()->all());
 $features = array_map(function ($c) {
-    $c = Json::encode($c);
-    return new OL('Feature', new OL('geom.Point', new JsExpression("ol.proj.transform($c, 'EPSG:4326', 'EPSG:3857')")));
+    return new OL('Feature', new OL('geom.Point', new OL('proj.fromLonLat', $c)));
 }, $coords);
 
 ?>
@@ -21,6 +20,31 @@ $features = array_map(function ($c) {
 
     <?= OpenLayers::widget([
         'mapOptions' => [
+            'interactions' => new JsExpression('ol.interaction.defaults().extend([
+                new ol.interaction.Select({
+                    style: function(feature, resolution) {
+                        return [
+                            new ol.style.Style({
+                                image: new ol.style.Circle({
+                                    radius: 10,
+                                    fill: new ol.style.Fill({
+                                        color: "#FF0000"
+                                    }),
+                                    stroke: new ol.style.Stroke({
+                                        color: "#000000"
+                                    })
+                                }),
+                                text: new ol.style.Text({
+                                    text: feature.get("features").length.toString(),
+                                    fill: new ol.style.Fill({
+                                        color: "#fff"
+                                    })
+                                })
+                            })
+                        ];
+                    }
+                 })
+            ])'),
             'layers' => [
                 'Tile' => [
                     'source' => new OL('source.MapQuest', [
@@ -29,7 +53,7 @@ $features = array_map(function ($c) {
                 ],
                 'Vector' => [
                     'source' => new OL('source.Cluster', [
-                        'distance' => 40,
+                        'distance' => 30,
                         'source' => new OL('source.Vector', [
                             'features' => $features,
                         ]),
@@ -56,7 +80,7 @@ $features = array_map(function ($c) {
                 ],
             ],
             'view' => [
-                'center' => [0,0],
+                'center' => new OL('proj.fromLonLat', [6.62232,46.5235]),
                 'zoom' => 2,
             ],
         ],
