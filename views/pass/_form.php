@@ -2,6 +2,7 @@
 
 use app\models\Event;
 use app\models\Pass;
+use app\widgets\DateRangePicker;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
@@ -24,13 +25,9 @@ use yii\jui\DatePicker;
 
     <?= $form->field($model, 'currency')->dropDownList(Pass::$currencies) ?>
 
-    <?= $form->field($model, 'available_from')->widget(DatePicker::className(), [
-        'dateFormat' => 'yyyy-MM-dd',
-    ]) ?>
-
-    <?= $form->field($model, 'available_to')->widget(DatePicker::className(), [
-        'dateFormat' => 'yyyy-MM-dd',
-    ]) ?>
+    <?= $form->field($model, 'available_from')->widget(DateRangePicker::className(), [
+        'endAttribute' => 'available_to',
+    ])->label(Yii::t('app', 'Availability period')) ?>
 
     <?= $form->field($model, 'event_id')->dropDownList(ArrayHelper::map(Event::find()->all(), 'id', 'name')) ?>
 
