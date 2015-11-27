@@ -3,6 +3,7 @@
 namespace app\widgets;
 
 use yii\base\InvalidConfigException;
+use yii\helpers\Html;
 use yii\jui\DatePicker;
 use yii\widgets\InputWidget;
 
@@ -18,6 +19,12 @@ class DateRangePicker extends InputWidget
     {
         if (!$this->endAttribute) {
             throw new InvalidConfigException("The 'endAttribute' property must be configured.");
+        }
+        if ($this->hasModel() && $this->model->hasErrors($this->endAttribute)) {
+            foreach ($this->model->getErrors($this->endAttribute) as $error) {
+                $this->model->addError($this->attribute, $error);
+            }
+
         }
         parent::init();
     }
