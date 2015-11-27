@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\components\RememberLastPage;
 use app\models\Pass;
 use Yii;
 use app\models\Event;
@@ -34,6 +35,9 @@ class EventController extends Controller
                 'actions' => [
                     'delete' => ['post'],
                 ],
+            ],
+            'rememberUpdatedFrom' => [
+                'class' => RememberLastPage::className(),
             ],
         ];
     }
@@ -110,7 +114,7 @@ class EventController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
             if ($model->save() && !$newLink->hasErrors() && !$newPass->hasErrors()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+                return $this->redirect($this->lastPage);
             }
         }
 

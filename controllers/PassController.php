@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\components\RememberLastPage;
 use Yii;
 use app\models\Pass;
 use app\models\PassSearch;
@@ -32,6 +33,9 @@ class PassController extends Controller
                 'actions' => [
                     'delete' => ['post'],
                 ],
+            ],
+            'rememberUpdatedFrom' => [
+                'class' => RememberLastPage::className(),
             ],
         ];
     }
@@ -92,7 +96,7 @@ class PassController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect($this->lastPage);
         } else {
             return $this->render('update', [
                 'model' => $model,
