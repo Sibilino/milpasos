@@ -1,12 +1,12 @@
 <?php
 
 use app\models\Pass;
+use app\widgets\DateRangePicker;
 use app\widgets\GridForm;
 use yii\data\ActiveDataProvider;
 use yii\grid\ActionColumn;
 use yii\grid\SerialColumn;
 use yii\helpers\Html;
-use yii\jui\DatePicker;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
@@ -22,12 +22,11 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'start_date')->widget(DatePicker::className(), [
-        'dateFormat' => 'yyyy-MM-dd',
-    ]) ?>
-
-    <?= $form->field($model, 'end_date')->widget(DatePicker::className(), [
-        'dateFormat' => 'yyyy-MM-dd',
+    <?= DateRangePicker::widget([
+        'form' => $form,
+        'model' => $model,
+        'fromAttr' => 'start_date',
+        'toAttr' => 'end_date',
     ]) ?>
 
     <?= $form->field($model, 'address')->widget(app\widgets\GeoComplete::className()) ?>
@@ -112,11 +111,11 @@ use yii\widgets\ActiveForm;
                 <?= $form->field($newPass, 'description')->textInput(['maxlength' => true]) ?>
                 <?= $form->field($newPass, 'price')->textInput(['maxlength' => true]) ?>
                 <?= $form->field($newPass, 'currency')->dropDownList(Pass::$currencies) ?>
-                <?= $form->field($newPass, 'available_from')->widget(DatePicker::className(), [
-                    'dateFormat' => 'yyyy-MM-dd',
-                ]) ?>
-                <?= $form->field($newPass, 'available_to')->widget(DatePicker::className(), [
-                    'dateFormat' => 'yyyy-MM-dd',
+                <?= DateRangePicker::widget([
+                    'form' => $form,
+                    'model' => $newPass,
+                    'fromAttr' => 'available_from',
+                    'toAttr' => 'available_to',
                 ]) ?>
                 <?= Html::submitButton("Add", ['class' => 'btn btn-danger']) ?>
 
