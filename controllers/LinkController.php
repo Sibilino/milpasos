@@ -2,7 +2,7 @@
 
 namespace app\controllers;
 
-use app\components\RememberLastPage;
+use app\components\RememberLastPageBehavior;
 use Yii;
 use app\models\Link;
 use app\models\LinkSearch;
@@ -35,7 +35,7 @@ class LinkController extends Controller
                 ],
             ],
             'rememberUpdatedFrom' => [
-                'class' => RememberLastPage::className(),
+                'class' => RememberLastPageBehavior::className(),
             ],
         ];
     }

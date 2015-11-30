@@ -10,7 +10,7 @@ use yii\base\Controller;
  * Behavior to be attached to controllers that remembers the last DIFFERENT url in $lastPage.
  * @property string $lastPage The last different url the current user accessed. This property is read-only.
  */
-class RememberLastPage extends Behavior
+class RememberLastPageBehavior extends Behavior
 {
     public function events() {
         return [

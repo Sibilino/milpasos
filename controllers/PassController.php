@@ -2,7 +2,7 @@
 
 namespace app\controllers;
 
-use app\components\RememberLastPage;
+use app\components\RememberLastPageBehavior;
 use Yii;
 use app\models\Pass;
 use app\models\PassSearch;
@@ -35,7 +35,7 @@ class PassController extends Controller
                 ],
             ],
             'rememberUpdatedFrom' => [
-                'class' => RememberLastPage::className(),
+                'class' => RememberLastPageBehavior::className(),
             ],
         ];
     }

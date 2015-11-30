@@ -2,7 +2,7 @@
 
 namespace app\controllers;
 
-use app\components\RememberLastPage;
+use app\components\RememberLastPageBehavior;
 use app\models\Pass;
 use Yii;
 use app\models\Event;
@@ -37,7 +37,7 @@ class EventController extends Controller
                 ],
             ],
             'rememberUpdatedFrom' => [
-                'class' => RememberLastPage::className(),
+                'class' => RememberLastPageBehavior::className(),
             ],
         ];
     }
