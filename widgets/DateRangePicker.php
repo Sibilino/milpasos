@@ -12,7 +12,7 @@ use yii\web\JsExpression;
 use yii\widgets\ActiveForm;
 
 /**
- * Class DateRangePicker
+ * Class DateRangePicker is a widget that outputs two linked datepickers for a model within an ActiveForm.
  * @package app\widgets
  */
 class DateRangePicker extends Widget
