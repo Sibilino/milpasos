@@ -21,29 +21,29 @@ $features = array_map(function ($c) {
     <?= OpenLayers::widget([
         'mapOptions' => [
             'interactions' => new JsExpression('ol.interaction.defaults().extend([
-                new ol.interaction.Select({
-                    style: function(feature, resolution) {
+                '.new OL('interaction.Select', [
+                    'style' => new JsExpression('function(feature, resolution) {
                         return [
-                            new ol.style.Style({
-                                image: new ol.style.Circle({
-                                    radius: 10,
-                                    fill: new ol.style.Fill({
-                                        color: "#FF0000"
-                                    }),
-                                    stroke: new ol.style.Stroke({
-                                        color: "#000000"
-                                    })
-                                }),
-                                text: new ol.style.Text({
-                                    text: feature.get("features").length.toString(),
-                                    fill: new ol.style.Fill({
-                                        color: "#fff"
-                                    })
-                                })
-                            })
+                            '.new OL('style.Style', [
+                                'image' => new OL('style.Circle', [
+                                    'radius' => 10,
+                                    'fill' => new OL('style.Fill', [
+                                        'color' => '#FF0000',
+                                    ]),
+                                    'stroke' => new OL('style.Stroke', [
+                                        'color' => "#000000",
+                                    ]),
+                                ]),
+                                'text' => new OL('style.Text', [
+                                    'text' => new JsExpression("feature.get('features').length.toString()"),
+                                    'fill' => new OL('style.Fill', [
+                                        'color' => '#FFFFFF',
+                                    ]),
+                                ]),
+                            ]).',
                         ];
-                    }
-                 })
+                    }'),
+                ]) .'
             ])'),
             'layers' => [
                 'Tile' => [
@@ -59,23 +59,25 @@ $features = array_map(function ($c) {
                         ]),
                     ]),
                     'style' => new JsExpression("function(feature, resolution) {
-                          return [new ol.style.Style({
-                            image: new ol.style.Circle({
-                              radius: 10,
-                              stroke: new ol.style.Stroke({
-                                color: '#fff'
-                              }),
-                              fill: new ol.style.Fill({
-                                color: '#3399CC'
-                              })
-                            }),
-                            text: new ol.style.Text({
-                              text: feature.get('features').length.toString(),
-                              fill: new ol.style.Fill({
-                                color: '#fff'
-                              })
-                            })
-                          })];
+                        return [
+                            ".new OL('style.Style', [
+                                'image' => new OL('style.Circle', [
+                                    'radius' => 10,
+                                    'stroke' => new OL('style.Stroke', [
+                                        'color' => '#FFFFFF',
+                                    ]),
+                                    'fill' => new OL('style.Fill', [
+                                        'color' => '#3399CC',
+                                    ]),
+                                ]),
+                                'text' => new OL('style.Text', [
+                                    'text' => new JsExpression('feature.get("features").length.toString()'),
+                                    'fill' => new OL('style.Fill', [
+                                        'color' => '#FFFFFF',
+                                    ]),
+                                ]),
+                            ])."
+                        ];
                     }"),
                 ],
             ],
