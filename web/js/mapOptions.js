@@ -23,10 +23,18 @@ sibilino.olwidget.mapOptions["main-map"] = (function ($) {
         }
     });
     select.on("select", function (e) {
-        console.log(e.target.getFeatures());
-        console.log(e.selected);
+        $("#selection-form").empty();
+        e.target.getFeatures().forEach(function (cluster) {
+            cluster.get("features").forEach(function (feature) {
+                var eventId = feature.get("eventId");
+                if (eventId) {
+                    $("#selection-form").append('<input type="hidden" name="EventSelectionForm[ids][]" value="' + eventId + '">');
+                }
+            });
+        });
+        $("#selection-form").submit();
     });
     return {
-        interactions: ol.interaction.defaults().extend([select]),
+        interactions: ol.interaction.defaults().extend([select])
     }
 } )(jQuery);

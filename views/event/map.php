@@ -4,13 +4,10 @@
 /* @var $selectedEvents app\models\Event[] */
 
 use app\models\Event;
-use app\models\forms\EventSelectionForm;
 use app\widgets\GridForm;
 use sibilino\yii2\openlayers\OL;
 use sibilino\yii2\openlayers\OpenLayers;
 use yii\data\ArrayDataProvider;
-use yii\helpers\Html;
-use yii\helpers\Json;
 use yii\helpers\Url;
 use yii\web\JsExpression;
 
@@ -19,7 +16,7 @@ $this->title = 'Milpasos';
 $features = array_map(function (Event $e) {
     return new OL('Feature', [
         'geometry' => new OL('geom.Point', new JsExpression("ol.proj.fromLonLat([$e->lon,$e->lat])")),
-        'data' => Json::encode($e),
+        'eventId' => $e->id,
     ]);
 }, Event::find()->all());
 
@@ -92,11 +89,6 @@ $features = array_map(function (Event $e) {
             ],
         ]) ?>
 
-        <div id="selection-inputs">
-            <?= Html::hiddenInput('EventSelectionForm[ids][]', 4) ?>
-            <?= Html::hiddenInput('EventSelectionForm[ids][]', 6) ?>
-            <?= Html::submitButton('Refresh') ?>
-        </div>
         <?php GridForm::end() ?>
 
     </div>
