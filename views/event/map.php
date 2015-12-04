@@ -8,6 +8,7 @@ use app\widgets\GridForm;
 use sibilino\yii2\openlayers\OL;
 use sibilino\yii2\openlayers\OpenLayers;
 use yii\data\ArrayDataProvider;
+use yii\data\Sort;
 use yii\helpers\Url;
 use yii\web\JsExpression;
 
@@ -78,6 +79,13 @@ $features = array_map(function (Event $e) {
             'gridOptions' => [
                 'dataProvider' => new ArrayDataProvider([
                     'allModels' => $selectedEvents,
+                    'sort' => [
+                        'attributes' => ['start_date', 'end_date'],
+                        'defaultOrder' => ['start_date'=>SORT_ASC],
+                    ],
+                    'pagination' => [
+                        'pageSize' => 5,
+                    ],
                 ]),
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
