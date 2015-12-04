@@ -6,7 +6,6 @@ $config = yii\helpers\ArrayHelper::merge([
         'id' => 'basic',
         'basePath' => dirname(__DIR__),
         'bootstrap' => ['log'],
-        'defaultRoute' => 'event/map',
         'components' => [
             'cache' => [
                 'class' => 'yii\caching\FileCache',
