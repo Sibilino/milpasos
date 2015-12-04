@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "07e7b3bac25c44c5e2fafb51c4892df3",
-    "content-hash": "b16e82f3b351d987097d910c98fac9cf",
+    "hash": "37164e6409bdd57ac5e21cf03d432196",
+    "content-hash": "4bedb08a21b96f896bdcaa26e7f48d74",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -344,16 +344,16 @@
         },
         {
             "name": "sibilino/yii2-openlayers",
-            "version": "dev-master",
+            "version": "dev-js-module",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Sibilino/yii2-openlayers.git",
-                "reference": "dfec3c8f761f32916b2382d91af92cbcbe3ea8c5"
+                "reference": "fdebd1fc262ee40852cabd1354471f183e6b686a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Sibilino/yii2-openlayers/zipball/dfec3c8f761f32916b2382d91af92cbcbe3ea8c5",
-                "reference": "dfec3c8f761f32916b2382d91af92cbcbe3ea8c5",
+                "url": "https://api.github.com/repos/Sibilino/yii2-openlayers/zipball/fdebd1fc262ee40852cabd1354471f183e6b686a",
+                "reference": "fdebd1fc262ee40852cabd1354471f183e6b686a",
                 "shasum": ""
             },
             "require": {
@@ -385,7 +385,7 @@
                 "yii",
                 "yii2"
             ],
-            "time": "2015-11-27 08:04:12"
+            "time": "2015-12-04 08:01:32"
         },
         {
             "name": "swiftmailer/swiftmailer",
