@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\components\RememberLastPageBehavior;
+use app\models\forms\EventSelectionForm;
 use app\models\Pass;
 use Yii;
 use app\models\Event;
@@ -143,9 +144,15 @@ class EventController extends Controller
      * @param array $selectionIds Array of the ids of the events to be shown in detail next to the map.
      * @return string
      */
-    public function actionMap($selectionIds=array())
+    public function actionMap()
     {
-        $selectedEvents = Event::findAll($selectionIds);
+        $selectionModel = new EventSelectionForm();
+        $selectionModel->load(Yii::$app->request->get());
+
+        $selectedEvents = [];
+        if ($selectionModel->validate()) {
+            $selectedEvents = Event::find()->where(['id'=>$selectionModel->ids])->all();
+        }
 
         return $this->render('map', [
             'selectedEvents' => $selectedEvents,

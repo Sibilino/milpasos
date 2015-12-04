@@ -4,8 +4,12 @@
 /* @var $selectedEvents app\models\Event[] */
 
 use app\models\Event;
+use app\models\forms\EventSelectionForm;
+use app\widgets\GridForm;
 use sibilino\yii2\openlayers\OL;
 use sibilino\yii2\openlayers\OpenLayers;
+use yii\data\ArrayDataProvider;
+use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\helpers\Url;
 use yii\web\JsExpression;
@@ -71,14 +75,29 @@ $features = array_map(function (Event $e) {
 
     <div class="body-content">
 
-        <div class="row">
-            <div class="col-lg-4">
-            </div>
-            <div class="col-lg-4">
-            </div>
-            <div class="col-lg-4">
-            </div>
+        <?php $form = GridForm::begin([
+            'id' => 'selection-form',
+            'method' => 'get',
+            'gridOptions' => [
+                'dataProvider' => new ArrayDataProvider([
+                    'allModels' => $selectedEvents,
+                ]),
+                'columns' => [
+                    ['class' => 'yii\grid\SerialColumn'],
+                    'name',
+                    'start_date:date',
+                    'end_date:date',
+                    'address',
+                ],
+            ],
+        ]) ?>
+
+        <div id="selection-inputs">
+            <?= Html::hiddenInput('EventSelectionForm[ids][]', 4) ?>
+            <?= Html::hiddenInput('EventSelectionForm[ids][]', 6) ?>
+            <?= Html::submitButton('Refresh') ?>
         </div>
+        <?php GridForm::end() ?>
 
     </div>
 </div>
