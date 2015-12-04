@@ -1,11 +1,11 @@
 <?php
 
 /* @var $this yii\web\View */
+/* @var $selectedEvents app\models\Event[] */
 
 use app\models\Event;
 use sibilino\yii2\openlayers\OL;
 use sibilino\yii2\openlayers\OpenLayers;
-use sibilino\yii2\openlayers\OpenLayersBundle;
 use yii\helpers\Json;
 use yii\helpers\Url;
 use yii\web\JsExpression;

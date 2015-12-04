@@ -139,6 +139,20 @@ class EventController extends Controller
     }
 
     /**
+     * Shows a map-based event search page.
+     * @param array $selectionIds Array of the ids of the events to be shown in detail next to the map.
+     * @return string
+     */
+    public function actionMap($selectionIds=array())
+    {
+        $selectedEvents = Event::findAll($selectionIds);
+
+        return $this->render('map', [
+            'selectedEvents' => $selectedEvents,
+        ]);
+    }
+
+    /**
      * Finds the Event model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param string $id
