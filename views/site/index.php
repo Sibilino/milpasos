@@ -5,46 +5,27 @@
 use app\models\Event;
 use sibilino\yii2\openlayers\OL;
 use sibilino\yii2\openlayers\OpenLayers;
+use sibilino\yii2\openlayers\OpenLayersBundle;
 use yii\helpers\Json;
+use yii\helpers\Url;
 use yii\web\JsExpression;
 
 $this->title = 'Milpasos';
 
-$coords = array_map(function (Event $e) { return [$e->lon, $e->lat]; }, Event::find()->all());
-$features = array_map(function ($c) {
-    return new OL('Feature', new OL('geom.Point', new OL('proj.fromLonLat', $c)));
-}, $coords);
+$features = array_map(function (Event $e) {
+    return new OL('Feature', [
+        'geometry' => new OL('geom.Point', new JsExpression("ol.proj.fromLonLat([$e->lon,$e->lat])")),
+        'data' => Json::encode($e),
+    ]);
+}, Event::find()->all());
 
 ?>
 <div class="site-index">
 
     <?= OpenLayers::widget([
+        'id' => 'main-map',
+        'mapOptionScript' => Url::to('@web/js/mapOptions.js'),
         'mapOptions' => [
-            'interactions' => new JsExpression('ol.interaction.defaults().extend([
-                '.new OL('interaction.Select', [
-                    'style' => new JsExpression('function(feature, resolution) {
-                        return [
-                            '.new OL('style.Style', [
-                                'image' => new OL('style.Circle', [
-                                    'radius' => 10,
-                                    'fill' => new OL('style.Fill', [
-                                        'color' => '#FF0000',
-                                    ]),
-                                    'stroke' => new OL('style.Stroke', [
-                                        'color' => "#000000",
-                                    ]),
-                                ]),
-                                'text' => new OL('style.Text', [
-                                    'text' => new JsExpression("feature.get('features').length.toString()"),
-                                    'fill' => new OL('style.Fill', [
-                                        'color' => '#FFFFFF',
-                                    ]),
-                                ]),
-                            ]).',
-                        ];
-                    }'),
-                ]) .'
-            ])'),
             'layers' => [
                 'Tile' => [
                     'source' => new OL('source.MapQuest', [
