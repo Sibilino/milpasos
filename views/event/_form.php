@@ -1,11 +1,13 @@
 <?php
 
+use app\models\Dance;
 use app\models\Pass;
 use app\widgets\DateRangePicker;
 use app\widgets\GridForm;
 use yii\data\ActiveDataProvider;
 use yii\grid\ActionColumn;
 use yii\grid\SerialColumn;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -21,6 +23,8 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'danceIds')->checkboxList(ArrayHelper::map(Dance::find()->all(), 'id', 'name')) ?>
 
     <?= DateRangePicker::widget([
         'form' => $form,

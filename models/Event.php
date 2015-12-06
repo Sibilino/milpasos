@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "event".
@@ -14,6 +15,7 @@ use Yii;
  * @property string $address
  * @property double $lon
  * @property double $lat
+ * @property array $danceIds
  *
  * @property Artist[] $artists
  * @property Dance[] $dances
@@ -23,6 +25,11 @@ use Yii;
  */
 class Event extends \yii\db\ActiveRecord
 {
+    /**
+     * @var array To collect input to update this Event's dances.
+     */
+    public $danceIds = [];
+
     /**
      * @inheritdoc
      */
@@ -44,7 +51,18 @@ class Event extends \yii\db\ActiveRecord
             [['name'], 'string', 'max' => 250],
             [['address'], 'string', 'max' => 500],
             [['address'], 'required', 'message' => "Please select an address from the list of suggestions."],
+            [['danceIds'], 'each', 'rule' => ['exist', 'targetClass'=>Dance::className(), 'targetAttribute'=>'id']],
         ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributes()
+    {
+        return array_merge(parent::attributes(), [
+            'danceIds',
+        ]);
     }
 
     /**
@@ -60,9 +78,33 @@ class Event extends \yii\db\ActiveRecord
             'address' => Yii::t('app', 'Address'),
             'lon' => Yii::t('app', 'Lon'),
             'lat' => Yii::t('app', 'Lat'),
+            'danceIds' => Yii::t('app', 'Dance Styles'),
         ];
     }
-    
+
+    /**
+     * Load $danceIds form this Event's associated dances.
+     */
+    public function afterFind()
+    {
+        $this->danceIds = ArrayHelper::getColumn($this->dances, 'id');
+        parent::afterFind();
+    }
+
+    /**
+     * Updates this event's associated dances so that the new selection is the one in $this->danceIds.
+     * @param bool $insert
+     * @param array $changedAttributes
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        $this->unlinkAll('dances', true);
+        foreach ($this->danceIds as $id) {
+            $this->link('dances', Dance::findOne($id));
+        }
+        parent::afterSave($insert, $changedAttributes);
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */
