@@ -40,9 +40,10 @@ class ManyToManyBehavior extends Behavior
     public function saveRelation(AfterSaveEvent $event) {
         $model = $this->owner;
         $model->unlinkAll($this->relation, true); // Delete all existing links
-        $relationFinder = $model->getRelation($this->relation);
         $ids = $model->${$this->idListAttr};
-        foreach ($relationFinder->where(['id' => $ids])->all() as $record) {
+        $relatedModels = $model->getRelation($this->relation)->andWhere(['id' => $ids])->all();
+        
+        foreach ($relatedModels as $record) {
             $model->link($this->relation, $record);
         }
     }
