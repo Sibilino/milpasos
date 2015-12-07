@@ -43,7 +43,7 @@ class ManyToManyBehavior extends Behavior
         $relationFinder = $model->getRelation($this->relation);
         $ids = $model->${$this->idListAttr};
         foreach ($relationFinder->where(['id' => $ids])->all() as $record) {
-            $this->link($this->relation, $record);
+            $model->link($this->relation, $record);
         }
     }
 }
