@@ -26,7 +26,7 @@ use yii\helpers\ArrayHelper;
 class Event extends \yii\db\ActiveRecord
 {
     /**
-     * @var array To collect input to update this Event's dances.
+     * @var array|string To collect input to update this Event's dances. Can be array or string of comma-separated ids.
      */
     public $danceIds = [];
 
@@ -51,6 +51,11 @@ class Event extends \yii\db\ActiveRecord
             [['name'], 'string', 'max' => 250],
             [['address'], 'string', 'max' => 500],
             [['address'], 'required', 'message' => "Please select an address from the list of suggestions."],
+            [['danceIds'], 'filter', 'filter' => function ($value) {
+                return explode(',', $value);
+            }, 'when' => function ($model) {
+                return is_string($model->danceIds);
+            }], // Transform comma-separated string to array
             [['danceIds'], 'each', 'rule' => ['exist', 'targetClass'=>Dance::className(), 'targetAttribute'=>'id']],
         ];
     }
