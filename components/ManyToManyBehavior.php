@@ -65,8 +65,13 @@ class ManyToManyBehavior extends Behavior
         $model = $this->owner;
         $model->unlinkAll($this->relation, true); // Delete all existing links
         $ids = $model->{$this->idListAttr};
-        $relatedModels = $model->getRelation($this->relation)->andWhere(['id' => $ids])->all();
-        
+
+        // Why does this not work?? The resulting query gets WHERE ... AND (0=1)
+        // $relatedModels = $this->owner->getRelation($this->relation)->where(['id' => $ids])->all();
+
+        $relationClass = $this->owner->getRelation($this->relation)->modelClass;
+        $relatedModels = call_user_func([$relationClass, 'findAll'], ['id' => $ids]);
+
         foreach ($relatedModels as $record) {
             $model->link($this->relation, $record);
         }
