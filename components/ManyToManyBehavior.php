@@ -25,6 +25,7 @@ class ManyToManyBehavior extends Behavior
     
     public function validateIdList(Event $event) {
         $relationClass = $this->owner->getRelation($this->relation)->modelClass;
+        // TODO: Replace each + exist validators for one findAll()
         $validator = new EachValidator([
             'rule' => ['exist', 'targetClass' => $relationClass, 'targetAttribute'=>'id'],
         ]);
@@ -38,11 +39,9 @@ class ManyToManyBehavior extends Behavior
     
     public function saveRelation(AfterSaveEvent $event) {
         $model = $this->owner;
-        
         $model->unlinkAll($this->relation, true); // Delete all existing links
-        
         $relationFinder = $model->getRelation($this->relation);
-        
+        $ids = $model->${$this->idListAttr};
         foreach ($relationFinder->where(['id' => $ids])->all() as $record) {
             $this->link($this->relation, $record);
         }
