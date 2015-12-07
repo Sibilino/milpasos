@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 use yii\helpers\ArrayHelper;
+use app\components\ManyToManyBehavior;
 
 /**
  * This is the model class for table "event".
@@ -37,6 +38,20 @@ class Event extends \yii\db\ActiveRecord
     {
         return 'event';
     }
+    
+    /**
+     * @inheritdoc
+     */
+    public function behaviors() {
+        return [
+            [
+                // Add functionality to save and load dances from the id array in $danceIds
+                'class' => ManyToManyBehavior::className(),
+                'relation' => 'dances',
+                'idListAttr' => 'danceIds',
+            ],
+        ];
+    }
 
     /**
      * @inheritdoc
@@ -56,7 +71,6 @@ class Event extends \yii\db\ActiveRecord
             }, 'when' => function ($model) {
                 return is_string($model->danceIds);
             }], // Transform comma-separated string to array
-            [['danceIds'], 'each', 'rule' => ['exist', 'targetClass'=>Dance::className(), 'targetAttribute'=>'id']],
         ];
     }
 
@@ -85,29 +99,6 @@ class Event extends \yii\db\ActiveRecord
             'lat' => Yii::t('app', 'Lat'),
             'danceIds' => Yii::t('app', 'Dance Styles'),
         ];
-    }
-
-    /**
-     * Load $danceIds form this Event's associated dances.
-     */
-    public function afterFind()
-    {
-        $this->danceIds = ArrayHelper::getColumn($this->dances, 'id');
-        parent::afterFind();
-    }
-
-    /**
-     * Updates this event's associated dances so that the new selection is the one in $this->danceIds.
-     * @param bool $insert
-     * @param array $changedAttributes
-     */
-    public function afterSave($insert, $changedAttributes)
-    {
-        $this->unlinkAll('dances', true);
-        foreach ($this->danceIds as $id) {
-            $this->link('dances', Dance::findOne($id));
-        }
-        parent::afterSave($insert, $changedAttributes);
     }
 
     /**
