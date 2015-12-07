@@ -4,6 +4,7 @@ namespace app\components;
 
 use yii\base\Behavior;
 use yii\base\Event;
+use yii\base\Model;
 use yii\db\ActiveRecord;
 use yii\db\AfterSaveEvent;
 
@@ -15,10 +16,15 @@ class ManyToManyBehavior extends Behavior
     
     public function events() {
         return [
+            Model::EVENT_AFTER_VALIDATE => 'validateIdList',
             ActiveRecord::EVENT_AFTER_FIND => 'loadIdList',
             ActiveRecord::EVENT_AFTER_INSERT => 'saveRelation',
             ActiveRecord::EVENT_AFTER_UPDATE => 'saveRelation',
         ];
+    }
+    
+    public function validateIdList(Event $event) {
+        // TODO
     }
     
     public function loadIdList(Event $event) {
