@@ -7,11 +7,11 @@ use yii\base\Event;
 use yii\base\Model;
 use yii\db\ActiveRecord;
 use yii\db\AfterSaveEvent;
+use yii\validators\EachValidator;
 
 class ManyToManyBehavior extends Behavior
 {
     public $relation;
-    
     public $idListAttr;
     
     public function events() {
@@ -24,7 +24,11 @@ class ManyToManyBehavior extends Behavior
     }
     
     public function validateIdList(Event $event) {
-        // TODO
+        $relationClass = $this->owner->getRelation($this->relation)->modelClass;
+        $validator = new EachValidator([
+            'rule' => ['exist', 'targetClass' => $relationClass, 'targetAttribute'=>'id'],
+        ]);
+        $validator->validateAttribute($this->owner, $this->idListAttr);
     }
     
     public function loadIdList(Event $event) {
