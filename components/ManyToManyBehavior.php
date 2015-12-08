@@ -2,6 +2,7 @@
 
 namespace app\components;
 
+use Yii;
 use yii\base\Behavior;
 use yii\base\Event;
 use yii\base\Model;
