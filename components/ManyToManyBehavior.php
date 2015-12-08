@@ -58,7 +58,7 @@ class ManyToManyBehavior extends Behavior
         $notFound = array_diff($model->$attribute, $existingIds);
         if ($notFound) {
             $model->addError($attribute, Yii::t('app', 'Some values in {attribute} are invalid.', [
-                '{attribute}' => $model->getAttributeLabel($attribute),
+                'attribute' => $model->getAttributeLabel($attribute),
             ]));
         }
     }
