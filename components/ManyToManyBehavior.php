@@ -8,7 +8,6 @@ use yii\base\Model;
 use yii\db\ActiveRecord;
 use yii\db\AfterSaveEvent;
 use yii\helpers\ArrayHelper;
-use yii\validators\EachValidator;
 
 /**
  * Behavior to be attached to an ActiveRecord model that manages a M:N relation with an "id" primary key.
