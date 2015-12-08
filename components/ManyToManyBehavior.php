@@ -24,7 +24,7 @@ class ManyToManyBehavior extends Behavior
      */
     public $relation;
     /**
-     * @var string The attribute of the model that with the array of ids to save or loaded from the DB.
+     * @var string The attribute of the model with the array of ids to save or to be loaded from the DB.
      */
     public $idListAttr;
 
