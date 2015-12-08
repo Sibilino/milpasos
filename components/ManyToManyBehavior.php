@@ -13,7 +13,7 @@ use yii\validators\EachValidator;
 /**
  * Behavior to be attached to an ActiveRecord model that manages a M:N relation with an "id" primary key.
  * The ids of the related records are automatically loaded and saved from an array attribute in the model.
- * In addition, a new rule will be added to the model so that each id in the array must exist in the DB.
+ * In addition, the ids in the array will be validated to ensure their records exist in the DB.
  * @property ActiveRecord $owner
  * @package app\components
  */
@@ -31,7 +31,7 @@ class ManyToManyBehavior extends Behavior
     /**
      * Attaches handles to make the owning ActiveRecord automatically perform the following actions:
      * <ul>
-     * <li>Adding a validation rule that checks existance of each id in $owner->$idListAttr.</li>
+     * <li>Validating the existance in the DB of each id in $owner->$idListAttr.</li>
      * <li>After any find(), loading the related record's ids into $owner->$idListAttr.</li>
      * <li>After save(), saving the related records defined by the ids in $owner->$idListAttr.</li>
      * </ul>
@@ -51,12 +51,16 @@ class ManyToManyBehavior extends Behavior
      * @param Event $event
      */
     public function validateIdList(Event $event) {
-        $relationClass = $this->owner->getRelation($this->relation)->modelClass;
-        // TODO: Replace each + exist validators for one findAll()
-        $validator = new EachValidator([
-            'rule' => ['exist', 'targetClass' => $relationClass, 'targetAttribute'=>'id'],
-        ]);
-        $validator->validateAttribute($this->owner, $this->idListAttr);
+        $model = $this->owner;
+        $existingIds = ArrayHelper::getColumn($this->getModelsFromIds(), 'id');
+        $attribute = $this->idListAttr;
+        
+        $notFound = array_diff($model->$attribute, $existingIds);
+        if ($notFound) {
+            $model->addError($attribute, Yii::t('app', 'Some values in {attribute} are invalid.', [
+                '{attribute}' => $model->getAttributeLabel($attribute),
+            ]));
+        }
     }
 
     /**
@@ -75,12 +79,19 @@ class ManyToManyBehavior extends Behavior
     public function saveRelation(AfterSaveEvent $event) {
         $model = $this->owner;
         $model->unlinkAll($this->relation, true); // Delete all existing links
-        
-        $ids = $model->{$this->idListAttr};
-        $relationClass = $this->owner->getRelation($this->relation)->modelClass;
-        $relatedModels = call_user_func([$relationClass, 'findAll'], ['id' => $ids]);
-        foreach ($relatedModels as $record) {
+        foreach ($this->getModelsFromIds() as $record) {
             $model->link($this->relation, $record);
         }
+    }
+    
+    /**
+     * Returns the records existing in the DB with the ids in the owner's id array.
+     * @return ActiveRecord[]
+     */
+    private function getModelsFromIds() {
+        $ids = $this->owner->{$this->idListAttr};
+        $relationClass = $this->owner->getRelation($this->relation)->modelClass;
+        // Return RelationClass::findAll($ids);
+        return call_user_func([$relationClass, 'findAll'], ['id' => $ids]);
     }
 }
