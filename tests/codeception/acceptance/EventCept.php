@@ -16,6 +16,9 @@ $I->setUpDb([
     'event' => [
         'class' => EventFixture::className(),
     ],
+    'event_has_dance' => [
+        'class' => EventHasDanceFixture::className(),
+    ],
     'pass' => [
         'class' => PassFixture::className(),
     ],
@@ -33,6 +36,7 @@ $I->see('Bachatea');
 $I->click('a[title="View"]');
 $I->expectTo('See details of first Event');
 $I->see('Salsea');
+$I->see('2015-11-06');
 $I->see('Update');
 
 $I->click('Update');
@@ -56,6 +60,8 @@ $I->expect('Event to be gone');
 $I->see('Create Event');
 $I->see('Bachatea');
 $I->dontSee('Salsea');
+$I->dontSee('Salsatorium');
+$I->dontSee('Newest test Event');
 
 $I->click('Create Event');
 $I->fillField('Name', 'Newest test Event');
