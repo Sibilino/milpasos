@@ -67,11 +67,6 @@ class Event extends \yii\db\ActiveRecord
             [['address'], 'string', 'max' => 500],
             [['address'], 'required', 'message' => "Please select an address from the list of suggestions."],
             [['danceIds'], 'default', 'value' => []],
-            [['danceIds'], 'filter', 'filter' => function ($value) {
-                return explode(',', $value);
-            }, 'when' => function ($model) {
-                return is_string($model->danceIds);
-            }], // Transform comma-separated string to array
         ];
     }
 

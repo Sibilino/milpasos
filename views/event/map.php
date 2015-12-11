@@ -1,14 +1,13 @@
 <?php
 
 /* @var $this yii\web\View */
-/* @var $selectedEvents app\models\Event[] */
+/* @var $model app\models\forms\MapForm */
 
 use app\models\Event;
 use app\widgets\GridForm;
 use sibilino\yii2\openlayers\OL;
 use sibilino\yii2\openlayers\OpenLayers;
 use yii\data\ArrayDataProvider;
-use yii\data\Sort;
 use yii\helpers\Url;
 use yii\web\JsExpression;
 
@@ -78,7 +77,7 @@ $features = array_map(function (Event $e) {
             'method' => 'get',
             'gridOptions' => [
                 'dataProvider' => new ArrayDataProvider([
-                    'allModels' => $selectedEvents,
+                    'allModels' => Event::find()->where(['id'=>$model->eventIds])->all(),
                     'sort' => [
                         'attributes' => ['start_date', 'end_date'],
                         'defaultOrder' => ['start_date'=>SORT_ASC],
@@ -96,6 +95,10 @@ $features = array_map(function (Event $e) {
                 ],
             ],
         ]) ?>
+
+        <?= $form->field($model, 'eventIds')
+            ->hiddenInput(['value'=>implode(',',$model->eventIds)])
+            ->label(false)->error(false) ?>
 
         <?php GridForm::end() ?>
 
