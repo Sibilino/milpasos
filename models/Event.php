@@ -66,6 +66,7 @@ class Event extends \yii\db\ActiveRecord
             [['name'], 'string', 'max' => 250],
             [['address'], 'string', 'max' => 500],
             [['address'], 'required', 'message' => "Please select an address from the list of suggestions."],
+            [['danceIds'], 'default', 'value' => []],
             [['danceIds'], 'filter', 'filter' => function ($value) {
                 return explode(',', $value);
             }, 'when' => function ($model) {

@@ -1,5 +1,6 @@
 <?php
 
+use app\models\Dance;
 use yii\data\ActiveDataProvider;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
@@ -37,6 +38,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'start_date',
             'end_date',
             'address',
+            [
+                'label' => $model->getAttributeLabel('danceIds'),
+                'value' => implode(', ', array_map(function (Dance $d) { return ucfirst($d->name); }, $model->dances)),
+            ],
             'lon',
             'lat',
         ],

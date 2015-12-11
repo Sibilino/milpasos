@@ -348,12 +348,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Sibilino/yii2-openlayers.git",
-                "reference": "fdebd1fc262ee40852cabd1354471f183e6b686a"
+                "reference": "4ccb2ea39e77d1f98fb459e9a7e2cc049c0628a1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Sibilino/yii2-openlayers/zipball/fdebd1fc262ee40852cabd1354471f183e6b686a",
-                "reference": "fdebd1fc262ee40852cabd1354471f183e6b686a",
+                "url": "https://api.github.com/repos/Sibilino/yii2-openlayers/zipball/4ccb2ea39e77d1f98fb459e9a7e2cc049c0628a1",
+                "reference": "4ccb2ea39e77d1f98fb459e9a7e2cc049c0628a1",
                 "shasum": ""
             },
             "require": {
@@ -385,7 +385,7 @@
                 "yii",
                 "yii2"
             ],
-            "time": "2015-12-04 08:01:32"
+            "time": "2015-12-10 10:36:13"
         },
         {
             "name": "swiftmailer/swiftmailer",

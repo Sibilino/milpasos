@@ -4,6 +4,7 @@
 
 use AcceptanceTester\RegisteredUserSteps as RegisteredTester;
 use tests\codeception\fixtures\EventFixture;
+use tests\codeception\fixtures\EventHasDanceFixture;
 use tests\codeception\fixtures\PassFixture;
 use tests\codeception\fixtures\UserFixture;
 
@@ -42,6 +43,9 @@ $I->see('Update');
 $I->click('Update');
 $I->expectTo('See an Event Editor page');
 $I->seeInField('Name', 'Salsea');
+$I->seeCheckboxIsChecked('Kizomba');
+$I->seeCheckboxIsChecked('Salsa');
+$I->dontSeeCheckboxIsChecked('Bachata');
 
 $I->amGoingTo("Try to enter an invalid value");
 $I->fillField("Name", '');
@@ -49,10 +53,14 @@ $I->click('Update');
 $I->waitForText("Name cannot be blank");
 
 $I->fillField('Name', 'Salsatorium');
+$I->checkOption("Bachata");
+$I->uncheckOption("Kizomba");
 $I->click('Update');
-$I->expectTo('See updated name for the Event');
+$I->expectTo('See updated fields for the Event');
 $I->wait(5); // Wait for page change after JS validation of fields
 $I->see('Salsatorium', 'td');
+$I->see("Bachata");
+$I->dontSee("Kizomba");
 
 $I->click('Delete');
 $I->acceptPopup();
