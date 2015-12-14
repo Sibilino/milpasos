@@ -23,11 +23,11 @@ sibilino.olwidget.mapOptions["main-map"] = (function ($) {
         }
     });
     select.on("select", function (e) {
-        $('#selection-form').html('<input type="hidden" id="mapform-eventids" name="MapForm[eventIds]" value="" >');
+        $('#selection-form').html('<input type="hidden" id="eventsearch-ids" name="EventSearch[ids]" value="" >');
         e.target.getFeatures().forEach(function (cluster) {
             // Get all features' eventIds in a comma-separated string
             var idList = cluster.get("features").map(function ($f) {return $f.get("eventId");}).join('-');
-            $("#mapform-eventids").val(idList);
+            $("#eventsearch-ids").val(idList);
         });
         $('#selection-form').submit();
     });
