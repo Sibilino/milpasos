@@ -149,6 +149,7 @@ class EventController extends Controller
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         
         return $this->render('map', [
+            'model' => $searchModel,
             'provider' => $dataProvider,
         ]);
     }
