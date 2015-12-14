@@ -3,7 +3,6 @@
 namespace app\controllers;
 
 use app\components\RememberLastPageBehavior;
-use app\models\forms\MapForm;
 use app\models\Pass;
 use Yii;
 use app\models\Event;
@@ -146,12 +145,11 @@ class EventController extends Controller
      */
     public function actionMap()
     {
-        $model = new MapForm();
-        $model->load(Yii::$app->request->get());
-        $model->validate();
-
+        $searchModel = new EventSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        
         return $this->render('map', [
-            'model' => $model,
+            'provider' => $dataProvider,
         ]);
     }
 
