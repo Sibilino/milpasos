@@ -6,12 +6,15 @@
 
 use app\models\Event;
 use app\models\EventSearch;
+use app\widgets\DateRangePicker;
 use app\widgets\GridForm;
 use sibilino\yii2\openlayers\OL;
 use sibilino\yii2\openlayers\OpenLayers;
 use yii\data\ActiveDataProvider;
+use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\web\JsExpression;
+use yii\widgets\ActiveForm;
 
 $this->title = 'Milpasos';
 
@@ -24,7 +27,28 @@ $features = array_map(function (Event $e) {
 
 ?>
 <div class="site-index">
-
+    
+    <div>
+        <?php $form = ActiveForm::begin([
+            'options' => [
+                'class' => 'form-inline',
+            ],
+        ]); ?>
+        
+        <?= DateRangePicker::widget([
+            'form' => $form,
+            'model' => $model,
+            'fromAttr' => 'start_date',
+            'toAttr' => 'end_date',
+        ]) ?>
+        
+        <?= Html::submitButton(Yii::t('app', 'Update'), [
+            'class' => 'btn btn-primary',
+        ]) ?>
+        
+        <?php ActiveForm::end(); ?>
+    </div>
+    
     <?= OpenLayers::widget([
         'id' => 'main-map',
         'mapOptionScript' => Url::to('@web/js/mapOptions.js'),
