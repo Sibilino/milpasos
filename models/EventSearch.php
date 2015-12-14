@@ -13,14 +13,27 @@ use app\models\Event;
 class EventSearch extends Event
 {
     /**
+     * @var array|string Array or dash-separated list of ids of the events that the user selected in the map.
+     */
+    public $ids;
+    
+    /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['id'], 'integer'],
+            ['id', 'integer'],
+            ['id', 'exist', 'targetClass'=>Event::className(), 'targetAttribute'=>'id'],
             [['name', 'start_date', 'end_date', 'address'], 'safe'],
             [['lon', 'lat'], 'number'],
+            ['ids', 'default', 'value' => []],
+            ['ids', 'filter', 'filter' => function ($value) {
+                return explode('-', $value);
+            }, 'when' => function (EventSearch $model) {
+                return is_string($model->ids);
+            }], // Transform dash-separated string to array
+            ['ids', 'each', 'rule' => ['exist', 'targetClass'=>Event::className(), 'targetAttribute'=>'id']],
         ];
     }
 
