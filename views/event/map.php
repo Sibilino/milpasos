@@ -7,7 +7,7 @@ use app\models\Event;
 use app\widgets\GridForm;
 use sibilino\yii2\openlayers\OL;
 use sibilino\yii2\openlayers\OpenLayers;
-use yii\data\ArrayDataProvider;
+use yii\data\ActiveDataProvider;
 use yii\helpers\Url;
 use yii\web\JsExpression;
 
@@ -76,8 +76,8 @@ $features = array_map(function (Event $e) {
             'id' => 'selection-form',
             'method' => 'get',
             'gridOptions' => [
-                'dataProvider' => new ArrayDataProvider([
-                    'allModels' => Event::find()->where(['id'=>$model->eventIds])->all(),
+                'dataProvider' => new ActiveDataProvider([
+                    'query' => Event::find()->where(['id'=>$model->eventIds]),
                     'sort' => [
                         'attributes' => ['start_date', 'end_date'],
                         'defaultOrder' => ['start_date'=>SORT_ASC],
