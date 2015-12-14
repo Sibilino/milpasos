@@ -17,7 +17,7 @@ $this->title = 'Milpasos';
 
 $features = array_map(function (Event $e) {
     return new OL('Feature', [
-        'geometry' => new OL('geom.Point', new JsExpression("ol.proj.fromLonLat([$e->lon,$e->lat])")),
+        'geometry' => new OL('geom.Point', new OL('proj.fromLonLat', [$e->lon,$e->lat])),
         'eventId' => $e->id,
     ]);
 }, $provider->getModels());
