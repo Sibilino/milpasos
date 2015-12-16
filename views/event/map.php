@@ -13,15 +13,40 @@ use yii\web\JsExpression;
 
 $this->title = 'Milpasos';
 
+$events = Event::find()
+    ->where(['<=','start_date', $model->to_date])
+    ->andWhere(['>=','end_date', $model->from_date])
+->all();
 $features = array_map(function (Event $e) {
     return new OL('Feature', [
         'geometry' => new OL('geom.Point', new OL('proj.fromLonLat', [$e->lon,$e->lat])),
         'eventId' => $e->id,
     ]);
-}, Event::find()->all());
+}, $events);
 
 ?>
 <div class="site-index">
+    
+    <div>
+        <?php $form = ActiveForm::begin([
+            'options' => [
+                'class' => 'form-inline',
+            ],
+        ]); ?>
+        
+        <?= DateRangePicker::widget([
+            'form' => $form,
+            'model' => $model,
+            'fromAttr' => 'from_date',
+            'toAttr' => 'to_date',
+        ]) ?>
+        
+        <?= Html::submitButton(Yii::t('app', 'Update'), [
+            'class' => 'btn btn-primary',
+        ]) ?>
+        
+        <?php ActiveForm::end(); ?>
+    </div>
 
     <?= OpenLayers::widget([
         'id' => 'main-map',
