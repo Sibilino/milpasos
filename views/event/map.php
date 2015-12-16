@@ -1,11 +1,9 @@
 <?php
 
 /* @var $this yii\web\View */
-/* @var $model app\models\EventSearch */
-/* @var $provider yii\data\ActiveDataProvider */
+/* @var $model app\models\forms\MapForm */
 
 use app\models\Event;
-use app\models\EventSearch;
 use app\widgets\GridForm;
 use sibilino\yii2\openlayers\OL;
 use sibilino\yii2\openlayers\OpenLayers;
@@ -20,7 +18,7 @@ $features = array_map(function (Event $e) {
         'geometry' => new OL('geom.Point', new OL('proj.fromLonLat', [$e->lon,$e->lat])),
         'eventId' => $e->id,
     ]);
-}, $provider->getModels());
+}, Event::find()->all());
 
 ?>
 <div class="site-index">
@@ -79,7 +77,7 @@ $features = array_map(function (Event $e) {
             'method' => 'get',
             'gridOptions' => [
                 'dataProvider' => new ActiveDataProvider([
-                    'query' => $provider->query,
+                    'query' => Event::find()->where(['id'=>$model->eventIds]),
                     'sort' => [
                         'attributes' => ['start_date', 'end_date'],
                         'defaultOrder' => ['start_date'=>SORT_ASC],
@@ -98,8 +96,8 @@ $features = array_map(function (Event $e) {
             ],
         ]) ?>
 
-        <?= $form->field($model, 'ids')
-            ->hiddenInput(['value'=>implode(',',$model->ids)])
+        <?= $form->field($model, 'eventIds')
+            ->hiddenInput(['value'=>implode(',',$model->eventIds)])
             ->label(false)->error(false) ?>
 
         <?php GridForm::end() ?>
