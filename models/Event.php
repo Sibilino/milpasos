@@ -60,7 +60,7 @@ class Event extends \yii\db\ActiveRecord
     {
         return [
             [['name', 'start_date', 'end_date', 'lon', 'lat'], 'required'],
-            [['start_date', 'end_date'], 'safe'],
+            [['start_date', 'end_date'], 'date', 'format' => 'dd-MM-yyyy'],
             [['lon'], 'number', 'min' => -180, 'max' => 180],
             [['lat'], 'number', 'min' => -90, 'max' => 90],
             [['name'], 'string', 'max' => 250],
