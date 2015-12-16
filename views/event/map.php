@@ -4,12 +4,15 @@
 /* @var $model app\models\forms\MapForm */
 
 use app\models\Event;
+use app\widgets\DateRangePicker;
 use app\widgets\GridForm;
 use sibilino\yii2\openlayers\OL;
 use sibilino\yii2\openlayers\OpenLayers;
 use yii\data\ActiveDataProvider;
+use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\web\JsExpression;
+use yii\widgets\ActiveForm;
 
 $this->title = 'Milpasos';
 
