@@ -50,8 +50,7 @@ class Group extends \yii\db\ActiveRecord
      */
     public function getEvents()
     {
-        return $this->hasMany(Event::className(), ['id' => 'event_id'])->viaTable('event_has_group', ['group_id' => 'id'])
-            ->inverseOf('groups');
+        return $this->hasMany(Event::className(), ['id' => 'event_id'])->viaTable('event_has_group', ['group_id' => 'id']);
     }
 
     /**
@@ -59,7 +58,6 @@ class Group extends \yii\db\ActiveRecord
      */
     public function getArtists()
     {
-        return $this->hasMany(Artist::className(), ['id' => 'artist_id'])->viaTable('group_has_artist', ['group_id' => 'id'])
-            ->inverseOf('groups');
+        return $this->hasMany(Artist::className(), ['id' => 'artist_id'])->viaTable('group_has_artist', ['group_id' => 'id']);
     }
 }
