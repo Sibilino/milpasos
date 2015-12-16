@@ -28,6 +28,10 @@ class MapForm extends Model
      * @var array The list of ids of the dances for which to find events.
      */
     public $danceIds;
+    /**
+     * @var number The maximum price to pay for a pass of searched events.
+     */
+    public $maxPrice;
 
     public function rules()
     {
@@ -41,6 +45,7 @@ class MapForm extends Model
             ['eventIds', 'each', 'rule' => ['exist', 'targetClass'=>Event::className(), 'targetAttribute'=>'id']],
             ['danceIds', 'each', 'rule' => ['exist', 'targetClass'=>Dance::className(), 'targetAttribute'=>'id']],
             [['from_date', 'to_date'], 'date', 'format' => 'dd-MM-yyyy'],
+            ['maxPrice', 'number', 'min' => 0],
         ];
     }
 }
