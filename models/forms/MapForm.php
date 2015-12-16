@@ -4,6 +4,7 @@ namespace app\models\forms;
 
 use app\models\Event;
 use app\models\Dance;
+use Yii;
 use yii\base\Model;
 
 /**
@@ -48,4 +49,19 @@ class MapForm extends Model
             ['maxPrice', 'number', 'min' => 0],
         ];
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'from_date' => Yii::t('app', 'From date'),
+            'to_date' => Yii::t('app', 'To date'),
+            'danceIds' => Yii::t('app', 'Dance Styles'),
+            'maxPrice' => Yii::t('app', 'Maximum pass price'),
+        ];
+    }
+
+
 }
