@@ -2,13 +2,16 @@
 
 /* @var $this yii\web\View */
 /* @var $model app\models\forms\MapForm */
+/* @var $events app\models\Event[] */
 
 use app\models\Event;
+use app\models\Dance;
 use app\widgets\DateRangePicker;
 use app\widgets\GridForm;
 use sibilino\yii2\openlayers\OL;
 use sibilino\yii2\openlayers\OpenLayers;
 use yii\data\ActiveDataProvider;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\web\JsExpression;
@@ -16,10 +19,6 @@ use yii\widgets\ActiveForm;
 
 $this->title = 'Milpasos';
 
-$events = Event::find()
-    ->where(['<=','start_date', $model->to_date])
-    ->andWhere(['>=','end_date', $model->from_date])
-->all();
 $features = array_map(function (Event $e) {
     return new OL('Feature', [
         'geometry' => new OL('geom.Point', new OL('proj.fromLonLat', [$e->lon,$e->lat])),
@@ -43,6 +42,8 @@ $features = array_map(function (Event $e) {
             'fromAttr' => 'from_date',
             'toAttr' => 'to_date',
         ]) ?>
+        
+        <?= $form->field($model, 'danceIds')->checkboxList(ArrayHelper::map(Dance::find()->all(), 'id', 'name')) ?>
         
         <?= Html::submitButton(Yii::t('app', 'Update'), [
             'class' => 'btn btn-primary',
