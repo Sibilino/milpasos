@@ -6,6 +6,7 @@ use app\widgets\DateRangePicker;
 use app\widgets\GridForm;
 use yii\data\ActiveDataProvider;
 use yii\grid\ActionColumn;
+use yii\grid\DataColumn;
 use yii\grid\SerialColumn;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
@@ -97,7 +98,9 @@ use yii\widgets\ActiveForm;
                             'description',
                             [
                                 'attribute' => 'price',
-                                "format" => 'currency',
+                                'value' => function (Pass $pass, $key, $index, DataColumn $column) {
+                                    return $column->grid->formatter->asCurrency($pass->price, $pass->currency);
+                                },
                             ],
                             'available_from:date',
                             'available_to:date',
