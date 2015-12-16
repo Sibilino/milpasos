@@ -147,6 +147,7 @@ class EventController extends Controller
     public function actionMap()
     {
         $model = new MapForm();
+        $model->load(Yii::$app->request->post());
         $model->load(Yii::$app->request->get());
         $model->validate();
         

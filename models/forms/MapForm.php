@@ -45,7 +45,7 @@ class MapForm extends Model
             }], // Transform dash-separated string to array
             ['eventIds', 'each', 'rule' => ['exist', 'targetClass'=>Event::className(), 'targetAttribute'=>'id']],
             ['danceIds', 'each', 'rule' => ['exist', 'targetClass'=>Dance::className(), 'targetAttribute'=>'id']],
-            [['from_date', 'to_date'], 'date', 'format' => 'dd-MM-yyyy'],
+            [['from_date', 'to_date'], 'date', 'format' => 'yyyy-MM-dd'],
             ['maxPrice', 'number', 'min' => 0],
         ];
     }
