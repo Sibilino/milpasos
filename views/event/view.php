@@ -1,8 +1,10 @@
 <?php
 
 use app\models\Dance;
+use app\models\Pass;
 use yii\data\ActiveDataProvider;
 use yii\grid\ActionColumn;
+use yii\grid\DataColumn;
 use yii\grid\GridView;
 use yii\grid\SerialColumn;
 use yii\helpers\Html;
@@ -85,7 +87,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     'description',
                     [
                         'attribute' => 'price',
-                        "format" => 'currency',
+                        'value' => function (Pass $pass, $key, $index, DataColumn $column) {
+                            return $column->grid->formatter->asCurrency($pass->price, $pass->currency);
+                        },
                     ],
                     [
                         'class' => ActionColumn::className(),
