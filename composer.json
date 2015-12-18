@@ -19,7 +19,7 @@
         "yiisoft/yii2-bootstrap": "*",
         "yiisoft/yii2-swiftmailer": "*",
         "yiisoft/yii2-jui": "~2.0.0",
-        "sibilino/yii2-openlayers": "dev-js-module"
+        "sibilino/yii2-openlayers": "*"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",
