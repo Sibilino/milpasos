@@ -105,7 +105,11 @@ $features = array_map(function (Event $e) {
         <?php $form = GridForm::begin([
             'id' => 'selection-form',
             'method' => 'get',
+            'options' => [
+                'style' => ['display' => 'none'],
+            ],
             'gridOptions' => [
+                'emptyText' => Yii::t('app', 'Select an event on the map.'),
                 'dataProvider' => new ActiveDataProvider([
                     'query' => Event::find()->where(['id'=>$model->eventIds]),
                     'sort' => [
@@ -117,11 +121,23 @@ $features = array_map(function (Event $e) {
                     ],
                 ]),
                 'columns' => [
-                    ['class' => 'yii\grid\SerialColumn'],
-                    'name',
+                    [
+                        'attribute' => 'name',
+                        'value' => function (Event $e) {
+                            return Html::a($e->name, Url::to(["event/view", 'id'=>$e->id]));
+                        },
+                        'format' => 'raw',
+                    ],
                     'start_date:date',
                     'end_date:date',
                     'address',
+                    [
+                        'label' => Yii::t('app', "Min. price"),
+                        'value' => function (Event $e) {
+                            $minPass = $e->getPasses()->orderBy('price ASC')->one();
+                            return $minPass === null ? null : Yii::$app->formatter->asCurrency($minPass->price, $minPass->currency);
+                        }
+                    ],
                 ],
             ],
         ]) ?>

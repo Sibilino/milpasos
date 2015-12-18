@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'description',
             [
                 'attribute' => 'price',
-                'value' => function ($model, $key, $index) {
+                'value' => function ($model) {
                     return Yii::$app->formatter->asCurrency($model->price, $model->currency);
                 } ,
             ],
