@@ -4,7 +4,6 @@ use app\models\Event;
 use app\models\Pass;
 use app\widgets\DateRangePicker;
 use yii\helpers\Html;
-use yii\jui\DatePicker;
 use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 

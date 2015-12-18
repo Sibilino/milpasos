@@ -50,7 +50,7 @@ class DateRangePicker extends Widget
      */
     public $toOptions = [];
     /**
-     * @var string The mask to be used for the date inputs. Defaults to "9999-99-99".
+     * @var string The mask to be used for the date inputs. Defaults to "9999-99-99". Set to false to disable masking.
      */
     public $mask = "9999-99-99";
     /**
@@ -69,55 +69,61 @@ class DateRangePicker extends Widget
         if (!($this->form && $this->model && $this->fromAttr && $this->toAttr)) {
             throw new InvalidConfigException("The 'form', 'model', 'fromAttr' and 'toAttr' properties are required.");
         }
+        if (!isset($this->fromOptions['id'])) {
+            $this->fromOptions['id'] = Html::getInputId($this->model, $this->fromAttr);
+        }
+        if (!isset($this->toOptions['id'])) {
+            $this->toOptions['id'] = Html::getInputId($this->model, $this->toAttr);
+        }
     }
 
     public function run()
     {
-        $idFrom = Html::getInputId($this->model, $this->fromAttr);
-        $idTo = Html::getInputId($this->model, $this->toAttr);
-        $maskDataAttr = 'data-plugin-'.MaskedInput::PLUGIN_NAME;
+        $idFrom = $this->fromOptions['id'];
+        $idTo = $this->toOptions['id'];
 
-        $fromOptions = array_merge([
+        $defaults = [
             'maxDate' => $this->model->{$this->toAttr},
             'onClose' => new JsExpression("function () {
                 $(\"#$idTo\").datepicker(\"option\", \"minDate\", $(\"#$idFrom\").datepicker(\"getDate\"));
             }"),
-        ], $this->fromOptions);
-        $maskedInput = new MaskedInput([
-            'id' => $idFrom,
-            'name'=>'unused',
-            'mask'=> $this->mask,
-            'clientOptions' => ['placeholder' => Yii::t('app', $this->placeholder)],
-        ]);
-        $maskedInput->registerClientScript();
-        if (!isset($fromOptions[$maskDataAttr])) {
-            $fromOptions[$maskDataAttr] = $maskedInput->options[$maskDataAttr];
-        }
+        ];
+        $fromOptions = array_merge($defaults, $this->fromOptions);
+        $this->addMask($fromOptions);
 
         echo $this->form->field($this->model, $this->fromAttr)->widget(DatePicker::className(), ArrayHelper::merge(
             $this->options, ['clientOptions' => $fromOptions]
         ));
 
-        $toOptions = array_merge([
+        $defaults = [
             'minDate' => $this->model->{$this->fromAttr},
             'onClose' => new JsExpression("function () {
                 $(\"#$idFrom\").datepicker(\"option\", \"maxDate\", $(\"#$idTo\").datepicker(\"getDate\"));
             }")
-        ], $this->toOptions);
-        $maskedInput = new MaskedInput([
-            'id' => $idTo,
-            'name'=>'unused',
-            'mask'=> $this->mask,
-            'clientOptions' => ['placeholder' => Yii::t('app', $this->placeholder)],
-        ]);
-        $maskedInput->registerClientScript();
-        if (!isset($toOptions[$maskDataAttr])) {
-            $toOptions[$maskDataAttr] = $maskedInput->options[$maskDataAttr];
-        }
+        ];
+        $toOptions = array_merge($defaults, $this->toOptions);
+        $this->addMask($toOptions);
 
         echo $this->form->field($this->model, $this->toAttr)->widget(DatePicker::className(), ArrayHelper::merge(
             $this->options, ['clientOptions' => $toOptions]
         ));
     }
 
+    /**
+     * Processes an input's options to add a mask plugin that makes the expected format clear to the user.
+     * @param array $options
+     */
+    private function addMask(array &$options) {
+        if ($this->mask !== false) {
+            $maskedInput = new MaskedInput([
+                'id' => $options['id'],
+                'name'=>'unused',
+                'mask'=> $this->mask,
+                'clientOptions' => ['placeholder' => Yii::t('app', $this->placeholder)],
+            ]);
+            $maskedInput->registerClientScript();
+            $maskDataAttr = 'data-plugin-'.MaskedInput::PLUGIN_NAME;
+            $options[$maskDataAttr] = $maskedInput->options[$maskDataAttr];
+        }
+    }
 }
