@@ -154,7 +154,7 @@ class EventController extends Controller
         $events = Event::find()
             ->filterWhere(['<=','start_date', $model->to_date])
             ->andFilterWhere(['>=','end_date', $model->from_date])
-            ->with('dances', 'passes')
+            ->joinWith(['dances', 'passes'], false)
             ->andFilterWhere(['dance.id' => $model->danceIds])
             ->andFilterWhere(['<=','pass.price', $model->maxPrice])
         ->all();

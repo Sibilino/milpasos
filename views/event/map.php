@@ -46,7 +46,7 @@ $features = array_map(function (Event $e) {
         <?= $form->field($model, 'danceIds')->checkboxList(ArrayHelper::map(Dance::find()->all(), 'id', 'name')) ?>
         <?= $form->field($model, 'maxPrice')->input('number') ?>
         
-        <?= Html::submitButton(Yii::t('app', 'Update'), [
+        <?= Html::submitButton(Yii::t('app', 'Search'), [
             'class' => 'btn btn-primary',
         ]) ?>
         
