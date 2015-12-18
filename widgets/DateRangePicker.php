@@ -2,6 +2,7 @@
 
 namespace app\widgets;
 
+use Yii;
 use yii\base\InvalidConfigException;
 use yii\base\Model;
 use yii\base\Widget;
@@ -10,6 +11,7 @@ use yii\helpers\Html;
 use yii\jui\DatePicker;
 use yii\web\JsExpression;
 use yii\widgets\ActiveForm;
+use yii\widgets\MaskedInput;
 
 /**
  * Class DateRangePicker is a widget that outputs two linked datepickers for a model within an ActiveForm.
@@ -48,6 +50,15 @@ class DateRangePicker extends Widget
      */
     public $toOptions = [];
     /**
+     * @var string The mask to be used for the date inputs. Defaults to "9999-99-99".
+     */
+    public $mask = "9999-99-99";
+    /**
+     * @var string The placeholder to be used for the date inputs (before translation). Defaults to "yyyy-mm-dd".
+     */
+    public $placeholder = "yyyy-mm-dd";
+
+    /**
      * Initializes the object.
      * This method is invoked at the end of the constructor after the object is initialized with the
      * given configuration.
@@ -64,6 +75,7 @@ class DateRangePicker extends Widget
     {
         $idFrom = Html::getInputId($this->model, $this->fromAttr);
         $idTo = Html::getInputId($this->model, $this->toAttr);
+        $maskDataAttr = 'data-plugin-'.MaskedInput::PLUGIN_NAME;
 
         $fromOptions = array_merge([
             'maxDate' => $this->model->{$this->toAttr},
@@ -71,6 +83,17 @@ class DateRangePicker extends Widget
                 $(\"#$idTo\").datepicker(\"option\", \"minDate\", $(\"#$idFrom\").datepicker(\"getDate\"));
             }"),
         ], $this->fromOptions);
+        $maskedInput = new MaskedInput([
+            'id' => $idFrom,
+            'name'=>'unused',
+            'mask'=> $this->mask,
+            'clientOptions' => ['placeholder' => Yii::t('app', $this->placeholder)],
+        ]);
+        $maskedInput->registerClientScript();
+        if (!isset($fromOptions[$maskDataAttr])) {
+            $fromOptions[$maskDataAttr] = $maskedInput->options[$maskDataAttr];
+        }
+
         echo $this->form->field($this->model, $this->fromAttr)->widget(DatePicker::className(), ArrayHelper::merge(
             $this->options, ['clientOptions' => $fromOptions]
         ));
@@ -81,6 +104,17 @@ class DateRangePicker extends Widget
                 $(\"#$idFrom\").datepicker(\"option\", \"maxDate\", $(\"#$idTo\").datepicker(\"getDate\"));
             }")
         ], $this->toOptions);
+        $maskedInput = new MaskedInput([
+            'id' => $idTo,
+            'name'=>'unused',
+            'mask'=> $this->mask,
+            'clientOptions' => ['placeholder' => Yii::t('app', $this->placeholder)],
+        ]);
+        $maskedInput->registerClientScript();
+        if (!isset($toOptions[$maskDataAttr])) {
+            $toOptions[$maskDataAttr] = $maskedInput->options[$maskDataAttr];
+        }
+
         echo $this->form->field($this->model, $this->toAttr)->widget(DatePicker::className(), ArrayHelper::merge(
             $this->options, ['clientOptions' => $toOptions]
         ));
