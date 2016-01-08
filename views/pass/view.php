@@ -36,6 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'available_from:date',
             'available_to:date',
+            'full:boolean',
             [
                 'format' => 'raw',
                 'value' => Html::a($model->event->name, ['event/view', 'id' => $model->event->id]),
