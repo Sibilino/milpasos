@@ -13,6 +13,7 @@ use Yii;
  * @property string $description
  * @property string $available_from
  * @property string $available_to
+ * @property boolean $full
  * @property string $event_id
  *
  * @property Event $event
@@ -42,8 +43,9 @@ class Pass extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['price', 'event_id'], 'required'],
+            [['price', 'full', 'event_id'], 'required'],
             [['price'], 'number'],
+            [['full'], 'boolean'],
             [['available_from', 'available_to'], 'default', 'value' => null],
             [['available_from', 'available_to'], 'date', 'format' => 'yyyy-MM-dd'],
             [['currency'], 'in', 'range' => array_keys(static::$currencies), 'strict' => true],
@@ -64,7 +66,8 @@ class Pass extends \yii\db\ActiveRecord
             'description' => Yii::t('app', 'Description'),
             'available_from' => Yii::t('app', 'Available From'),
             'available_to' => Yii::t('app', 'Available To'),
-            'event_id' => Yii::t('app', 'Event ID'),
+            'full' => Yii::t('app', "It's a Full Pass"),
+            'event_id' => Yii::t('app', 'Event'),
         ];
     }
 

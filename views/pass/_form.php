@@ -24,6 +24,8 @@ use yii\helpers\ArrayHelper;
 
     <?= $form->field($model, 'currency')->dropDownList(Pass::$currencies) ?>
 
+    <?= $form->field($model, 'full')->checkbox(); ?>
+
     <?= DateRangePicker::widget([
         'form' => $form,
         'model' => $model,

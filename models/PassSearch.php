@@ -20,7 +20,8 @@ class PassSearch extends Pass
         return [
             [['id', 'event_id'], 'integer'],
             [['price'], 'number'],
-            [['description', 'available_from', 'available_to'], 'safe'],
+            [['full'], 'boolean'],
+            [['description', 'available_from', 'available_to', 'full'], 'safe'],
         ];
     }
 
@@ -61,6 +62,7 @@ class PassSearch extends Pass
             'price' => $this->price,
             'available_from' => $this->available_from,
             'available_to' => $this->available_to,
+            'full' => $this->full,
             'event_id' => $this->event_id,
         ]);
 

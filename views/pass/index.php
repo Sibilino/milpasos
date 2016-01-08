@@ -35,6 +35,17 @@ $this->params['breadcrumbs'][] = $this->title;
             'available_from:date',
             'available_to:date',
             [
+                'attribute' => 'full',
+                'format' => 'boolean',
+                'filter' => Html::activeDropDownList($searchModel, 'full', [
+                    Yii::t('app', "No"),
+                    Yii::t('app', "Yes"),
+                ],[
+                    'class' => 'form-control',
+                    'prompt' => '',
+                ]),
+            ],
+            [
                 'format' => 'raw',
                 'value' => function ($model, $key, $index) {
                     return Html::a($model->event->name, ['event/view', 'id' => $model->event->id]);
