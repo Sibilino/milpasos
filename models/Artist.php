@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use app\components\ManyToManyBehavior;
 
 /**
  * This is the model class for table "artist".
@@ -19,11 +20,30 @@ use Yii;
 class Artist extends \yii\db\ActiveRecord
 {
     /**
+     * @var array|string To collect input to update this model's dances. Can be array or string of comma-separated ids.
+     */
+    public $danceIds = [];
+    
+    /**
      * @inheritdoc
      */
     public static function tableName()
     {
         return 'artist';
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    public function behaviors() {
+        return [
+            [
+                // Add functionality to save and load dances from the id array in $danceIds
+                'class' => ManyToManyBehavior::className(),
+                'relation' => 'dances',
+                'idListAttr' => 'danceIds',
+            ],
+        ];
     }
 
     /**
@@ -33,8 +53,19 @@ class Artist extends \yii\db\ActiveRecord
     {
         return [
             [['name'], 'required'],
-            [['name', 'surname', 'website'], 'string', 'max' => 250]
+            [['name', 'surname', 'website'], 'string', 'max' => 250],
+            [['danceIds'], 'default', 'value' => []],
         ];
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    public function attributes()
+    {
+        return array_merge(parent::attributes(), [
+            'danceIds',
+        ]);
     }
 
     /**
@@ -47,6 +78,7 @@ class Artist extends \yii\db\ActiveRecord
             'name' => Yii::t('app', 'Name'),
             'surname' => Yii::t('app', 'Surname'),
             'website' => Yii::t('app', 'Website'),
+            'danceIds' => Yii::t('app', 'Dance Styles'),
         ];
     }
 
