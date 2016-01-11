@@ -1,5 +1,7 @@
 <?php
 
+use app\models\Dance;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -17,6 +19,8 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'surname')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'website')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'danceIds')->checkboxList(ArrayHelper::map(Dance::find()->all(), 'id', 'name')) ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
