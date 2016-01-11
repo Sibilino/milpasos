@@ -1,5 +1,6 @@
 <?php
 
+use app\models\Dance;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -31,6 +32,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'name',
             'surname',
+            [
+                'label' => $model->getAttributeLabel('danceIds'),
+                'value' => implode(', ', array_map(function (Dance $d) { return ucfirst($d->name); }, $model->dances)),
+            ],
             'website',
         ],
     ]) ?>
