@@ -5,6 +5,7 @@ namespace app\controllers;
 use Yii;
 use app\models\Artist;
 use app\models\ArtistSearch;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;

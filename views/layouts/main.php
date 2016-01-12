@@ -39,6 +39,7 @@ AppAsset::register($this);
             ['label' => Yii::t('app', "Home"), 'url' => ['/event/map']],
             ['label' => Yii::t('app', "Events"), 'url' => ['/event/index']],
             ['label' => Yii::t('app', "Passes"), 'url' => ['/pass/index']],
+            ['label' => Yii::t('app', "Artists"), 'url' => ['/artist/index']],
             Yii::$app->user->isGuest ?
                 ['label' => 'Login', 'url' => ['/site/login']] :
                 [
