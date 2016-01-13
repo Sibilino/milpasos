@@ -138,16 +138,4 @@ class Event extends \yii\db\ActiveRecord
             ->inverseOf('event');
     }
 
-    public function getNewLink()
-    {
-        if (!isset($this->_newLink))
-            $this->_newLink = new Link(['event_id' => $this->id]);
-        return $this->_newLink;
-    }
-
-    public function setNewLink(Link $value)
-    {
-        $this->_newLink = $value;
-    }
-
 }
