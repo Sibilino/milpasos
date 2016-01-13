@@ -44,13 +44,13 @@ class Pass extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            ['full', 'event_id'], 'required'],
+            ['full', 'event_id', 'price', 'currency'], 'required'],
             [['price'], 'number', 'min' => 0],
             [['full'], 'boolean'],
             [['available_from', 'available_to', 'price'], 'default', 'value' => null],
             [['available_from', 'available_to'], 'date', 'format' => 'yyyy-MM-dd'],
             [['currency'], 'in', 'range' => array_keys(static::$currencies), 'strict' => true],
-            [['event_id'], 'integer'],
+            [['event_id'], 'exist', 'targetClass' => Event::className(), 'targetAttribute' => 'id'],
             [['description'], 'string', 'max' => 1000]
         ];
     }
