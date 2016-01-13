@@ -124,7 +124,7 @@ $features = array_map(function (Event $e) {
                     [
                         'attribute' => 'name',
                         'value' => function (Event $e) {
-                            return Html::a($e->name, Url::to(["event/view", 'id'=>$e->id]));
+                            return Html::a(Html::encode($e->name), Url::to(["event/view", 'id'=>$e->id]));
                         },
                         'format' => 'raw',
                     ],
