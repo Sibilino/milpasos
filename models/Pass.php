@@ -17,11 +17,12 @@ use Yii;
  * @property string $event_id
  *
  * @property Event $event
+ * @property TemporaryPrice[] $temporaryPrices
  */
 class Pass extends \yii\db\ActiveRecord
 {
     /**
-     * @var array The possible currencies for price, as "3-letterCode" => "displaySymbol".
+     * @var array The possible currencies for price and any temporary prices, as "3-letterCode" => "displaySymbol".
      */
     public static $currencies = [
         'EUR' => '€',
@@ -43,10 +44,10 @@ class Pass extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['price', 'full', 'event_id'], 'required'],
-            [['price'], 'number'],
+            ['full', 'event_id'], 'required'],
+            [['price'], 'number', 'min' => 0],
             [['full'], 'boolean'],
-            [['available_from', 'available_to'], 'default', 'value' => null],
+            [['available_from', 'available_to', 'price'], 'default', 'value' => null],
             [['available_from', 'available_to'], 'date', 'format' => 'yyyy-MM-dd'],
             [['currency'], 'in', 'range' => array_keys(static::$currencies), 'strict' => true],
             [['event_id'], 'integer'],
@@ -61,7 +62,7 @@ class Pass extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'price' => Yii::t('app', 'Price'),
+            'price' => Yii::t('app', 'Normal Price'),
             'currency' => Yii::t('app', 'Currency'),
             'description' => Yii::t('app', 'Description'),
             'available_from' => Yii::t('app', 'Available From'),
@@ -76,6 +77,14 @@ class Pass extends \yii\db\ActiveRecord
      */
     public function getEvent()
     {
-        return $this->hasOne(Event::className(), ['id' => 'event_id']);
+        return $this->hasOne(Event::className(), ['id' => 'event_id'])->inverseOf('passes');;
+    }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTemporaryPrices()
+    {
+        return $this->hasMany(TemporaryPrice::className(), ['pass_id' => 'id'])->inverseOf('pass');
     }
 }
