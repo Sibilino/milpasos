@@ -32,7 +32,8 @@ class TemporaryPrice extends \yii\db\ActiveRecord
     {
         return [
             [['price'], 'number', 'min' => 0],
-            [['available_from', 'available_to', 'price'], 'default', 'value' => null],
+            ['price', 'required'],
+            [['available_from', 'available_to'], 'default', 'value' => null],
             [['available_from', 'available_to'], 'date', 'format' => 'yyyy-MM-dd'],
             [['pass_id'], 'exist', 'targetClass' => Pass::className(), 'targetAttribute' => 'id'],
         ];
