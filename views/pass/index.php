@@ -48,7 +48,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'format' => 'raw',
                 'value' => function ($model, $key, $index) {
-                    return Html::a($model->event->name, ['event/view', 'id' => $model->event->id]);
+                    return Html::a(Html::encode($model->event->name), ['event/view', 'id' => $model->event->id]);
                 },
                 'label' => Yii::t('app', 'Event'),
             ],
