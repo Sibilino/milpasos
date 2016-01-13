@@ -39,7 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'full:boolean',
             [
                 'format' => 'raw',
-                'value' => Html::a($model->event->name, ['event/view', 'id' => $model->event->id]),
+                'value' => Html::a(Html::encode($model->event->name), ['event/view', 'id' => $model->event->id]),
                 'label' => Yii::t('app', 'Event'),
             ],
         ],
