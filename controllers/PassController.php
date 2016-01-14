@@ -6,6 +6,7 @@ use app\components\RememberLastPageBehavior;
 use Yii;
 use app\models\Pass;
 use app\models\PassSearch;
+use app\models\TemporaryPrice;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -94,12 +95,21 @@ class PassController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        
+        $newTemporaryPrice = new TemporaryPrice(['pass_id' => $id]);
+        if ($newTemporaryPrice->load(Yii::$app->request->post())) {
+            if ($newTemporaryPrice->save()) {
+                // Clear new TemporaryPrice inputs so the user can add another new TemporaryPrice
+                $newTemporaryPrice = new TemporaryPrice(['pass_id' => $id]);
+            }
+        }
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect($this->lastPage);
         } else {
             return $this->render('update', [
                 'model' => $model,
+                'newTemporaryPrice' => $newTemporaryPrice,
             ]);
         }
     }
