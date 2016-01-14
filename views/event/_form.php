@@ -47,7 +47,7 @@ use yii\widgets\ActiveForm;
     <?php if (!$model->isNewRecord):?>
         <?php if (isset($newLink)): ?>
             <div id="links">
-                <h2>Links</h2>
+                <h2><?= Yii::t('app', "Links") ?></h2>
 
                 <?php $form = GridForm::begin([
                     'gridOptions' => [
@@ -84,7 +84,7 @@ use yii\widgets\ActiveForm;
         <?php endif;?>
         <?php if (isset($newPass)): ?>
             <div id="passes">
-                <h2>Passes</h2>
+                <h2><?= Yii::t('app', "Passes") ?></h2>
 
                 <?php $form = GridForm::begin([
                     'gridOptions' => [
