@@ -99,8 +99,8 @@ class PassController extends Controller
         $newTemporaryPrice = new TemporaryPrice(['pass_id' => $id]);
         if ($newTemporaryPrice->load(Yii::$app->request->post())) {
             if ($newTemporaryPrice->save()) {
-                // Clear new TemporaryPrice inputs so the user can add another new TemporaryPrice
-                $newTemporaryPrice = new TemporaryPrice(['pass_id' => $id]);
+                // Fill some default values that will help the user add the next TemporaryPrice
+                $newTemporaryPrice = $newTemporaryPrice->getNext();
             }
         }
 
