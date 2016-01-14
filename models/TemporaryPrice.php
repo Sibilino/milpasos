@@ -78,7 +78,7 @@ class TemporaryPrice extends \yii\db\ActiveRecord
         $months = $this->getPeriodInMonths();
         $nextTo = $months ? date('Y-m-d', strtotime("+$months months", strtotime($this->available_to))) : '';
         return new TemporaryPrice([
-            'pass_id' => $id,
+            'pass_id' => $this->pass_id,
             'available_from' => $nextFrom,
             'available_to' => $nextTo,
         ]);
