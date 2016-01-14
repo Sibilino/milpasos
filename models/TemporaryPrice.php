@@ -69,6 +69,22 @@ class TemporaryPrice extends \yii\db\ActiveRecord
     }
     
     /**
+     * Generates a new TemporaryPrice model whose attributes represent the "next" logical temporary price.
+     * @return app\models\TemporaryPrice
+     */
+    public function getNext()
+    {
+        $nextFrom = $this->available_to ? date('Y-m-d', strtotime('+1 day', strtotime($this->available_to))) : '';
+        $months = $this->getPeriodInMonths();
+        $nextTo = $months ? date('Y-m-d', strtotime("+$months months", strtotime($this->available_to))) : '';
+        return new TemporaryPrice([
+            'pass_id' => $id,
+            'available_from' => $nextFrom,
+            'available_to' => $nextTo,
+        ]);
+    }
+    
+    /**
      * @return \yii\db\ActiveQuery
      */
     public function getPass()
