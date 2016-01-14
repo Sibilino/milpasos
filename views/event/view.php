@@ -50,7 +50,7 @@ $this->params['breadcrumbs'][] = $this->title;
     ]) ?>
 
     <div id="links">
-        <h2>Links</h2>
+        <h2><?= Yii::t('app', "Links") ?></h2>
         <?= GridView::widget([
                 'dataProvider' => new ActiveDataProvider([
                     'query' => $model->getLinks(),
@@ -75,7 +75,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 
     <div id="passes">
-        <h2>Passes</h2>
+        <h2><?= Yii::t('app', "Passes") ?></h2>
         <?= GridView::widget([
                 'dataProvider' => new ActiveDataProvider([
                     'query' => $model->getPasses(),
