@@ -54,6 +54,21 @@ class TemporaryPrice extends \yii\db\ActiveRecord
     }
     
     /**
+     * The number of months that this price is valid.
+     * @return integer|null Number of months. Returns null if the validity period is unbound or undefined.
+     */
+    public function getPeriodInMonths()
+    {
+        if (!$this->available_from || !$this->available_to) {
+            return null;
+        }
+        $from = new DateTime($this->available_from);
+        $to = new DateTime($this->available_to);
+        $to->add(new DateInterval('P1D')); // Next day
+        return $to->diff($from)->m;
+    }
+    
+    /**
      * @return \yii\db\ActiveQuery
      */
     public function getPass()
