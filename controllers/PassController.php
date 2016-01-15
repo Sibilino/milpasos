@@ -97,11 +97,8 @@ class PassController extends Controller
         $model = $this->findModel($id);
         
         $newTemporaryPrice = new TemporaryPrice(['pass_id' => $id]);
-        if ($newTemporaryPrice->load(Yii::$app->request->post())) {
-            if ($newTemporaryPrice->save()) {
-                // Fill some default values that will help the user add the next TemporaryPrice
-                $newTemporaryPrice = $newTemporaryPrice->getNext();
-            }
+        if (!$newTemporaryPrice->load(Yii::$app->request->post()) || $newTemporaryPrice->save()) {
+            $newTemporaryPrice = $model->getNextPriceSuggestion();
         }
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {

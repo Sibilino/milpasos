@@ -2,6 +2,8 @@
 
 namespace app\models;
 
+use DateInterval;
+use DateTime;
 use Yii;
 
 /**
@@ -46,7 +48,7 @@ class TemporaryPrice extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'price' => Yii::t('app', 'Normal Price'),
+            'price' => Yii::t('app', 'Price'),
             'available_from' => Yii::t('app', 'Available From'),
             'available_to' => Yii::t('app', 'Available To'),
             'pass_id' => Yii::t('app', 'Pass'),
@@ -67,28 +69,12 @@ class TemporaryPrice extends \yii\db\ActiveRecord
         $to->add(new DateInterval('P1D')); // Next day
         return $to->diff($from)->m;
     }
-    
-    /**
-     * Generates a new TemporaryPrice model whose attributes represent the "next" logical temporary price.
-     * @return app\models\TemporaryPrice
-     */
-    public function getNext()
-    {
-        $nextFrom = $this->available_to ? date('Y-m-d', strtotime('+1 day', strtotime($this->available_to))) : '';
-        $months = $this->getPeriodInMonths();
-        $nextTo = $months ? date('Y-m-d', strtotime("+$months months", strtotime($this->available_to))) : '';
-        return new TemporaryPrice([
-            'pass_id' => $this->pass_id,
-            'available_from' => $nextFrom,
-            'available_to' => $nextTo,
-        ]);
-    }
-    
+
     /**
      * @return \yii\db\ActiveQuery
      */
     public function getPass()
     {
-        return $this->hasOne(Pass::className(), ['id' => 'pass_id'])->inverseOf('temporaryPrices');;
+        return $this->hasOne(Pass::className(), ['id' => 'pass_id'])->inverseOf('temporaryPrices');
     }
 }

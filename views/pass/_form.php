@@ -4,10 +4,10 @@ use app\models\Event;
 use app\models\Pass;
 use app\models\TemporaryPrice;
 use app\widgets\DateRangePicker;
-use app\widgets\GridForm;
 use yii\data\ActiveDataProvider;
 use yii\grid\ActionColumn;
 use yii\grid\DataColumn;
+use yii\grid\GridView;
 use yii\grid\SerialColumn;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
@@ -44,38 +44,13 @@ use yii\helpers\ArrayHelper;
         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
-    <?php ActiveForm::end(); ?>
-    
+    <?php $form = ActiveForm::end(); ?>
+
+    <?php $form = ActiveForm::begin(); ?>
+
     <?php if (!$model->isNewRecord && isset($newTemporaryPrice)): ?>
         <div id="temporary-prices">
             <h2><?= Yii::t('app', "Temporary Prices") ?></h2>
-            
-            <?php $form = GridForm::begin([
-                'gridOptions' => [
-                    'dataProvider' => new ActiveDataProvider([
-                        'query' => $model->getTemporaryPrices(),
-                    ]),
-                    "columns" => [
-                        [
-                            'class' => SerialColumn::className(),
-                        ],
-                        [
-                            'attribute' => 'price',
-                            'value' => function (TemporaryPrice $tempPrice, $key, $index, DataColumn $column) use ($model) {
-                                return $column->grid->formatter->asCurrency($tempPrice->price, $model->currency);
-                            },
-                        ],
-                        'available_from:date',
-                        'available_to:date',
-                        [
-                            'class' => ActionColumn::className(),
-                            'header' => 'actions',
-                            'template' => '{update}{delete}',
-                            'controller' => 'temporary-price',
-                        ],
-                    ],
-                ],
-            ]); ?>
 
             <?= $form->field($newTemporaryPrice, 'price')->textInput(['maxlength' => true]) ?>
             <?= DateRangePicker::widget([
@@ -87,9 +62,34 @@ use yii\helpers\ArrayHelper;
             
             <?= Html::submitButton("Add", ['class' => 'btn btn-danger']) ?>
 
-            <?php GridForm::end() ?>
+            <?= GridView::widget([
+                'dataProvider' => new ActiveDataProvider([
+                    'query' => $model->getTemporaryPrices(),
+                ]),
+                "columns" => [
+                    [
+                        'class' => SerialColumn::className(),
+                    ],
+                    [
+                        'attribute' => 'price',
+                        'value' => function (TemporaryPrice $tempPrice, $key, $index, DataColumn $column) use ($model) {
+                            return $column->grid->formatter->asCurrency($tempPrice->price, $model->currency);
+                        },
+                    ],
+                    'available_from:date',
+                    'available_to:date',
+                    [
+                        'class' => ActionColumn::className(),
+                        'header' => 'actions',
+                        'template' => '{update}{delete}',
+                        'controller' => 'temporary-price',
+                    ],
+                ],
+            ]) ?>
         </div>
     
     <?php endif; ?>
+
+    <?php ActiveForm::end() ?>
 
 </div>

@@ -44,14 +44,14 @@ class Pass extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            ['full', 'event_id', 'price', 'currency'], 'required'],
+            [['full', 'event_id', 'price', 'currency'], 'required'],
             [['price'], 'number', 'min' => 0],
             [['full'], 'boolean'],
             [['available_from', 'available_to', 'price'], 'default', 'value' => null],
             [['available_from', 'available_to'], 'date', 'format' => 'yyyy-MM-dd'],
             [['currency'], 'in', 'range' => array_keys(static::$currencies), 'strict' => true],
             [['event_id'], 'exist', 'targetClass' => Event::className(), 'targetAttribute' => 'id'],
-            [['description'], 'string', 'max' => 1000]
+            [['description'], 'string', 'max' => 1000],
         ];
     }
 
@@ -73,11 +73,35 @@ class Pass extends \yii\db\ActiveRecord
     }
 
     /**
+     * Generates a new TemporaryPrice model with default attribute values to easily create a price for the next logical
+     * time step.
+     * @return TemporaryPrice
+     */
+    public function getNextPriceSuggestion()
+    {
+        /* @var $lastPrice TemporaryPrice */
+        $lastPrice = $this->getTemporaryPrices()->orderBy('available_from DESC')->one();
+        $suggestion = new TemporaryPrice([
+            'pass_id' => $this->id,
+        ]);
+        if ($lastPrice) {
+            $nextFrom = $lastPrice->available_to ? date('Y-m-d', strtotime('+1 day', strtotime($lastPrice->available_to))) : '';
+            $months = $lastPrice->getPeriodInMonths();
+            $nextTo = $months ? date('Y-m-d', strtotime("+$months months", strtotime($lastPrice->available_to))) : '';
+            $suggestion->setAttributes([
+                'available_from' => $nextFrom,
+                'available_to' => $nextTo,
+            ]);
+        }
+        return $suggestion;
+    }
+
+    /**
      * @return \yii\db\ActiveQuery
      */
     public function getEvent()
     {
-        return $this->hasOne(Event::className(), ['id' => 'event_id'])->inverseOf('passes');;
+        return $this->hasOne(Event::className(), ['id' => 'event_id'])->inverseOf('passes');
     }
     
     /**
@@ -85,6 +109,7 @@ class Pass extends \yii\db\ActiveRecord
      */
     public function getTemporaryPrices()
     {
-        return $this->hasMany(TemporaryPrice::className(), ['pass_id' => 'id'])->inverseOf('pass');
+        return $this->hasMany(TemporaryPrice::className(), ['pass_id' => 'id'])
+            ->inverseOf('pass');
     }
 }
