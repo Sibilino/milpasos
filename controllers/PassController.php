@@ -2,7 +2,6 @@
 
 namespace app\controllers;
 
-use app\components\RememberLastPageBehavior;
 use Yii;
 use app\models\Pass;
 use app\models\PassSearch;
@@ -34,9 +33,6 @@ class PassController extends Controller
                 'actions' => [
                     'delete' => ['post'],
                 ],
-            ],
-            'rememberUpdatedFrom' => [
-                'class' => RememberLastPageBehavior::className(),
             ],
         ];
     }
@@ -87,28 +83,28 @@ class PassController extends Controller
     }
 
     /**
-     * Updates an existing Pass model.
-     * If update is successful, the browser will be redirected to the 'view' page.
+     * Updates an existing Pass model and/or adds a new TemporaryPrice.
      * @param string $id
      * @return mixed
      */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $newTemporaryPrice = $model->getNextPriceSuggestion();
         
-        $newTemporaryPrice = new TemporaryPrice(['pass_id' => $id]);
-        if (!$newTemporaryPrice->load(Yii::$app->request->post()) || $newTemporaryPrice->save()) {
+        if ($newTemporaryPrice->load(Yii::$app->request->post())) {
+            $newTemporaryPrice->save();
             $newTemporaryPrice = $model->getNextPriceSuggestion();
         }
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect($this->lastPage);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-                'newTemporaryPrice' => $newTemporaryPrice,
-            ]);
-        }
+        if ($model->load(Yii::$app->request->post())) {
+            $model->save();
+        } 
+        
+        return $this->render('update', [
+            'model' => $model,
+            'newTemporaryPrice' => $newTemporaryPrice,
+        ]);
     }
 
     /**
