@@ -20,6 +20,11 @@ use Yii;
 class TemporaryPrice extends \yii\db\ActiveRecord
 {
     /**
+     * @var string The scenario to be used to represent a 
+     */
+    const SCENARIO_IN_PASS = 'in_pass';
+    
+    /**
      * @inheritdoc
      */
     public static function tableName()
@@ -34,10 +39,12 @@ class TemporaryPrice extends \yii\db\ActiveRecord
     {
         return [
             [['price'], 'number', 'min' => 0],
-            [['price', 'pass_id'], 'required'],
+            [['price'], 'required'],
             [['available_from', 'available_to'], 'default', 'value' => null],
             [['available_from', 'available_to'], 'date', 'format' => 'yyyy-MM-dd'],
-            [['pass_id'], 'exist', 'targetClass' => Pass::className(), 'targetAttribute' => 'id'],
+            // pass_id must not be assigned from $_POST when this TempPrice is edited from a Pass form
+            [['pass_id'], 'exist', 'targetClass' => Pass::className(), 'targetAttribute' => 'id',
+                'allowEmpty' => false, 'except' => static::SCENARIO_IN_PASS],
         ];
     }
     
