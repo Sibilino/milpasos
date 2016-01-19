@@ -71,13 +71,27 @@ class Pass extends \yii\db\ActiveRecord
             'event_id' => Yii::t('app', 'Event'),
         ];
     }
+    
+    /**
+     * Returns a list of existing TempPrices for this Pass and adds a new TempPrice model "template" at the end.
+     * @return TemporaryPrice[]
+     */
+    public function getPriceList()
+    {
+        $prices = $this->temporaryPrices;
+        $prices = array_map(function (TemporaryPrice $p) {
+            $p->scenario = TemporaryPrice::SCENARIO_IN_PASS;
+        }, $prices);
+        array_push($prices, $this->getNextPriceSuggestion());
+        return $prices;
+    }
 
     /**
      * Generates a new TemporaryPrice model with default attribute values to easily create a price for the next logical
      * time step.
      * @return TemporaryPrice
      */
-    public function getNextPriceSuggestion()
+    private function getNextPriceSuggestion()
     {
         /* @var $lastPrice TemporaryPrice */
         $lastPrice = $this->getTemporaryPrices()->orderBy('available_from DESC')->one();
