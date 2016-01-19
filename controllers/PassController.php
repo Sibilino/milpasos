@@ -6,6 +6,7 @@ use Yii;
 use app\models\Pass;
 use app\models\PassSearch;
 use app\models\TemporaryPrice;
+use yii\base\Model;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -90,20 +91,21 @@ class PassController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $newTemporaryPrice = $model->getNextPriceSuggestion();
         
-        if ($newTemporaryPrice->load(Yii::$app->request->post())) {
-            $newTemporaryPrice->save();
-            $newTemporaryPrice = $model->getNextPriceSuggestion();
-        }
-
         if ($model->load(Yii::$app->request->post())) {
             $model->save();
-        } 
+        }
         
+        $prices = $model->getPriceList();
+        if (Model::loadMultiple($prices, Yii::$app->request->post()) && !$model->hasErrors()) {
+           foreach ($prices as $price) {
+               $price->save();
+           }
+        }
+
         return $this->render('update', [
             'model' => $model,
-            'newTemporaryPrice' => $newTemporaryPrice,
+            'prices' => $prices,
         ]);
     }
 
