@@ -66,19 +66,29 @@ class PassController extends Controller
     }
 
     /**
-     * Creates a new Pass model.
+     * Creates a new Pass model and any related TemporaryPrices
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
         $model = new Pass();
+        $passSaved = $model->load(Yii::$app->request->post()) && $model->save();
+        
+        $prices = $model->getPriceList();
+        $pricesSaved = true;
+        if (Model::loadMultiple($prices, Yii::$app->request->post()) && !$model->hasErrors()) {
+            foreach ($prices as $price) {
+               $pricesSaved = $price->save() && $pricesSaved; // Only true if all save() calls return true
+           }
+        }
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($passSaved && $pricesSaved) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
+                'prices' => $prices,
             ]);
         }
     }
