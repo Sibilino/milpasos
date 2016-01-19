@@ -4,7 +4,7 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Pass */
-/* @var $newTemporaryPrice app\models\TemporaryPrice */
+/* @var $prices app\models\TemporaryPrice[] */
 
 $this->title = Yii::t('app', 'Update {modelClass}: ', [
     'modelClass' => 'Pass',
@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 
     <?= $this->render('_form', [
         'model' => $model,
-        'newTemporaryPrice' => $newTemporaryPrice,
+        'prices' => $prices,
     ]) ?>
 
 </div>
