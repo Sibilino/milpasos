@@ -82,6 +82,7 @@ class Pass extends \yii\db\ActiveRecord
         /* @var $lastPrice TemporaryPrice */
         $lastPrice = $this->getTemporaryPrices()->orderBy('available_from DESC')->one();
         $suggestion = new TemporaryPrice([
+            'scenario' => TemporaryPrice::SCENARIO_IN_PASS,
             'pass_id' => $this->id,
         ]);
         if ($lastPrice) {
