@@ -50,18 +50,26 @@ use yii\helpers\ArrayHelper;
         <h2><?= Yii::t('app', "Temporary Prices") ?></h2>
 
         <?php foreach ($prices as $i => $price): ?>
-            
-            <?= $form->field($price, "[$i]price")->textInput(['maxlength' => true]) ?>
-            <?= DateRangePicker::widget([
-                'form' => $form,
-                'model' => $price,
-                'fromAttr' => "[$i]available_from",
-                'toAttr' => "[$i]available_to",
-            ]) ?>
+            <div id="price-list-<?= $i ?>">
+                <?= $form->field($price, "[$i]price")->textInput(['maxlength' => true]) ?>
+                <?= DateRangePicker::widget([
+                    'form' => $form,
+                    'model' => $price,
+                    'fromAttr' => "[$i]available_from",
+                    'toAttr' => "[$i]available_to",
+                ]) ?>
+                <?= Html::button(Yii::t('app', "Delete"), ['class' => 'btn btn-danger price-delete','data-ref' => "price-list-$i"])?>
+            </div>
             
         <?php endforeach; ?>
+        <?php $this->registerJs('
+            $(".price-delete").on("click", function () {
+                var selector = "#"+$(this).attr("data-ref");
+                $(selector).remove();
+            });
+        '); ?>
         
-        <?= Html::submitButton(Yii::t('app', "Add"), ['class' => 'btn btn-danger']) ?>
+        <?= Html::submitButton(Yii::t('app', "Add"), ['class' => 'btn btn-success']) ?>
 
         <?= GridView::widget([
             'dataProvider' => new ActiveDataProvider([

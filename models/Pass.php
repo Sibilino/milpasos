@@ -78,7 +78,7 @@ class Pass extends \yii\db\ActiveRecord
      */
     public function getPriceList()
     {
-        $prices = $this->temporaryPrices;
+        $prices = $this->getTemporaryPrices()->orderBy('available_from')->all();
         array_walk($prices, function (TemporaryPrice $p) {
             $p->scenario = TemporaryPrice::SCENARIO_IN_PASS;
         });

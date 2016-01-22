@@ -7,6 +7,7 @@ use app\models\Pass;
 use app\models\PassSearch;
 use app\models\TemporaryPrice;
 use yii\base\Model;
+use yii\db\Exception;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -108,10 +109,22 @@ class PassController extends Controller
         
         $prices = $model->getPriceList();
         if (Model::loadMultiple($prices, Yii::$app->request->post()) && !$model->hasErrors()) {
-           foreach ($prices as $price) {
-               $price->pass_id = $model->id;
-               $price->save();
-           }
+            array_walk($prices,function (TemporaryPrice $p) use ($model) { // Cannot trust pass_id from user form
+                $p->pass_id = $model->id;
+            });
+
+            $transaction = Yii::$app->db->beginTransaction();
+            TemporaryPrice::deleteAll(['pass_id'=>$model->id]);
+            try {
+                array_walk($prices,function (TemporaryPrice $p) {
+                    if (!$p->save()) {
+                        throw new Exception("Problem saving prices.");
+                    };
+                });
+                $transaction->commit();
+            } catch (Exception $e) {
+                $transaction->rollBack();
+            }
         }
 
         return $this->render('update', [
