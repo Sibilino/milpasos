@@ -44,7 +44,7 @@ class TemporaryPrice extends \yii\db\ActiveRecord
             [['available_from', 'available_to'], 'date', 'format' => 'yyyy-MM-dd'],
             // pass_id must not be assigned from $_POST when this TempPrice is edited from a Pass form
             [['pass_id'], 'exist', 'targetClass' => Pass::className(), 'targetAttribute' => 'id',
-                'allowEmpty' => false, 'except' => static::SCENARIO_IN_PASS],
+                'skipOnEmpty' => false, 'except' => static::SCENARIO_IN_PASS],
         ];
     }
     

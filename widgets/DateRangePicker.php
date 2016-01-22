@@ -83,7 +83,7 @@ class DateRangePicker extends Widget
         $idTo = $this->toOptions['id'];
 
         $defaults = [
-            'maxDate' => $this->model->{$this->toAttr},
+            'maxDate' => Html::getAttributeValue($this->model, $this->toAttr),
             'onClose' => new JsExpression("function () {
                 $(\"#$idTo\").datepicker(\"option\", \"minDate\", $(\"#$idFrom\").datepicker(\"getDate\"));
             }"),
@@ -96,7 +96,7 @@ class DateRangePicker extends Widget
         ));
 
         $defaults = [
-            'minDate' => $this->model->{$this->fromAttr},
+            'minDate' => Html::getAttributeValue($this->model, $this->fromAttr),
             'onClose' => new JsExpression("function () {
                 $(\"#$idFrom\").datepicker(\"option\", \"maxDate\", $(\"#$idTo\").datepicker(\"getDate\"));
             }")

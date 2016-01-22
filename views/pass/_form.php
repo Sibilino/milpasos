@@ -1,6 +1,5 @@
 <?php
 
-use Yii;
 use app\models\Event;
 use app\models\Pass;
 use app\models\TemporaryPrice;
@@ -22,7 +21,9 @@ use yii\helpers\ArrayHelper;
 
 <div class="pass-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin([
+        'enableClientValidation' => false,
+    ]); ?>
 
     <?= $form->field($model, 'description')->textInput(['maxlength' => true]) ?>
 
