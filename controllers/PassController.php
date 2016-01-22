@@ -109,6 +109,7 @@ class PassController extends Controller
         $prices = $model->getPriceList();
         if (Model::loadMultiple($prices, Yii::$app->request->post()) && !$model->hasErrors()) {
            foreach ($prices as $price) {
+               $price->pass_id = $model->id;
                $price->save();
            }
         }
