@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\db\Exception;
 
 /**
  * This is the model class for table "pass".
@@ -71,7 +72,7 @@ class Pass extends \yii\db\ActiveRecord
             'event_id' => Yii::t('app', 'Event'),
         ];
     }
-    
+
     /**
      * Returns a list of existing TempPrices for this Pass and adds a new TempPrice model "template" at the end.
      * @return TemporaryPrice[]
@@ -84,6 +85,37 @@ class Pass extends \yii\db\ActiveRecord
         });
         array_push($prices, $this->getNextPriceSuggestion());
         return $prices;
+    }
+
+    /**
+     * Attach the given list of prices to this Pass, saving them to the DB after removing any existing prices.
+     * @param TemporaryPrice[] $prices
+     * @return bool Whether the saving operation was successfull (true) or rolled back (false).
+     */
+    public function updatePriceList(array $prices)
+    {
+        $pass_id = $this->id;
+        array_walk($prices,function (TemporaryPrice $p) use ($pass_id) { // Cannot trust pass_id from user form
+            $p->pass_id = $pass_id;
+        });
+
+        $transaction = Yii::$app->db->beginTransaction();
+        TemporaryPrice::deleteAll(['pass_id'=>$this->id]);
+
+        try {
+            array_walk($prices,function (TemporaryPrice $p) use ($pass_id) {
+                $p->pass_id = $pass_id;
+                $p->isNewRecord = true;
+                if (!$p->save()) {
+                    throw new Exception("Problem saving prices.");
+                };
+            });
+            $transaction->commit();
+            return true;
+        } catch (Exception $e) {
+            $transaction->rollBack();
+        }
+        return false;
     }
 
     /**

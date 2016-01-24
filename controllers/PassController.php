@@ -106,24 +106,11 @@ class PassController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             $model->save();
         }
-        
+
         $prices = $model->getPriceList();
         if (Model::loadMultiple($prices, Yii::$app->request->post()) && !$model->hasErrors()) {
-            array_walk($prices,function (TemporaryPrice $p) use ($model) { // Cannot trust pass_id from user form
-                $p->pass_id = $model->id;
-            });
-
-            $transaction = Yii::$app->db->beginTransaction();
-            TemporaryPrice::deleteAll(['pass_id'=>$model->id]);
-            try {
-                array_walk($prices,function (TemporaryPrice $p) {
-                    if (!$p->save()) {
-                        throw new Exception("Problem saving prices.");
-                    };
-                });
-                $transaction->commit();
-            } catch (Exception $e) {
-                $transaction->rollBack();
+            if ($model->updatePriceList($prices)) {
+                $prices = $model->getPriceList();
             }
         }
 
