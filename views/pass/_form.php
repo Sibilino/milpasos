@@ -49,27 +49,26 @@ use yii\helpers\ArrayHelper;
     <div id="temporary-prices">
         <h2><?= Yii::t('app', "Temporary Prices") ?></h2>
 
-        <?php foreach ($prices as $i => $price): ?>
-            <div id="price-list-<?= $i ?>">
-                <?= $form->field($price, "[$i]price")->textInput(['maxlength' => true]) ?>
-                <?= DateRangePicker::widget([
-                    'form' => $form,
-                    'model' => $price,
-                    'fromAttr' => "[$i]available_from",
-                    'toAttr' => "[$i]available_to",
-                ]) ?>
-                <?= Html::button(Yii::t('app', "Delete"), ['class' => 'btn btn-danger price-delete','data-ref' => "price-list-$i"])?>
+        <div  class="panel panel-default">
+            <div class="panel-body">
+                <?php foreach ($prices as $i => $price): ?>
+                    <div class="well">
+                        <?= $form->field($price, "[$i]price")->textInput(['maxlength' => true]) ?>
+                        <?= DateRangePicker::widget([
+                            'form' => $form,
+                            'model' => $price,
+                            'fromAttr' => "[$i]available_from",
+                            'toAttr' => "[$i]available_to",
+                        ]) ?>
+                        <?= Html::submitButton(Yii::t('app', "Save"), ['class' => 'btn btn-success']) ?>
+                    </div>
+
+                <?php endforeach; ?>
             </div>
-            
-        <?php endforeach; ?>
-        <?php $this->registerJs('
-            $(".price-delete").on("click", function () {
-                var selector = "#"+$(this).attr("data-ref");
-                $(selector).remove();
-            });
-        '); ?>
-        
-        <?= Html::submitButton(Yii::t('app', "Add"), ['class' => 'btn btn-success']) ?>
+            <div class="panel-footer">
+                <?= Html::submitButton(Yii::t('app', "Add"), ['class' => 'btn btn-success']) ?>
+            </div>
+        </div>
 
         <?= GridView::widget([
             'dataProvider' => new ActiveDataProvider([
