@@ -2,12 +2,11 @@
 
 namespace app\controllers;
 
+use app\components\RememberLastPageBehavior;
 use Yii;
 use app\models\Pass;
 use app\models\PassSearch;
-use app\models\TemporaryPrice;
 use yii\base\Model;
-use yii\db\Exception;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -35,6 +34,9 @@ class PassController extends Controller
                 'actions' => [
                     'delete' => ['post'],
                 ],
+            ],
+            'rememberUpdatedFrom' => [
+                'class' => RememberLastPageBehavior::className(),
             ],
         ];
     }
@@ -130,7 +132,7 @@ class PassController extends Controller
     {
         $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
+        return $this->redirect($this->lastPage);
     }
 
     /**

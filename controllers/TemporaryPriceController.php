@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\components\RememberLastPageBehavior;
 use Yii;
 use app\models\TemporaryPrice;
 use app\models\TemporaryPriceSearch;
@@ -32,6 +33,9 @@ class TemporaryPriceController extends Controller
                 'actions' => [
                     'delete' => ['post'],
                 ],
+            ],
+            'rememberUpdatedFrom' => [
+                'class' => RememberLastPageBehavior::className(),
             ],
         ];
     }
@@ -110,7 +114,7 @@ class TemporaryPriceController extends Controller
     {
         $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
+        return $this->redirect($this->lastPage);
     }
 
     /**
