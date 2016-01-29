@@ -31,7 +31,8 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'name',
-            'surname',
+            'real_name',
+            'real_surname',
             [
                 'label' => $model->getAttributeLabel('danceIds'),
                 'value' => implode(', ', array_map(function (Dance $d) { return ucfirst($d->name); }, $model->dances)),

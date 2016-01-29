@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 use app\components\ManyToManyBehavior;
+use yii\web\UploadedFile;
 
 /**
  * This is the model class for table "artist".
@@ -24,7 +25,11 @@ class Artist extends \yii\db\ActiveRecord
      * @var array|string To collect input to update this model's dances. Can be array or string of comma-separated ids.
      */
     public $danceIds = [];
-    
+    /**
+     * @var UploadedFile
+     */
+    public $imageFile;
+
     /**
      * @inheritdoc
      */
@@ -57,6 +62,10 @@ class Artist extends \yii\db\ActiveRecord
             [['name', 'real_name', 'real_surname', 'website'], 'string', 'max' => 250],
             ['website', 'url', 'defaultScheme' => 'http'],
             [['danceIds'], 'default', 'value' => []],
+            [['imageFile'], 'image', 'extensions' => 'png, jpg',
+                'minWidth' => 100, 'maxWidth' => 200,
+                'minHeight' => 100, 'maxHeight' => 200,
+            ],
         ];
     }
     
@@ -82,6 +91,7 @@ class Artist extends \yii\db\ActiveRecord
             'real_surname' => Yii::t('app', 'Real Surname'),
             'website' => Yii::t('app', 'Website'),
             'danceIds' => Yii::t('app', 'Dance Styles'),
+            'imageFile' => Yii::t('app', 'Image'),
         ];
     }
 

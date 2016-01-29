@@ -19,7 +19,7 @@ class ArtistSearch extends Artist
     {
         return [
             [['id'], 'integer'],
-            [['name', 'surname', 'website'], 'safe'],
+            [['name', 'real_name', 'real_surname', 'website'], 'safe'],
         ];
     }
 
@@ -60,7 +60,8 @@ class ArtistSearch extends Artist
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'surname', $this->surname])
+            ->andFilterWhere(['like', 'real_name', $this->real_name])
+            ->andFilterWhere(['like', 'real_surname', $this->real_surname])
             ->andFilterWhere(['like', 'website', $this->website]);
 
         return $dataProvider;

@@ -9,6 +9,7 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * ArtistController implements the CRUD actions for Artist model.
@@ -92,6 +93,10 @@ class ArtistController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
+            if ($model->imageFile && !$model->imageFile->saveAs(Yii::getAlias('@web').'/img/artist'.$model->name.'.'.$model->imageFile->extension)) {
+                $model->addError('imageFile', Yii::t('app', "Could not save image."));
+            }
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
