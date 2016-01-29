@@ -15,6 +15,7 @@ use app\components\ManyToManyBehavior;
  * @property string $address
  * @property double $lon
  * @property double $lat
+ * @property string $website
  * @property array $danceIds
  *
  * @property Artist[] $artists
@@ -62,7 +63,7 @@ class Event extends \yii\db\ActiveRecord
             [['start_date', 'end_date'], 'date', 'format' => 'yyyy-MM-dd'],
             [['lon'], 'number', 'min' => -180, 'max' => 180],
             [['lat'], 'number', 'min' => -90, 'max' => 90],
-            [['name'], 'string', 'max' => 250],
+            [['name', 'website'], 'string', 'max' => 250],
             [['address'], 'string', 'max' => 500],
             [['address'], 'required', 'message' => "Please select an address from the list of suggestions."],
             [['danceIds'], 'default', 'value' => []],
@@ -92,6 +93,7 @@ class Event extends \yii\db\ActiveRecord
             'address' => Yii::t('app', 'Address'),
             'lon' => Yii::t('app', 'Lon'),
             'lat' => Yii::t('app', 'Lat'),
+            'website' => Yii::t('app', 'Main Website'),
             'danceIds' => Yii::t('app', 'Dance Styles'),
         ];
     }

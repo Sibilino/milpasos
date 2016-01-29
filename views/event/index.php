@@ -1,7 +1,9 @@
 <?php
 
+use app\models\Event;
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\EventSearch */
@@ -25,7 +27,14 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            'name',
+            [
+                'attribute' => 'name',
+                'value' => function (Event $model) {
+                    $url = (strpos($model->website, '://')) === false ? "http://$model->website" : $model->website;
+                    return $model->website ? Html::a($model->name, $url, ['target'=>'_blank']) : $model->name;
+                },
+                'format' => 'html',
+            ],
             'start_date:date',
             'end_date:date',
             'address',
