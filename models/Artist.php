@@ -10,7 +10,8 @@ use app\components\ManyToManyBehavior;
  *
  * @property string $id
  * @property string $name
- * @property string $surname
+ * @property string $real_name
+ * @property string $real_surname
  * @property string $website
  *
  * @property Dance[] $dances
@@ -53,7 +54,8 @@ class Artist extends \yii\db\ActiveRecord
     {
         return [
             [['name'], 'required'],
-            [['name', 'surname', 'website'], 'string', 'max' => 250],
+            [['name', 'real_name', 'real_surname', 'website'], 'string', 'max' => 250],
+            ['website', 'url', 'defaultScheme' => 'http'],
             [['danceIds'], 'default', 'value' => []],
         ];
     }
@@ -75,8 +77,9 @@ class Artist extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'name' => Yii::t('app', 'Name'),
-            'surname' => Yii::t('app', 'Surname'),
+            'name' => Yii::t('app', 'Artistic Name'),
+            'real_name' => Yii::t('app', 'Real Name'),
+            'real_surname' => Yii::t('app', 'Real Surname'),
             'website' => Yii::t('app', 'Website'),
             'danceIds' => Yii::t('app', 'Dance Styles'),
         ];
