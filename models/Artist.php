@@ -63,8 +63,8 @@ class Artist extends \yii\db\ActiveRecord
             ['website', 'url', 'defaultScheme' => 'http'],
             [['danceIds'], 'default', 'value' => []],
             [['imageFile'], 'image', 'extensions' => 'png, jpg',
-                'minWidth' => 100, 'maxWidth' => 200,
-                'minHeight' => 100, 'maxHeight' => 200,
+                'minWidth' => 100, 'maxWidth' => 500,
+                'minHeight' => 100, 'maxHeight' => 500,
             ],
         ];
     }
@@ -76,6 +76,7 @@ class Artist extends \yii\db\ActiveRecord
     {
         return array_merge(parent::attributes(), [
             'danceIds',
+            'imageFile'
         ]);
     }
 
