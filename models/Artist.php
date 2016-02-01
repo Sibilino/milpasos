@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 use app\components\ManyToManyBehavior;
+use yii\helpers\FileHelper;
 use yii\web\UploadedFile;
 
 /**
@@ -96,6 +97,17 @@ class Artist extends \yii\db\ActiveRecord
         ];
     }
 
+    public function getImage()
+    {
+        $files = FileHelper::findFiles($this->getImageBasePath(), ['only' => ["$this->id.*"]] );
+        if (!$files) {
+            return null;
+        }
+        $path = array_pop($files);
+        $filename = array_pop(explode('/', $path));
+        return Yii::getAlias('@web').'/img/artist/'.$filename;
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -118,5 +130,10 @@ class Artist extends \yii\db\ActiveRecord
     public function getGroups()
     {
         return $this->hasMany(Group::className(), ['id' => 'group_id'])->viaTable('group_has_artist', ['artist_id' => 'id']);
+    }
+
+    public function getImageBasePath()
+    {
+        return Yii::getAlias('@webroot').'/img/artist/';
     }
 }
