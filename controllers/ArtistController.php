@@ -93,10 +93,6 @@ class ArtistController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
-            if ($model->imageFile && !$model->imageFile->saveAs($model->getImageBasePath().$model->id.'.'.$model->imageFile->extension)) {
-                $model->addError('imageFile', Yii::t('app', "Could not save image."));
-            }
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [

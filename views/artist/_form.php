@@ -24,8 +24,8 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'danceIds')->checkboxList(ArrayHelper::map(Dance::find()->all(), 'id', 'name')) ?>
 
-    <?php if ($model->getImage()): ?>
-        <img src="<?= $model->getImage() ?>">
+    <?php if ($model->hasThumbnail()): ?>
+        <img src="<?= $model->getThumbnailUrl() ?>">
     <?php endif; ?>
     <?= $form->field($model, 'imageFile')->fileInput() ?>
 

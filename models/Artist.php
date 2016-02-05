@@ -4,7 +4,9 @@ namespace app\models;
 
 use Yii;
 use app\components\ManyToManyBehavior;
+use yii\base\Exception;
 use yii\helpers\FileHelper;
+use yii\imagine\Image;
 use yii\web\UploadedFile;
 
 /**
@@ -97,15 +99,40 @@ class Artist extends \yii\db\ActiveRecord
         ];
     }
 
-    public function getImage()
+    public function load($data, $formName = null)
     {
-        $files = FileHelper::findFiles($this->getImageBasePath(), ['only' => ["$this->id.*"]] );
-        if (!$files) {
-            return null;
+        $loaded = parent::load($data, $formName);
+        $this->imageFile = UploadedFile::getInstance($this, 'imageFile');
+        return ($loaded || $this->imageFile !== null);
+    }
+
+    public function save($runValidation = true, $attributeNames = null)
+    {
+        if (parent::save($runValidation, $attributeNames) && $this->imageFile) {
+            if ($this->imageFile->saveAs(Yii::getAlias('@webroot')."/img/artist/$this->id.".$this->imageFile->extension)) {
+                try {
+                    Image::thumbnail(Yii::getAlias('@webroot')."/img/artist/$this->id.".$this->imageFile->extension, 150, 150)->save($this->getThumbnailPath());
+                    return true;
+                } catch (Exception $e) {
+                    $this->addError('imageFile', "Could not save image: ".$e->getMessage().".");
+                }
+            }
         }
-        $path = array_pop($files);
-        $filename = array_pop(explode('/', $path));
-        return Yii::getAlias('@web').'/img/artist/'.$filename;
+        return false;
+
+    }
+
+    public function hasThumbnail() {
+        return file_exists($this->getThumbnailPath());
+    }
+
+    public function getThumbnailUrl()
+    {
+        if ($this->hasThumbnail()) {
+            $filename = array_pop(explode('/', $this->getThumbnailPath()));
+            return Yii::getAlias('@web').'/img/artist/'.$filename;
+        }
+        return false;
     }
 
     /**
@@ -132,8 +159,8 @@ class Artist extends \yii\db\ActiveRecord
         return $this->hasMany(Group::className(), ['id' => 'group_id'])->viaTable('group_has_artist', ['artist_id' => 'id']);
     }
 
-    public function getImageBasePath()
+    public function getThumbnailPath()
     {
-        return Yii::getAlias('@webroot').'/img/artist/';
+        return Yii::getAlias('@webroot')."/img/artist/thumb-$this->id.png";
     }
 }
