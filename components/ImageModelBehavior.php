@@ -1,0 +1,79 @@
+<?php
+
+namespace app\components;
+
+
+use Exception;
+use Yii;
+use yii\base\Behavior;
+use yii\base\Event;
+use yii\base\Model;
+use yii\db\ActiveRecord;
+use yii\db\AfterSaveEvent;
+use yii\imagine\Image;
+use yii\web\UploadedFile;
+
+/**
+ * Class ImageModelBehavior
+ * @property \yii\db\ActiveRecord $owner
+ */
+class ImageModelBehavior extends Behavior
+{
+    public $imageAttr = 'image';
+    public $idAttr = 'id';
+    public $folder;
+
+    /**
+     * @var UploadedFile
+     */
+    private $_image;
+
+    public function events() {
+        return [
+            Model::EVENT_AFTER_VALIDATE => 'validateImage',
+            ActiveRecord::EVENT_AFTER_FIND => 'populateImageAttr',
+            ActiveRecord::EVENT_AFTER_INSERT => 'saveImage',
+            ActiveRecord::EVENT_AFTER_UPDATE => 'saveImage',
+        ];
+    }
+
+    public function getImagePath()
+    {
+        return Yii::getAlias('@webroot')."/$this->folder/thumb-".$this->owner->{$this->idAttr}.".png";
+    }
+
+    public function getImageUrl()
+    {
+        return Yii::getAlias('@web')."/$this->folder/thumb-".$this->owner->{$this->idAttr}.".png";
+    }
+
+    public function loadImage($data, $formName = null) {
+        $this->_image = UploadedFile::getInstance($this->owner, $this->imageAttr);
+        return ($this->_image !== null);
+    }
+
+    public function saveImage(AfterSaveEvent $event) {
+        if ($this->_image && !$this->owner->hasErrors()) {
+            try {
+                $originalFile = Yii::getAlias('@webroot')."/$this->folder/".$this->owner->id.'.'.$this->_image->extension;
+                $this->_image->saveAs($originalFile);
+                Image::thumbnail($originalFile, 150, 150)->save($this->getImagePath());
+            } catch (Exception $e) {
+                $this->owner->addError($this->imageAttr, "Could not save image: ".$e->getMessage().".");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public function populateImageAttr(Event $event) {
+        if (file_exists($this->getImagePath())) {
+            $this->owner->{$this->imageAttr} = $this->getImageUrl();
+        }
+        // TODO: Add cache busting such as in https://github.com/yiisoft/yii2/blob/master/framework/web/AssetManager.php#L318
+    }
+
+    public function validateImage() {
+        // TODO: Validate Image through core Image validator
+    }
+}

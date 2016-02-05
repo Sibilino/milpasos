@@ -24,10 +24,10 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'danceIds')->checkboxList(ArrayHelper::map(Dance::find()->all(), 'id', 'name')) ?>
 
-    <?php if ($model->hasThumbnail()): ?>
-        <img src="<?= $model->getThumbnailUrl() ?>">
+    <?php if ($model->imageUrl): ?>
+        <img src="<?= $model->imageUrl ?>">
     <?php endif; ?>
-    <?= $form->field($model, 'imageFile')->fileInput() ?>
+    <?= $form->field($model, 'imageUrl')->fileInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

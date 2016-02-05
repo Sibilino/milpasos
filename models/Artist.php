@@ -2,12 +2,9 @@
 
 namespace app\models;
 
+use app\components\ImageModelBehavior;
 use Yii;
 use app\components\ManyToManyBehavior;
-use yii\base\Exception;
-use yii\helpers\FileHelper;
-use yii\imagine\Image;
-use yii\web\UploadedFile;
 
 /**
  * This is the model class for table "artist".
@@ -29,9 +26,9 @@ class Artist extends \yii\db\ActiveRecord
      */
     public $danceIds = [];
     /**
-     * @var UploadedFile
+     * @var string
      */
-    public $imageFile;
+    public $imageUrl;
 
     /**
      * @inheritdoc
@@ -52,6 +49,11 @@ class Artist extends \yii\db\ActiveRecord
                 'relation' => 'dances',
                 'idListAttr' => 'danceIds',
             ],
+            [
+                'class' => ImageModelBehavior::className(),
+                'folder' => 'img/artist',
+                'imageAttr' => 'imageUrl',
+            ]
         ];
     }
 
@@ -65,10 +67,6 @@ class Artist extends \yii\db\ActiveRecord
             [['name', 'real_name', 'real_surname', 'website'], 'string', 'max' => 250],
             ['website', 'url', 'defaultScheme' => 'http'],
             [['danceIds'], 'default', 'value' => []],
-            [['imageFile'], 'image', 'extensions' => 'png, jpg',
-                'minWidth' => 100, 'maxWidth' => 500,
-                'minHeight' => 100, 'maxHeight' => 500,
-            ],
         ];
     }
     
@@ -79,7 +77,7 @@ class Artist extends \yii\db\ActiveRecord
     {
         return array_merge(parent::attributes(), [
             'danceIds',
-            'imageFile'
+            'imageUrl'
         ]);
     }
 
@@ -95,44 +93,14 @@ class Artist extends \yii\db\ActiveRecord
             'real_surname' => Yii::t('app', 'Real Surname'),
             'website' => Yii::t('app', 'Website'),
             'danceIds' => Yii::t('app', 'Dance Styles'),
-            'imageFile' => Yii::t('app', 'Image'),
+            'imageUrl' => Yii::t('app', 'Image'),
         ];
     }
 
     public function load($data, $formName = null)
     {
         $loaded = parent::load($data, $formName);
-        $this->imageFile = UploadedFile::getInstance($this, 'imageFile');
-        return ($loaded || $this->imageFile !== null);
-    }
-
-    public function save($runValidation = true, $attributeNames = null)
-    {
-        if (parent::save($runValidation, $attributeNames) && $this->imageFile) {
-            if ($this->imageFile->saveAs(Yii::getAlias('@webroot')."/img/artist/$this->id.".$this->imageFile->extension)) {
-                try {
-                    Image::thumbnail(Yii::getAlias('@webroot')."/img/artist/$this->id.".$this->imageFile->extension, 150, 150)->save($this->getThumbnailPath());
-                    return true;
-                } catch (Exception $e) {
-                    $this->addError('imageFile', "Could not save image: ".$e->getMessage().".");
-                }
-            }
-        }
-        return false;
-
-    }
-
-    public function hasThumbnail() {
-        return file_exists($this->getThumbnailPath());
-    }
-
-    public function getThumbnailUrl()
-    {
-        if ($this->hasThumbnail()) {
-            $filename = array_pop(explode('/', $this->getThumbnailPath()));
-            return Yii::getAlias('@web').'/img/artist/'.$filename;
-        }
-        return false;
+        return ($this->loadImage($data) || $loaded);
     }
 
     /**
@@ -157,10 +125,5 @@ class Artist extends \yii\db\ActiveRecord
     public function getGroups()
     {
         return $this->hasMany(Group::className(), ['id' => 'group_id'])->viaTable('group_has_artist', ['artist_id' => 'id']);
-    }
-
-    public function getThumbnailPath()
-    {
-        return Yii::getAlias('@webroot')."/img/artist/thumb-$this->id.png";
     }
 }
