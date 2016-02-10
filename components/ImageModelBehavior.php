@@ -44,7 +44,13 @@ class ImageModelBehavior extends Behavior
 
     public function getImageUrl()
     {
-        return Yii::getAlias('@web')."/$this->folder/thumb-".$this->owner->{$this->idAttr}.".png";
+        $url = Yii::getAlias('@web')."/$this->folder/thumb-".$this->owner->{$this->idAttr}.".png";
+        // Add timestamp to bust browser cache when image is modified
+        $timestamp = @filemtime($this->getImagePath());
+        if ($timestamp) {
+            $url .= "?v=$timestamp";
+        }
+        return $url;
     }
 
     public function loadImage($data, $formName = null) {
@@ -70,7 +76,6 @@ class ImageModelBehavior extends Behavior
         if (file_exists($this->getImagePath())) {
             $this->owner->{$this->imageAttr} = $this->getImageUrl();
         }
-        // TODO: Add cache busting such as in https://github.com/yiisoft/yii2/blob/master/framework/web/AssetManager.php#L318
     }
 
     public function validateImage() {
