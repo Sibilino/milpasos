@@ -11,6 +11,7 @@ use yii\base\Model;
 use yii\db\ActiveRecord;
 use yii\db\AfterSaveEvent;
 use yii\imagine\Image;
+use yii\validators\ImageValidator;
 use yii\web\UploadedFile;
 
 /**
@@ -79,6 +80,16 @@ class ImageModelBehavior extends Behavior
     }
 
     public function validateImage() {
-        // TODO: Validate Image through core Image validator
+        if ($this->_image) {
+            $validator = new ImageValidator([
+                'extensions' => 'png, jpg',
+                'minWidth' => 100, 'maxWidth' => 500,
+                'minHeight' => 100, 'maxHeight' => 500,
+            ]);
+            $error = '';
+            if (!$validator->validate($this->_image, $error)) {
+                $this->owner->addError($this->imageAttr, $error);
+            }
+        }
     }
 }
