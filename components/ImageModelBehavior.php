@@ -41,6 +41,15 @@ class ImageModelBehavior extends Behavior
      */
     public $folder;
     /**
+     * @var int The height to which the image will be converted upon saving.
+     */
+    public $height = 150;
+    /**
+     * @var int The width to which the image will be converted upon saving.
+     */
+    public $width = 150;
+
+    /**
      * @var array The configuration array to be used to validate an uploaded image.
      */
     public $imageRules = [
@@ -74,6 +83,7 @@ class ImageModelBehavior extends Behavior
 
     /**
      * @return string The full path and filename that should be assigned to an image corresponding to the owner.
+     * Does not check whether the file actually exists.
      */
     private function getImagePath()
     {
@@ -81,7 +91,8 @@ class ImageModelBehavior extends Behavior
     }
 
     /**
-     * @return string
+     * @return string The url to the image associated to the owner. Includes cache busting variable. Does not check
+     * whether the image actually exists in disk.
      */
     private function getImageUrl()
     {
@@ -95,25 +106,25 @@ class ImageModelBehavior extends Behavior
     }
 
     /**
-     * @param $data
-     * @param null $formName
-     * @return bool
+     * Loads the uploaded image so that it can later be saved when calling save() on the owner.
+     * @return bool Whether an image was actually loaded.
      */
-    public function loadImage($data, $formName = null) {
+    public function loadImage() {
         $this->_image = UploadedFile::getInstance($this->owner, $this->imageAttr);
         return ($this->_image !== null);
     }
 
     /**
+     * Saves the image loaded by loadImage() as a thumbnail with dimensions $width x $height.
      * @param AfterSaveEvent $event
-     * @return bool
+     * @return bool Whether the save operation was successful.
      */
     public function saveImage(AfterSaveEvent $event) {
         if ($this->_image && !$this->owner->hasErrors()) {
             try {
                 $originalFile = Yii::getAlias('@webroot')."/$this->folder/".$this->owner->id.'.'.$this->_image->extension;
                 $this->_image->saveAs($originalFile);
-                Image::thumbnail($originalFile, 150, 150)->save($this->getImagePath());
+                Image::thumbnail($originalFile, $this->width, $this->height)->save($this->getImagePath());
             } catch (Exception $e) {
                 $this->owner->addError($this->imageAttr, "Could not save image: ".$e->getMessage().".");
                 return false;
@@ -123,6 +134,7 @@ class ImageModelBehavior extends Behavior
     }
 
     /**
+     * Sets the owner's imageAttr to the URL of its image, if it exists on disk.
      * @param Event $event
      */
     public function populateImageAttr(Event $event) {
@@ -132,7 +144,8 @@ class ImageModelBehavior extends Behavior
     }
 
     /**
-     *
+     * Performs a validation on the image loaded by loadImage. If it fails, adds the corresponding error to the owner's
+     * imageAttr.
      */
     public function validateImage() {
         if ($this->_image) {
