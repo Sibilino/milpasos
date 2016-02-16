@@ -22,6 +22,11 @@ use yii\widgets\ActiveForm;
 <div class="event-form">
 
     <?php $form = ActiveForm::begin(); ?>
+    
+    <?php if ($model->imageUrl): ?>
+        <img src="<?= $model->imageUrl ?>">
+    <?php endif; ?>
+    <?= $form->field($model, 'imageUrl')->fileInput() ?>
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
