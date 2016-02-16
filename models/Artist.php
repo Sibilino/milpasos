@@ -97,6 +97,9 @@ class Artist extends \yii\db\ActiveRecord
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function load($data, $formName = null)
     {
         $loaded = parent::load($data, $formName);
