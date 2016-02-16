@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use app\components\ImageModelBehavior;
 
 /**
  * This is the model class for table "group".
@@ -16,11 +17,29 @@ use Yii;
 class Group extends \yii\db\ActiveRecord
 {
     /**
+     * @var string
+     */
+    public $imageUrl;
+    
+    /**
      * @inheritdoc
      */
     public static function tableName()
     {
         return 'group';
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    public function behaviors() {
+        return [
+            [
+                'class' => ImageModelBehavior::className(),
+                'folder' => 'img/group',
+                'imageAttr' => 'imageUrl',
+            ]
+        ];
     }
 
     /**
@@ -33,6 +52,16 @@ class Group extends \yii\db\ActiveRecord
             [['name'], 'string', 'max' => 250]
         ];
     }
+    
+    /**
+     * @inheritdoc
+     */
+    public function attributes()
+    {
+        return array_merge(parent::attributes(), [
+            'imageUrl'
+        ]);
+    }
 
     /**
      * @inheritdoc
@@ -42,7 +71,17 @@ class Group extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('app', 'ID'),
             'name' => Yii::t('app', 'Name'),
+            'imageUrl' => Yii::t('app', 'Image'),
         ];
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    public function load($data, $formName = null)
+    {
+        $loaded = parent::load($data, $formName);
+        return ($this->loadImage($data) || $loaded);
     }
 
     /**
