@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use app\components\ImageModelBehavior;
 use app\components\ManyToManyBehavior;
 
 /**
@@ -30,6 +31,10 @@ class Event extends \yii\db\ActiveRecord
      * @var array|string To collect input to update this Event's dances. Can be array or string of comma-separated ids.
      */
     public $danceIds = [];
+    /**
+     * @var string
+     */
+    public $imageUrl;
 
     /**
      * @inheritdoc
@@ -49,6 +54,11 @@ class Event extends \yii\db\ActiveRecord
                 'class' => ManyToManyBehavior::className(),
                 'relation' => 'dances',
                 'idListAttr' => 'danceIds',
+            ],
+            [
+                'class' => ImageModelBehavior::className(),
+                'folder' => 'img/event',
+                'imageAttr' => 'imageUrl',
             ],
         ];
     }
@@ -78,6 +88,7 @@ class Event extends \yii\db\ActiveRecord
     {
         return array_merge(parent::attributes(), [
             'danceIds',
+            'imageUrl',
         ]);
     }
 
@@ -96,7 +107,17 @@ class Event extends \yii\db\ActiveRecord
             'lat' => Yii::t('app', 'Lat'),
             'website' => Yii::t('app', 'Main Website'),
             'danceIds' => Yii::t('app', 'Dance Styles'),
+            'imageUrl' => Yii::t('app', 'Image'),
         ];
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    public function load($data, $formName = null)
+    {
+        $loaded = parent::load($data, $formName);
+        return ($this->loadImage($data) || $loaded);
     }
 
     /**
