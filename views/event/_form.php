@@ -21,7 +21,7 @@ use yii\widgets\ActiveForm;
 
 <div class="event-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
     
     <?php if ($model->imageUrl): ?>
         <img src="<?= $model->imageUrl ?>">
