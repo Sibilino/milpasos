@@ -54,8 +54,8 @@ class ImageModelBehavior extends Behavior
      */
     public $imageRules = [
         'extensions' => 'png, jpg',
-        'minWidth' => 100, 'maxWidth' => 500,
-        'minHeight' => 100, 'maxHeight' => 500,
+        'minWidth' => 100, 'maxWidth' => 1000,
+        'minHeight' => 100, 'maxHeight' => 1000,
     ];
 
     /**
