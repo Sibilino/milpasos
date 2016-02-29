@@ -26,6 +26,10 @@ class Artist extends \yii\db\ActiveRecord
      */
     public $danceIds = [];
     /**
+     * @var array|string To collect input to update this model's groups. Can be array or string of comma-separated ids.
+     */
+    public $groupIds = [];
+    /**
      * @var string
      */
     public $imageUrl;
@@ -50,6 +54,13 @@ class Artist extends \yii\db\ActiveRecord
                 'idListAttr' => 'danceIds',
             ],
             [
+                // Add functionality to save and load groups from the id array in $groupIds
+                'class' => ManyToManyBehavior::className(),
+                'relation' => 'groups',
+                'idListAttr' => 'groupIds',
+            ],
+            [
+                // Add functionality to save and upload images
                 'class' => ImageModelBehavior::className(),
                 'folder' => 'img/artist',
                 'imageAttr' => 'imageUrl',
@@ -67,6 +78,7 @@ class Artist extends \yii\db\ActiveRecord
             [['name', 'real_name', 'real_surname', 'website'], 'string', 'max' => 250],
             ['website', 'url', 'defaultScheme' => 'http'],
             [['danceIds'], 'default', 'value' => []],
+            [['groupIds'], 'default', 'value' => []],
         ];
     }
     
@@ -77,6 +89,7 @@ class Artist extends \yii\db\ActiveRecord
     {
         return array_merge(parent::attributes(), [
             'danceIds',
+            'groupIds',
             'imageUrl'
         ]);
     }
@@ -93,6 +106,7 @@ class Artist extends \yii\db\ActiveRecord
             'real_surname' => Yii::t('app', 'Real Surname'),
             'website' => Yii::t('app', 'Website'),
             'danceIds' => Yii::t('app', 'Dance Styles'),
+            'groupIds' => Yii::t('app', 'Groups'),
             'imageUrl' => Yii::t('app', 'Image'),
         ];
     }

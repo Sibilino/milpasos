@@ -1,6 +1,7 @@
 <?php
 
 use app\models\Dance;
+use app\models\Group;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
@@ -23,6 +24,8 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'website')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'danceIds')->checkboxList(ArrayHelper::map(Dance::find()->all(), 'id', 'name')) ?>
+
+    <?= $form->field($model, 'groupIds')->checkboxList(ArrayHelper::map(Group::find()->all(), 'id', 'name')) ?>
 
     <?php if ($model->imageUrl): ?>
         <img src="<?= $model->imageUrl ?>">
