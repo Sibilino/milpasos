@@ -68,6 +68,7 @@ class ManyToManyBehavior extends Behavior
      * @param Event $event
      */
     public function loadIdList(Event $event) {
+        // TODO: Avoid db loops when loaded relations also have the ManyToManyBehavior!
         $model = $this->owner;
         $model->{$this->idListAttr} = ArrayHelper::getColumn($model->{$this->relation}, 'id');
     }

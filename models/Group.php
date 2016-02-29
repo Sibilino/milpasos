@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\components\ManyToManyBehavior;
 use Yii;
 use app\components\ImageModelBehavior;
 
@@ -16,6 +17,10 @@ use app\components\ImageModelBehavior;
  */
 class Group extends \yii\db\ActiveRecord
 {
+    /**
+     * @var array|string To collect input to update this model's artists. Can be array or string of comma-separated ids.
+     */
+    public $artistIds = [];
     /**
      * @var string
      */
@@ -35,6 +40,13 @@ class Group extends \yii\db\ActiveRecord
     public function behaviors() {
         return [
             [
+                // Add functionality to save and load groups from the id array in $artistIds
+                'class' => ManyToManyBehavior::className(),
+                'relation' => 'artists',
+                'idListAttr' => 'artistIds',
+            ],
+            [
+                // Add functionality to save and upload images
                 'class' => ImageModelBehavior::className(),
                 'folder' => 'img/group',
                 'imageAttr' => 'imageUrl',
@@ -49,7 +61,8 @@ class Group extends \yii\db\ActiveRecord
     {
         return [
             [['name'], 'required'],
-            [['name'], 'string', 'max' => 250]
+            [['name'], 'string', 'max' => 250],
+            [['artistIds'], 'default', 'value' => []],
         ];
     }
     
@@ -59,7 +72,8 @@ class Group extends \yii\db\ActiveRecord
     public function attributes()
     {
         return array_merge(parent::attributes(), [
-            'imageUrl'
+            'imageUrl',
+            'artistIds',
         ]);
     }
 
@@ -72,6 +86,7 @@ class Group extends \yii\db\ActiveRecord
             'id' => Yii::t('app', 'ID'),
             'name' => Yii::t('app', 'Name'),
             'imageUrl' => Yii::t('app', 'Image'),
+            'artistIds' => Yii::t('app', 'Artists'),
         ];
     }
     
