@@ -151,13 +151,7 @@ class EventController extends Controller
         $model->load(Yii::$app->request->get());
         $model->validate();
         
-        $events = Event::find()
-            ->filterWhere(['<=','start_date', $model->to_date])
-            ->andFilterWhere(['>=','end_date', $model->from_date])
-            ->joinWith(['dances', 'passes'], false)
-            ->andFilterWhere(['dance.id' => $model->danceIds])
-            ->andFilterWhere(['<=','pass.price', $model->maxPrice])
-        ->all();
+        $events = Event::find()->fromMapForm($model)->all();
 
         return $this->render('map', [
             'model' => $model,

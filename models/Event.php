@@ -2,9 +2,11 @@
 
 namespace app\models;
 
+use app\models\forms\MapForm;
 use Yii;
 use app\components\ImageModelBehavior;
 use app\components\ManyToManyBehavior;
+use yii\db\ActiveQuery;
 
 /**
  * This is the model class for table "event".
@@ -110,7 +112,7 @@ class Event extends \yii\db\ActiveRecord
             'imageUrl' => Yii::t('app', 'Image'),
         ];
     }
-    
+
     /**
      * @inheritdoc
      */
@@ -118,6 +120,15 @@ class Event extends \yii\db\ActiveRecord
     {
         $loaded = parent::load($data, $formName);
         return ($this->loadImage($data) || $loaded);
+    }
+
+    /**
+     * @inheritdoc
+     * @return EventQuery the newly created [[ActiveQuery]] instance.
+     */
+    public static function find()
+    {
+        return new EventQuery(get_called_class());
     }
 
     /**
@@ -162,4 +173,31 @@ class Event extends \yii\db\ActiveRecord
             ->inverseOf('event');
     }
 
+}
+
+class EventQuery extends ActiveQuery
+{
+    /**
+     * Selects the Events that are still available.
+     * @return $this
+     */
+    public function available()
+    {
+        return $this->andWhere(['>=','end_date', date('Y-m-d')]);
+    }
+
+    /**
+     * Selects the Events that correspond to the filtering data passed in $form.
+     * @param MapForm $form
+     * @return $this
+     */
+    public function fromMapForm(MapForm $form)
+    {
+        return $this->available()
+            ->andFilterWhere(['<=','start_date', $form->to_date])
+            ->andFilterWhere(['>=','end_date', $form->from_date])
+            ->joinWith(['dances', 'passes'], false)
+            ->andFilterWhere(['dance.id' => $form->danceIds])
+            ->andFilterWhere(['<=','pass.price', $form->maxPrice]);
+    }
 }
