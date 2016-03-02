@@ -2,6 +2,7 @@
 
 use app\models\Dance;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
@@ -39,7 +40,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'real_surname',
             [
                 'label' => $model->getAttributeLabel('danceIds'),
-                'value' => implode(', ', array_map(function (Dance $d) { return ucfirst($d->name); }, $model->dances)),
+                'value' => Html::ul(array_map(function (Dance $d) { return Html::a(ucfirst($d->name), Url::to(["dance/view", 'id'=>$d->id])); }, $model->dances), ['encode'=>false]),
+                'format' => 'raw',
             ],
             'website',
         ],
