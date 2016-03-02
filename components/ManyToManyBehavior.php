@@ -27,6 +27,11 @@ class ManyToManyBehavior extends Behavior
      * @var string The attribute of the model with the array of ids to save or to be loaded from the DB.
      */
     public $idListAttr;
+    /**
+     * @var array List of each different class of ActiveRecord that have been loaded in a single loadIdList() call.
+     * Useful to make sure the automatic loading of relations does not result in a DB loop.
+     **/
+    private static $relationLoadStack = [];
 
     /**
      * Attaches handles to make the owning ActiveRecord automatically perform the following actions:
@@ -68,9 +73,14 @@ class ManyToManyBehavior extends Behavior
      * @param Event $event
      */
     public function loadIdList(Event $event) {
-        // TODO: Avoid db loops when loaded relations also have the ManyToManyBehavior!
         $model = $this->owner;
-        $model->{$this->idListAttr} = ArrayHelper::getColumn($model->{$this->relation}, 'id');
+        $relationClass = $model->getRelation($this->relation)->modelClass;
+        // Make sure not to create a DB loop if relation also has ManyToManyBehavior
+        if (!in_array($relationClass, static::$relationLoadStack)) {
+            static::$relationLoadStack []= $relationClass;
+            $model->{$this->idListAttr} = ArrayHelper::getColumn($model->{$this->relation}, 'id');
+            array_pop(static::$relationLoadStack);
+        }
     }
 
     /**
