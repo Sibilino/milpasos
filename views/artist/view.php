@@ -35,10 +35,15 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
+            [
+                'attribute' => 'imageUrl',
+                'format' => 'image',
+            ],
             'id',
             'name',
             'real_name',
             'real_surname',
+            'website',
             [
                 'label' => $model->getAttributeLabel('danceIds'),
                 'value' => RelationList::widget([
@@ -47,7 +52,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 ]),
                 'format' => 'html',
             ],
-            'website',
+            [
+                'label' => $model->getAttributeLabel('groupIds'),
+                'value' => RelationList::widget([
+                    'model' => $model,
+                    'relation' => 'groups',
+                ]),
+                'format' => 'html',
+            ],
         ],
     ]) ?>
 
