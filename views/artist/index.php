@@ -1,5 +1,7 @@
 <?php
 
+use app\models\Artist;
+use app\widgets\RelationList;
 use yii\helpers\Html;
 use yii\grid\GridView;
 
@@ -24,11 +26,35 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
+            [
+                'attribute' => 'imageUrl',
+                'format' => 'image',
+            ],
             'id',
             'name',
             'real_name',
             'real_surname',
             'website',
+            [
+                'attribute' => 'danceIds',
+                'value' => function (Artist $model) {
+                    return RelationList::widget([
+                        'model' => $model,
+                        'relation' => 'dances',
+                    ]);
+                },
+                'format' => 'html',
+            ],
+            [
+                'attribute' => 'groupIds',
+                'value' => function (Artist $model) {
+                    return RelationList::widget([
+                        'model' => $model,
+                        'relation' => 'groups',
+                    ]);
+                },
+                'format' => 'html',
+            ],
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
