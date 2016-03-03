@@ -1,6 +1,7 @@
 <?php
 
 use app\models\Dance;
+use app\widgets\RelationList;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\DetailView;
@@ -40,8 +41,11 @@ $this->params['breadcrumbs'][] = $this->title;
             'real_surname',
             [
                 'label' => $model->getAttributeLabel('danceIds'),
-                'value' => Html::ul(array_map(function (Dance $d) { return Html::a(ucfirst($d->name), Url::to(["dance/view", 'id'=>$d->id])); }, $model->dances), ['encode'=>false]),
-                'format' => 'raw',
+                'value' => RelationList::widget([
+                    'model' => $model,
+                    'relation' => 'dances',
+                ]),
+                'format' => 'html',
             ],
             'website',
         ],
