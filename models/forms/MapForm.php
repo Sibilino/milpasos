@@ -4,6 +4,7 @@ namespace app\models\forms;
 
 use app\models\Event;
 use app\models\Dance;
+use app\models\Group;
 use Yii;
 use yii\base\Model;
 
@@ -30,6 +31,10 @@ class MapForm extends Model
      */
     public $danceIds;
     /**
+     * @var array The list of ids of the groups for which to find events.
+     */
+    public $groupIds;
+    /**
      * @var number The maximum price to pay for a pass of searched events.
      */
     public $maxPrice;
@@ -37,14 +42,15 @@ class MapForm extends Model
     public function rules()
     {
         return [
-            [['eventIds', 'danceIds'], 'default', 'value' => []],
-            [['eventIds', 'danceIds'], 'filter', 'filter' => function ($value) {
+            [['eventIds', 'danceIds', 'groupIds'], 'default', 'value' => []],
+            [['eventIds', 'danceIds', 'groupIds'], 'filter', 'filter' => function ($value) {
                 return explode('-', $value);
             }, 'when' => function (MapForm $model, $attribute) {
                 return is_string($model->$attribute);
             }], // Transform dash-separated string to array
             ['eventIds', 'each', 'rule' => ['exist', 'targetClass'=>Event::className(), 'targetAttribute'=>'id']],
             ['danceIds', 'each', 'rule' => ['exist', 'targetClass'=>Dance::className(), 'targetAttribute'=>'id']],
+            ['danceIds', 'each', 'rule' => ['exist', 'targetClass'=>Group::className(), 'targetAttribute'=>'id']],
             [['from_date', 'to_date'], 'date', 'format' => 'yyyy-MM-dd'],
             ['maxPrice', 'number', 'min' => 0],
         ];
@@ -59,6 +65,7 @@ class MapForm extends Model
             'from_date' => Yii::t('app', 'From date'),
             'to_date' => Yii::t('app', 'To date'),
             'danceIds' => Yii::t('app', 'Dance Styles'),
+            'groupIds' => Yii::t('app', 'Performers'),
             'maxPrice' => Yii::t('app', 'Maximum pass price'),
         ];
     }

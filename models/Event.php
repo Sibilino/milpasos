@@ -208,8 +208,10 @@ class EventQuery extends ActiveQuery
         return $this->available()
             ->andFilterWhere(['<=','start_date', $form->to_date])
             ->andFilterWhere(['>=','end_date', $form->from_date])
-            ->joinWith(['dances', 'passes'], false)
+            ->joinWith(['dances', 'passes', 'groups'], false)
+            ->andFilterWhere(['<=','pass.price', $form->maxPrice])
             ->andFilterWhere(['dance.id' => $form->danceIds])
-            ->andFilterWhere(['<=','pass.price', $form->maxPrice]);
+            ->andFilterWhere(['group.id' => $form->groupIds])
+        ;
     }
 }
