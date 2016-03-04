@@ -1,6 +1,7 @@
 <?php
 
 use app\models\Dance;
+use app\models\Group;
 use app\models\Pass;
 use app\widgets\DateRangePicker;
 use app\widgets\GridForm;
@@ -31,6 +32,8 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'danceIds')->checkboxList(ArrayHelper::map(Dance::find()->all(), 'id', 'name')) ?>
+
+    <?= $form->field($model, 'groupIds')->checkboxList(ArrayHelper::map(Group::find()->all(), 'id', 'name')) ?>
 
     <?= DateRangePicker::widget([
         'form' => $form,

@@ -1,12 +1,13 @@
 <?php
 
-use app\models\Dance;
 use app\models\Pass;
+use app\widgets\RelationLinks;
 use yii\data\ActiveDataProvider;
 use yii\grid\ActionColumn;
 use yii\grid\DataColumn;
 use yii\grid\GridView;
 use yii\grid\SerialColumn;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -32,23 +33,32 @@ $this->params['breadcrumbs'][] = $this->title;
         ]) ?>
     </p>
 
-    <?php if ($model->imageUrl): ?>
-        <img src="<?= $model->imageUrl ?>">
-    <?php endif; ?>
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
+            [
+                'attribute' => 'imageUrl',
+                'format' => 'image',
+            ],
             'id',
             'name',
+            [
+                'attribute' => 'danceIds',
+                'value' => Html::ul(ArrayHelper::getColumn($model->dances, 'name')),
+                'format' => 'html',
+            ],
             'start_date',
             'end_date',
             'address',
             [
-                'label' => $model->getAttributeLabel('danceIds'),
-                'value' => implode(', ', array_map(function (Dance $d) { return ucfirst($d->name); }, $model->dances)),
+                'attribute' => 'groupIds',
+                'value' => RelationLinks::widget([
+                    'model' => $model,
+                    'relation' => 'groups',
+                ]),
+                'format' => 'html',
             ],
-            'lon',
-            'lat',
+
         ],
     ]) ?>
 

@@ -5,6 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Event */
 /* @var $newLink app\models\Link */
+/* @var $newPass app\models\Pass */
 
 $this->title = Yii::t('app', 'Update {modelClass}: ', [
     'modelClass' => 'Event',

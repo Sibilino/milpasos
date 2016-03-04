@@ -34,6 +34,10 @@ class Event extends \yii\db\ActiveRecord
      */
     public $danceIds = [];
     /**
+     * @var array|string To collect input to update this Event's groups. Can be array or string of comma-separated ids.
+     */
+    public $groupIds = [];
+    /**
      * @var string
      */
     public $imageUrl;
@@ -56,6 +60,11 @@ class Event extends \yii\db\ActiveRecord
                 'class' => ManyToManyBehavior::className(),
                 'relation' => 'dances',
                 'idListAttr' => 'danceIds',
+            ],[
+                // Add functionality to save and load dances from the id array in $groupIds
+                'class' => ManyToManyBehavior::className(),
+                'relation' => 'groups',
+                'idListAttr' => 'groupIds',
             ],
             [
                 'class' => ImageModelBehavior::className(),
@@ -80,6 +89,7 @@ class Event extends \yii\db\ActiveRecord
             [['address'], 'string', 'max' => 500],
             [['address'], 'required', 'message' => "Please select an address from the list of suggestions."],
             [['danceIds'], 'default', 'value' => []],
+            [['groupIds'], 'default', 'value' => []],
         ];
     }
 
@@ -90,6 +100,7 @@ class Event extends \yii\db\ActiveRecord
     {
         return array_merge(parent::attributes(), [
             'danceIds',
+            'groupIds',
             'imageUrl',
         ]);
     }
@@ -109,6 +120,7 @@ class Event extends \yii\db\ActiveRecord
             'lat' => Yii::t('app', 'Lat'),
             'website' => Yii::t('app', 'Main Website'),
             'danceIds' => Yii::t('app', 'Dance Styles'),
+            'groupIds' => Yii::t('app', 'Performers'),
             'imageUrl' => Yii::t('app', 'Image'),
         ];
     }

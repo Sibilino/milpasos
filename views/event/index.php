@@ -1,6 +1,8 @@
 <?php
 
 use app\models\Event;
+use app\widgets\RelationLinks;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\helpers\Url;
@@ -25,7 +27,10 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
+            [
+                'attribute' => 'imageUrl',
+                'format' => 'image',
+            ],
             'id',
             [
                 'attribute' => 'name',
@@ -35,11 +40,26 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 'format' => 'html',
             ],
+            [
+                'attribute' => 'danceIds',
+                'value' => function (Event $model) {
+                    return Html::ul(ArrayHelper::getColumn($model->dances, 'name'));
+                },
+                'format' => 'html',
+            ],
             'start_date:date',
             'end_date:date',
             'address',
-            // 'lon',
-            // 'lat',
+            [
+                'attribute' => 'groupIds',
+                'value' => function (Event $model) {
+                    return RelationLinks::widget([
+                        'model' => $model,
+                        'relation' => 'groups',
+                    ]);
+                },
+                'format' => 'html',
+            ],
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
