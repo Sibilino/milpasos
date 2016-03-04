@@ -1,9 +1,8 @@
 <?php
 
-use app\models\Dance;
-use app\widgets\RelationList;
+use app\widgets\RelationLinks;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
-use yii\helpers\Url;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
@@ -28,10 +27,6 @@ $this->params['breadcrumbs'][] = $this->title;
         ]) ?>
     </p>
 
-    <?php if ($model->imageUrl): ?>
-        <img src="<?= $model->imageUrl ?>">
-    <?php endif; ?>
-    
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
@@ -46,15 +41,12 @@ $this->params['breadcrumbs'][] = $this->title;
             'website',
             [
                 'label' => $model->getAttributeLabel('danceIds'),
-                'value' => RelationList::widget([
-                    'model' => $model,
-                    'relation' => 'dances',
-                ]),
+                'value' => Html::ul(ArrayHelper::getColumn($model->dances, 'name')),
                 'format' => 'html',
             ],
             [
                 'label' => $model->getAttributeLabel('groupIds'),
-                'value' => RelationList::widget([
+                'value' => RelationLinks::widget([
                     'model' => $model,
                     'relation' => 'groups',
                 ]),
