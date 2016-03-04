@@ -36,16 +36,16 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'id',
             'name',
+            [
+                'attribute' => 'danceIds',
+                'value' => Html::ul(ArrayHelper::getColumn($model->dances, 'name')),
+                'format' => 'html',
+            ],
             'real_name',
             'real_surname',
             'website',
             [
-                'label' => $model->getAttributeLabel('danceIds'),
-                'value' => Html::ul(ArrayHelper::getColumn($model->dances, 'name')),
-                'format' => 'html',
-            ],
-            [
-                'label' => $model->getAttributeLabel('groupIds'),
+                'attribute' => 'groupIds',
                 'value' => RelationLinks::widget([
                     'model' => $model,
                     'relation' => 'groups',
