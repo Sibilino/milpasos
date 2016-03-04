@@ -1,5 +1,6 @@
 <?php
 
+use app\widgets\RelationLinks;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -25,15 +26,23 @@ $this->params['breadcrumbs'][] = $this->title;
         ]) ?>
     </p>
     
-    <?php if ($model->imageUrl): ?>
-        <img src="<?= $model->imageUrl ?>">
-    <?php endif; ?>
-
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
+            [
+                'attribute' => 'imageUrl',
+                'format' => 'image',
+            ],
             'id',
             'name',
+            [
+                'attribute' => 'artistIds',
+                'value' => RelationLinks::widget([
+                    'model' => $model,
+                    'relation' => 'artists',
+                ]),
+                'format' => 'html',
+            ],
         ],
     ]) ?>
 

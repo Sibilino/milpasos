@@ -1,5 +1,7 @@
 <?php
 
+use app\models\Group;
+use app\widgets\RelationLinks;
 use yii\helpers\Html;
 use yii\grid\GridView;
 
@@ -23,10 +25,22 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
+            [
+                'attribute' => 'imageUrl',
+                'format' => 'image',
+            ],
             'id',
             'name',
-
+            [
+                'attribute' => 'artistIds',
+                'value' => function (Group $model) {
+                    return RelationLinks::widget([
+                        'model' => $model,
+                        'relation' => 'artists',
+                    ]);
+                },
+                'format' => 'html',
+            ],
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
