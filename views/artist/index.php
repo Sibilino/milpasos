@@ -2,6 +2,7 @@
 
 use app\models\Artist;
 use app\widgets\RelationList;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\grid\GridView;
 
@@ -38,10 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'danceIds',
                 'value' => function (Artist $model) {
-                    return RelationList::widget([
-                        'model' => $model,
-                        'relation' => 'dances',
-                    ]);
+                    return Html::ul(ArrayHelper::getColumn($model->dances, 'name'));
                 },
                 'format' => 'html',
             ],
