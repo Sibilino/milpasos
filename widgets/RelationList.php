@@ -38,7 +38,7 @@ class RelationList extends Widget
         $widget = $this;
         $models = $this->_relationQuery->all();
         $links = array_map(function (ActiveRecord $m) use ($widget) {
-            return Html::a(ucfirst($m->{$widget->labelAttr}}), Url::to(["$widget->controller", 'id'=>$m->id]));
+            return Html::a(ucfirst($m->{$widget->labelAttr}), Url::to(["/$widget->controller/view/$m->id"]));
         }, $models);
         return Html::ul($links, ['encode'=>false]);
     }
