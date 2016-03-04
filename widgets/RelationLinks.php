@@ -17,7 +17,7 @@ use yii\helpers\Url;
  * This widget generates an unordered list of links to each of the records existing for a model's relation.
  * @package app\widgets
  */
-class RelationList extends Widget
+class RelationLinks extends Widget
 {
     /**
      * @var Model The model for which to find the related objects.
