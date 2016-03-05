@@ -61,6 +61,7 @@ class Group extends \yii\db\ActiveRecord
     {
         return [
             [['name'], 'required'],
+            [['name'], 'unique'],
             [['name'], 'string', 'max' => 250],
             [['artistIds'], 'default', 'value' => []],
         ];
