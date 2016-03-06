@@ -15,7 +15,7 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
-    <?= $form->field($model, 'artistIds')->checkboxList(ArrayHelper::map(Artist::find()->all(), 'id', 'name')) ?>
+    <?= $form->field($model, 'artistIds')->checkboxList(ArrayHelper::map(Artist::find()->orderBy('name')->all(), 'id', 'name')) ?>
     <?php if ($model->imageUrl): ?>
         <img src="<?= $model->imageUrl ?>">
     <?php endif; ?>

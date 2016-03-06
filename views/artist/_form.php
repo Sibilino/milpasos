@@ -23,9 +23,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'website')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'danceIds')->checkboxList(ArrayHelper::map(Dance::find()->all(), 'id', 'name')) ?>
+    <?= $form->field($model, 'danceIds')->checkboxList(ArrayHelper::map(Dance::find()->orderBy('name')->all(), 'id', 'name')) ?>
 
-    <?= $form->field($model, 'groupIds')->checkboxList(ArrayHelper::map(Group::find()->all(), 'id', 'name')) ?>
+    <?= $form->field($model, 'groupIds')->checkboxList(ArrayHelper::map(Group::find()->orderBy('name')->all(), 'id', 'name')) ?>
 
     <?php if ($model->imageUrl): ?>
         <img src="<?= $model->imageUrl ?>">

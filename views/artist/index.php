@@ -39,7 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'danceIds',
                 'value' => function (Artist $model) {
-                    return Html::ul(ArrayHelper::getColumn($model->dances, 'name'));
+                    return Html::ul(ArrayHelper::getColumn($model->getDances()->orderBy('name')->all(), 'name'));
                 },
                 'format' => 'html',
             ],

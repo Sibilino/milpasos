@@ -65,7 +65,7 @@ class RelationLinks extends Widget
     public function run()
     {
         $widget = $this;
-        $models = $this->_relationQuery->all();
+        $models = $this->_relationQuery->orderBy($this->labelAttr)->all();
         $links = array_map(function (ActiveRecord $m) use ($widget) {
             return Html::a(ucfirst($m->{$widget->labelAttr}), Url::to(["/$widget->controller/view/$m->id"]));
         }, $models);

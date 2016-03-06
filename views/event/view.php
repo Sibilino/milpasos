@@ -44,7 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'name',
             [
                 'attribute' => 'danceIds',
-                'value' => Html::ul(ArrayHelper::getColumn($model->dances, 'name')),
+                'value' => Html::ul(ArrayHelper::getColumn($model->getDances()->orderBy('name')->all(), 'name')),
                 'format' => 'html',
             ],
             'start_date',
