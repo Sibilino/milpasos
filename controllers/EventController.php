@@ -49,7 +49,9 @@ class EventController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new EventSearch();
+        $searchModel = new EventSearch([
+            'start_date' => date('Y-m-d'),
+        ]);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -146,7 +148,9 @@ class EventController extends Controller
      */
     public function actionMap()
     {
-        $model = new MapForm();
+        $model = new MapForm([
+            'from_date' => date('Y-m-d'),
+        ]);
         $model->load(Yii::$app->request->post());
         $model->load(Yii::$app->request->get());
         $model->validate();

@@ -20,7 +20,6 @@ class EventSearch extends Event
         return [
             [['id'], 'integer'],
             [['name', 'start_date', 'end_date', 'address'], 'safe'],
-            [['lon', 'lat'], 'number'],
         ];
     }
 
@@ -56,13 +55,10 @@ class EventSearch extends Event
             return $dataProvider;
         }
 
-        $query->andFilterWhere([
-            'id' => $this->id,
-            'start_date' => $this->start_date,
-            'end_date' => $this->end_date,
-            'lon' => $this->lon,
-            'lat' => $this->lat,
-        ]);
+        $query->andFilterWhere(['id' => $this->id])
+            ->andFilterWhere(['>=','start_date', $this->start_date])
+            ->andFilterWhere(['<=','end_date', $this->end_date])
+        ;
 
         $query->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'address', $this->address]);
