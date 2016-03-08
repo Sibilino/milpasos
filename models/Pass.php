@@ -90,7 +90,7 @@ class Pass extends \yii\db\ActiveRecord
     /**
      * Attach the given list of prices to this Pass, saving them to the DB.
      * @param TemporaryPrice[] $prices
-     * @return bool Whether the saving operation was successfull (true) or rolled back (false).
+     * @return bool Whether all $prices were saved successfully.
      */
     public function updatePriceList(array $prices)
     {
