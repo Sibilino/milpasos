@@ -20,7 +20,7 @@ use Yii;
 class TemporaryPrice extends \yii\db\ActiveRecord
 {
     /**
-     * @var string The scenario to be used to represent a 
+     * @var string The scenario to be used to represent a price that is being edited through the Pass form.
      */
     const SCENARIO_IN_PASS = 'in_pass';
     
