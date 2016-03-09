@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\db\ActiveQuery;
 use yii\db\Exception;
 
 /**
@@ -129,6 +130,15 @@ class Pass extends \yii\db\ActiveRecord
         }
         return $suggestion;
     }
+    
+    /**
+     * @inheritdoc
+     * @return PassQuery the newly created [[ActiveQuery]] instance.
+     */
+    public static function find()
+    {
+        return new PassQuery(get_called_class());
+    }
 
     /**
      * @return \yii\db\ActiveQuery
@@ -145,5 +155,23 @@ class Pass extends \yii\db\ActiveRecord
     {
         return $this->hasMany(TemporaryPrice::className(), ['pass_id' => 'id'])
             ->inverseOf('pass');
+    }
+}
+
+class PassQuery extends ActiveQuery
+{
+    /**
+     * Selects the Passes for which the current price is below the given maximum.
+     * @param number $price The maximum prices for selected Passes.
+     * @return $this
+     */
+    public function nowCheaperThan($price) {
+        return $this
+            ->joinWith('temporaryPrices')
+            ->andOnCondition(['<=', 'temporaryPrice.available_from', date('Y-m-d')])
+            ->andOnCondition(['>=', 'temporaryPrice.available_to', date('Y-m-d')])
+            ->andFilterWhere(['<=', 'temporaryPrice.price', $price])
+            ->orFilterWhere(['<=', 'price', $price])
+        ;
     }
 }
