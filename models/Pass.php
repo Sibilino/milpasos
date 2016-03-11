@@ -3,7 +3,6 @@
 namespace app\models;
 
 use Yii;
-use yii\db\Exception;
 
 /**
  * This is the model class for table "pass".
