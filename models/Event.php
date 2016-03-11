@@ -2,7 +2,6 @@
 
 namespace app\models;
 
-use app\models\PassQuery;
 use app\models\forms\MapForm;
 use Yii;
 use app\components\ImageModelBehavior;
@@ -209,9 +208,8 @@ class EventQuery extends ActiveQuery
         return $this->available()
             ->andFilterWhere(['<=','start_date', $form->to_date])
             ->andFilterWhere(['>=','end_date', $form->from_date])
-            ->joinWith(['dances', 'groups', 'passes' => function (PassQuery $query) use ($form) {
-                    $query->nowCheaperThan($form->maxPrice');
-                }], false)
+            ->joinWith(['dances', 'passes', 'groups'], false)
+            ->andFilterWhere(['<=','pass.price', $form->maxPrice])
             ->andFilterWhere(['dance.id' => $form->danceIds])
             ->andFilterWhere(['group.id' => $form->groupIds])
         ;
