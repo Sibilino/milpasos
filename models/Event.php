@@ -205,13 +205,35 @@ class EventQuery extends ActiveQuery
      */
     public function fromMapForm(MapForm $form)
     {
-        return $this->available()
+        return $this
+            ->joinWith(['dances', 'groups'], false)
+            ->andFilterWherePrice($form->maxPrice, $form->from_date, $form->to_date)
             ->andFilterWhere(['<=','start_date', $form->to_date])
             ->andFilterWhere(['>=','end_date', $form->from_date])
-            ->joinWith(['dances', 'passes', 'groups'], false)
-            ->andFilterWhere(['<=','pass.price', $form->maxPrice])
             ->andFilterWhere(['dance.id' => $form->danceIds])
             ->andFilterWhere(['group.id' => $form->groupIds])
+        ;
+    }
+
+    /**
+     * Selects the Events for which a Pass can be bought for under $maxPrice during the period between $from and $to.
+     * @param $maxPrice
+     * @param string|null $from Optional. Defines the beginning of the buying period.
+     * @param string|null $to Optional. Defines the end of the buying period.
+     * @return $this
+     */
+    public function andFilterWherePrice($maxPrice, $from = null, $to = null) {
+        if ($maxPrice === null) {
+            return $this;
+        }
+        return $this
+            ->joinWith(['passes', 'passes.temporaryPrices'])
+            ->andFilterWhere(['<=', 'temporary_price.available_from', $from])
+            ->andFilterWhere(['>=', 'temporary_price.available_to', $from])
+            ->andFilterWhere(['<=', 'temporary_price.available_from', $to])
+            ->andFilterWhere(['>=', 'temporary_price.available_to', $to])
+            ->andWhere(['<=', 'temporary_price.price', $maxPrice])
+            ->orWhere(['<=', 'pass.price', $maxPrice])
         ;
     }
 }
