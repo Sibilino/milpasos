@@ -48,8 +48,8 @@ $features = array_map(function (Event $e) {
         <?= $form->field($model, 'maxPrice')->input('number') ?>
     </div>
     <div>
-        <?= $form->field($model, 'groupIds')->dropDownList(ArrayHelper::map(Group::find()->orderBy('name')->all(), 'id', 'name'), ['multiple'=>true]) ?>
-        <?= $form->field($model, 'danceIds')->dropDownList(ArrayHelper::map(Dance::find()->orderBy('name')->all(), 'id', 'name'), ['multiple'=>true]) ?>
+        <?= $form->field($model, 'groupIds')->dropDownList(ArrayHelper::map(Group::find()->orderBy('name')->asArray()->all(), 'id', 'name'), ['multiple'=>true]) ?>
+        <?= $form->field($model, 'danceIds')->dropDownList(ArrayHelper::map(Dance::find()->orderBy('name')->asArray()->all(), 'id', 'name'), ['multiple'=>true]) ?>
 
         <?= Html::submitButton(Yii::t('app', 'Search'), [
             'class' => 'btn btn-primary',
