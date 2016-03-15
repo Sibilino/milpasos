@@ -21,7 +21,7 @@ use yii\helpers\ArrayHelper;
  * @property double $lat
  * @property string $website
  * @property array $danceIds
- * @property string @currentLowestPrice
+ * @property null|PriceInterface @currentLowestPrice
  *
  * @property Artist[] $artists
  * @property Dance[] $dances
@@ -139,7 +139,7 @@ class Event extends \yii\db\ActiveRecord
     /**
      * Returns the current lowest price available for a Full Pass of this Event.
      * If there are no full passes defined, returns the lowest available price amongst all Passes.
-     * @return null|number
+     * @return null|PriceInterface
      */
     public function getCurrentLowestPrice()
     {
@@ -148,9 +148,14 @@ class Event extends \yii\db\ActiveRecord
                 return (boolean)$p->full;
             });
             if (empty($passes)) {
-                $passes = $this->passes;
+                $passes = $this->passes; // If no full passes, take any existing passes into account
             }
-            return min(ArrayHelper::getColumn($passes, 'currentLowestPrice'));
+            $prices = ArrayHelper::getColumn($passes, 'currentLowestPrice');
+            $eurPrices = ArrayHelper::index($prices, function (PriceInterface $p) {
+                return $p->toEur();
+            })
+            ksort($eurPrices, SORT_NUMERIC);
+            return reset($eurPrices);
         }
         return null;
     }
