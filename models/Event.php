@@ -7,6 +7,7 @@ use Yii;
 use app\components\ImageModelBehavior;
 use app\components\ManyToManyBehavior;
 use yii\db\ActiveQuery;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "event".
@@ -20,6 +21,7 @@ use yii\db\ActiveQuery;
  * @property double $lat
  * @property string $website
  * @property array $danceIds
+ * @property string @currentLowestPrice
  *
  * @property Artist[] $artists
  * @property Dance[] $dances
@@ -132,6 +134,25 @@ class Event extends \yii\db\ActiveRecord
     {
         $loaded = parent::load($data, $formName);
         return ($this->loadImage($data) || $loaded);
+    }
+    
+    /**
+     * Returns the current lowest price available for a Full Pass of this Event.
+     * If there are no full passes defined, returns the lowest available price amongst all Passes.
+     * @return null|number
+     */
+    public function getCurrentLowestPrice()
+    {
+        if ($this->passes) {
+            $passes = array_filter($this->passes, function (Pass $p) {
+                return (boolean)$p->full;
+            });
+            if (empty($passes)) {
+                $passes = $this->passes;
+            }
+            return min(ArrayHelper::getColumn($passes, 'currentLowestPrice'));
+        }
+        return null;
     }
 
     /**
