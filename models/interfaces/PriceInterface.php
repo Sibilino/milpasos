@@ -7,6 +7,7 @@ use
 interface PriceInterface
 {
     public function getFormattedPrice();
+    public function toEur();
 }
 
 trait PriceTrait
@@ -18,5 +19,15 @@ trait PriceTrait
     public function getFormattedPrice()
     {
         return Yii::$app->formatter->asCurrency($this->price, $this->currency);
+    }
+    
+    /**
+     * Returns $this->price, converted to EUR.
+     * @todo Implement actual currency conversion.
+     * @return number
+     */
+    public function toEur()
+    {
+        return $this->price;
     }
 }
