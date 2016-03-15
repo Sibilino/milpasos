@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "pass".
@@ -15,6 +16,7 @@ use Yii;
  * @property string $available_to
  * @property boolean $full
  * @property string $event_id
+ * @property string $currentLowestPrice
  *
  * @property Event $event
  * @property TemporaryPrice[] $temporaryPrices
@@ -70,6 +72,18 @@ class Pass extends \yii\db\ActiveRecord
             'full' => Yii::t('app', "It's a Full Pass"),
             'event_id' => Yii::t('app', 'Event'),
         ];
+    }
+    
+    /**
+     * Returns the lowest price that is currently available for this Pass.
+     * @return string
+     */
+    public function getCurrentLowestPrice()
+    {
+        $currentPrices = array_filter($this->temporaryPrices, function (TemporaryPrice $p) {
+            return $p->isCurrent();
+        });
+        return min(ArrayHelper::getColumn($currentPrices, 'price'));
     }
 
     /**
