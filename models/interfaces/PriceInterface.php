@@ -2,7 +2,7 @@
 
 namespace app\models\interfaces;
 
-use 
+use Yii;
 
 interface PriceInterface
 {

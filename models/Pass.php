@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\models\interfaces\PriceTrait;
 use Yii;
 use app\models\interfaces\PriceInterface;
 use yii\db\ActiveRecord;
