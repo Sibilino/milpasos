@@ -4,5 +4,5 @@ namespace app\models\interfaces;
 
 interface PriceInterface
 {
-    // TODO: Add "convertToEuros()" and implement where needed.
+    public function formattedPrice();
 }
