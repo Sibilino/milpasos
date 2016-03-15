@@ -83,7 +83,9 @@ class Pass extends \yii\db\ActiveRecord
         $currentPrices = array_filter($this->temporaryPrices, function (TemporaryPrice $p) {
             return $p->isCurrent();
         });
-        return min(ArrayHelper::getColumn($currentPrices, 'price'));
+        $priceList = ArrayHelper::getColumn($currentPrices, 'price');
+        array_push($priceList, $this->price);
+        return min($priceList);
     }
 
     /**
