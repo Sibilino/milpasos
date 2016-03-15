@@ -67,16 +67,6 @@ class TemporaryPrice extends ActiveRecord implements PriceInterface
     }
     
     /**
-     * Returns whether this price is currently available.
-     * @return boolean
-     */
-    public function isCurrent()
-    {
-        $today = date('Y-m-d');
-        return $this->available_from <= $today && $this->available_to >= $today;
-    }
-    
-    /**
      * The number of months that this price is valid.
      * @return integer|null Number of months. Returns null if the validity period is unbound or undefined.
      */
