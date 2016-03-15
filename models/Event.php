@@ -251,7 +251,7 @@ class EventQuery extends ActiveQuery
      * @return $this
      */
     public function filterWherePrice($maxPrice, $from = null, $to = null) {
-        if ($maxPrice === null) {
+        if (!$maxPrice) {
             return $this;
         }
         return $this
