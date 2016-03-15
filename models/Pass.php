@@ -16,7 +16,7 @@ use yii\helpers\ArrayHelper;
  * @property string $available_to
  * @property boolean $full
  * @property string $event_id
- * @property string $currentLowestPrice
+ * @property Pass|TemporaryPrice $currentLowestPrice
  *
  * @property Event $event
  * @property TemporaryPrice[] $temporaryPrices
@@ -76,16 +76,17 @@ class Pass extends \yii\db\ActiveRecord
     
     /**
      * Returns the lowest price that is currently available for this Pass.
-     * @return string
+     * @return Pass|TemporaryPrice
      */
     public function getCurrentLowestPrice()
     {
         $currentPrices = array_filter($this->temporaryPrices, function (TemporaryPrice $p) {
             return $p->isCurrent();
         });
-        $priceList = ArrayHelper::getColumn($currentPrices, 'price');
-        array_push($priceList, $this->price);
-        return min($priceList);
+        array_push($currentPrices, $this);
+        $currentPrices = ArrayHelper::index($currentPrices, 'price');
+        ksort($currentPrices, SORT_NUMERIC);
+        return reset($currentPrices);
     }
 
     /**
