@@ -95,7 +95,7 @@ class Pass extends ActiveRecord implements PriceInterface
      * Returns a list of existing TempPrices for this Pass and adds a new TempPrice model "template" at the end.
      * @return TemporaryPrice[]
      */
-    public function getPriceList()
+    public function generatePriceList()
     {
         $prices = $this->getTemporaryPrices()->orderBy('available_from')->all();
         array_walk($prices, function (TemporaryPrice $p) {
