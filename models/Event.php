@@ -154,7 +154,7 @@ class Event extends \yii\db\ActiveRecord
             $prices = ArrayHelper::getColumn($passes, 'currentLowestPrice');
             $eurPrices = ArrayHelper::index($prices, function (PriceInterface $p) {
                 return $p->toEur();
-            })
+            });
             ksort($eurPrices, SORT_NUMERIC);
             return reset($eurPrices);
         }
