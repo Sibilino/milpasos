@@ -21,6 +21,8 @@ use app\models\interfaces\PriceInterface;
  */
 class TemporaryPrice extends ActiveRecord implements PriceInterface
 {
+    use PriceTrait;
+    
     /**
      * @var string The scenario to be used to represent a price that is being edited through the Pass form.
      */
