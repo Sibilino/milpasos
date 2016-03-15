@@ -138,10 +138,9 @@ $features = array_map(function (Event $e) {
                 'end_date:date',
                 'address',
                 [
-                    'label' => Yii::t('app', "Min. price"),
+                    'label' => Yii::t('app', "Current price"),
                     'value' => function (Event $e) {
-                        $minPass = $e->getPasses()->orderBy('price ASC')->one();
-                        return $minPass === null ? null : Yii::$app->formatter->asCurrency($minPass->price, $minPass->currency);
+                        return isset($e->currentLowestPrice) ? $e->currentLowestPrice->getFormattedPrice() : null;
                     }
                 ],
             ],
