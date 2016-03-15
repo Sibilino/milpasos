@@ -3,6 +3,8 @@
 namespace app\models;
 
 use Yii;
+use app\models\interfaces\PriceInterface;
+use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -16,12 +18,12 @@ use yii\helpers\ArrayHelper;
  * @property string $available_to
  * @property boolean $full
  * @property string $event_id
- * @property Pass|TemporaryPrice $currentLowestPrice
+ * @property PriceInterface $currentLowestPrice
  *
  * @property Event $event
  * @property TemporaryPrice[] $temporaryPrices
  */
-class Pass extends \yii\db\ActiveRecord
+class Pass extends ActiveRecord implements PriceInterface
 {
     /**
      * @var array The possible currencies for price and any temporary prices, as "3-letterCode" => "displaySymbol".
@@ -76,7 +78,7 @@ class Pass extends \yii\db\ActiveRecord
     
     /**
      * Returns the lowest price that is currently available for this Pass.
-     * @return Pass|TemporaryPrice
+     * @return PriceInterface
      */
     public function getCurrentLowestPrice()
     {
