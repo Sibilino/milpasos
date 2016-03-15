@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'price',
                 'value' => function ($model) {
-                    return Yii::$app->formatter->asCurrency($model->price, $model->currency);
+                    return $model->getFormattedPrice();
                 } ,
             ],
             'available_from:date',
