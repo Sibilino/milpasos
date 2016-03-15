@@ -85,8 +85,8 @@ class Pass extends ActiveRecord implements PriceInterface
         $currentPrices = array_filter($this->temporaryPrices, function (TemporaryPrice $p) {
             return $p->isCurrent();
         });
-        array_push($currentPrices, $this);
         $currentPrices = ArrayHelper::index($currentPrices, 'price');
+        $currentPrices[$this->price] = $this;
         ksort($currentPrices, SORT_NUMERIC);
         return reset($currentPrices);
     }
