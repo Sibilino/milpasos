@@ -207,7 +207,7 @@ class EventQuery extends ActiveQuery
     {
         return $this
             ->joinWith(['dances', 'groups'], false)
-            ->andFilterWherePrice($form->maxPrice, $form->from_date, $form->to_date)
+            ->filterWherePrice($form->maxPrice, $form->from_date, $form->to_date)
             ->andFilterWhere(['<=','start_date', $form->to_date])
             ->andFilterWhere(['>=','end_date', $form->from_date])
             ->andFilterWhere(['dance.id' => $form->danceIds])
@@ -217,12 +217,13 @@ class EventQuery extends ActiveQuery
 
     /**
      * Selects the Events for which a Pass can be bought for under $maxPrice during the period between $from and $to.
+     * <b>Note:</b> An OR clause will be added to the WHERE part. Make sure to call this method first in the chain of query methods.
      * @param $maxPrice
      * @param string|null $from Optional. Defines the beginning of the buying period.
      * @param string|null $to Optional. Defines the end of the buying period.
      * @return $this
      */
-    public function andFilterWherePrice($maxPrice, $from = null, $to = null) {
+    public function filterWherePrice($maxPrice, $from = null, $to = null) {
         if ($maxPrice === null) {
             return $this;
         }
