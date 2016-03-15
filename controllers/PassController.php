@@ -78,7 +78,7 @@ class PassController extends Controller
         $model = new Pass();
         $passSaved = $model->load(Yii::$app->request->post()) && $model->save();
         
-        $prices = $model->getPriceList();
+        $prices = $model->generatePriceList();
         $pricesSaved = true;
         if (Model::loadMultiple($prices, Yii::$app->request->post()) && !$model->hasErrors()) {
             foreach ($prices as $price) {
@@ -109,10 +109,10 @@ class PassController extends Controller
             $model->save();
         }
 
-        $prices = $model->getPriceList();
+        $prices = $model->generatePriceList();
         if (Model::loadMultiple($prices, Yii::$app->request->post()) && !$model->hasErrors()) {
             if ($model->updatePriceList($prices)) {
-                $prices = $model->getPriceList();
+                $prices = $model->generatePriceList();
             }
         }
 
