@@ -5,6 +5,11 @@ namespace app\models\interfaces;
 use Yii;
 use yii\base\InvalidConfigException;
 
+/**
+ * Interface PriceInterface ensures that an object has some currency-related methods.
+ * The required methods can be easily provided by app\models\interface\PriceTrait.
+ * @package app\models\interfaces
+ */
 interface PriceInterface
 {
     public function getFormattedPrice();
@@ -12,6 +17,16 @@ interface PriceInterface
     public function isCurrent();
 }
 
+/**
+ * Provides the methods that implement a PriceInterface, using the following properties of the receiving object:
+ * <ul>
+ * <li>$price</li>
+ * <li>$currency</li>
+ * <li>$available_from</li>
+ * <li>$available_to</li>
+ * </ul>
+ * @package app\models\interfaces
+ */
 trait PriceTrait
 {
     /**
