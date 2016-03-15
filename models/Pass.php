@@ -25,6 +25,8 @@ use yii\helpers\ArrayHelper;
  */
 class Pass extends ActiveRecord implements PriceInterface
 {
+    use PriceTrait;
+    
     /**
      * @var array The possible currencies for price and any temporary prices, as "3-letterCode" => "displaySymbol".
      */
