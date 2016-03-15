@@ -235,6 +235,7 @@ class EventQuery extends ActiveQuery
             ->andFilterWhere(['>=', 'temporary_price.available_to', $to])
             ->andWhere(['<=', 'temporary_price.price', $maxPrice])
             ->orWhere(['<=', 'pass.price', $maxPrice])
+            ->andWhere(['pass.full' => 1])
         ;
     }
 }
