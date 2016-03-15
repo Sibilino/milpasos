@@ -3,6 +3,7 @@
 namespace app\models\interfaces;
 
 use Yii;
+use yii\base\InvalidConfigException;
 
 interface PriceInterface
 {
@@ -21,15 +22,24 @@ trait PriceTrait
     {
         return Yii::$app->formatter->asCurrency($this->price, $this->currency);
     }
-    
+
     /**
      * Returns $this->price, converted to EUR.
-     * @todo Implement actual currency conversion.
+     * @todo Implement currency conversion with online rates.
      * @return number
+     * @throws InvalidConfigException If the currency cannot be converted.
      */
     public function toEur()
     {
-        return $this->price;
+        $rates = [
+            'EUR' => 1,
+            'CHF' => 0.91,
+            'USD' => 0.9,
+        ];
+        if (!isset($rates[$this->currency])) {
+            throw new InvalidConfigException("Conversion rate for currency '$this->currency' to EUR is not defined.");
+        }
+        return $this->price * $rates[$this->currency];
     }
     
     /**
