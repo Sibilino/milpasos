@@ -8,6 +8,7 @@ interface PriceInterface
 {
     public function getFormattedPrice();
     public function toEur();
+    public function isCurrent();
 }
 
 trait PriceTrait
@@ -29,5 +30,15 @@ trait PriceTrait
     public function toEur()
     {
         return $this->price;
+    }
+    
+    /**
+     * Returns whether this price is currently available, based on $this->available_from and $this->available_to.
+     * @return boolean
+     */
+    public function isCurrent()
+    {
+        $today = date('Y-m-d');
+        return $this->available_from <= $today && $this->available_to >= $today;
     }
 }
