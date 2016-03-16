@@ -29,7 +29,7 @@ use yii\helpers\ArrayHelper;
 
     <?= $form->field($model, 'price')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'currency')->dropDownList(Pass::$currencies) ?>
+    <?= $form->field($model, 'currency')->dropDownList(Yii::$app->params['currencies']) ?>
 
     <?= $form->field($model, 'full')->checkbox(); ?>
 
