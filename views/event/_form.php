@@ -127,7 +127,7 @@ use yii\widgets\ActiveForm;
                 <?= Html::activeHiddenInput($newPass, 'event_id') ?>
                 <?= $form->field($newPass, 'description')->textInput(['maxlength' => true]) ?>
                 <?= $form->field($newPass, 'price')->textInput(['maxlength' => true]) ?>
-                <?= $form->field($newPass, 'currency')->dropDownList(Pass::$currencies) ?>
+                <?= $form->field($newPass, 'currency')->dropDownList(Yii::$app->params['currencies']) ?>
                 <?= DateRangePicker::widget([
                     'form' => $form,
                     'model' => $newPass,
