@@ -2,7 +2,7 @@
 
 namespace app\controllers;
 
-use app\components\RememberLastPageBehavior;
+use app\behaviors\RememberLastPageBehavior;
 use app\models\forms\MapForm;
 use app\models\Pass;
 use Yii;

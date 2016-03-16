@@ -1,6 +1,6 @@
 <?php
 
-namespace app\components;
+namespace app\behaviors;
 
 use Yii;
 use yii\base\Behavior;
@@ -15,7 +15,7 @@ use yii\helpers\ArrayHelper;
  * The ids of the related records are automatically loaded and saved from an array attribute in the model.
  * In addition, the ids in the array will be validated to ensure their records exist in the DB.
  * @property ActiveRecord $owner
- * @package app\components
+ * @package app\behaviors
  */
 class ManyToManyBehavior extends Behavior
 {

@@ -4,8 +4,8 @@ namespace app\models;
 
 use app\models\forms\MapForm;
 use Yii;
-use app\components\ImageModelBehavior;
-use app\components\ManyToManyBehavior;
+use app\behaviors\ImageModelBehavior;
+use app\behaviors\ManyToManyBehavior;
 use app\models\interfaces\PriceInterface;
 use yii\db\ActiveQuery;
 use yii\helpers\ArrayHelper;

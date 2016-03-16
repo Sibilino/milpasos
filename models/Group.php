@@ -2,9 +2,9 @@
 
 namespace app\models;
 
-use app\components\ManyToManyBehavior;
+use app\behaviors\ManyToManyBehavior;
 use Yii;
-use app\components\ImageModelBehavior;
+use app\behaviors\ImageModelBehavior;
 
 /**
  * This is the model class for table "group".

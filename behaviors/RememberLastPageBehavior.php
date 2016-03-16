@@ -1,6 +1,6 @@
 <?php
 
-namespace app\components;
+namespace app\behaviors;
 
 use yii\base\ActionEvent;
 use yii\base\Behavior;

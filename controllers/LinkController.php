@@ -2,7 +2,7 @@
 
 namespace app\controllers;
 
-use app\components\RememberLastPageBehavior;
+use app\behaviors\RememberLastPageBehavior;
 use Yii;
 use app\models\Link;
 use app\models\LinkSearch;

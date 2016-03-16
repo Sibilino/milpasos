@@ -2,9 +2,9 @@
 
 namespace app\models;
 
-use app\components\ImageModelBehavior;
+use app\behaviors\ImageModelBehavior;
 use Yii;
-use app\components\ManyToManyBehavior;
+use app\behaviors\ManyToManyBehavior;
 
 /**
  * This is the model class for table "artist".

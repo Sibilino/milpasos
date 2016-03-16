@@ -2,7 +2,7 @@
 
 namespace app\controllers;
 
-use app\components\RememberLastPageBehavior;
+use app\behaviors\RememberLastPageBehavior;
 use Yii;
 use app\models\TemporaryPrice;
 use app\models\TemporaryPriceSearch;
