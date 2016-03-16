@@ -1,5 +1,11 @@
 <?php
 
 return [
-    'adminEmail' => 'admin@example.com',
+    'adminEmail' => 'luishernandez.mail@gmail.com',
+    'currencies' => [
+        'EUR' => '€',
+        'CHF' => 'CHF',
+        'HRK' => 'kn',
+        'USD' => '$',
+    ],
 ];
