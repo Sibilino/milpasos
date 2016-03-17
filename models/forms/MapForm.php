@@ -38,6 +38,10 @@ class MapForm extends Model
      * @var number The maximum price to pay for a pass of searched events.
      */
     public $maxPrice;
+    /**
+     * @var string The code of the currency in which $maxPrice is specified.
+     */
+    public $currency;
 
     public function rules()
     {
@@ -53,6 +57,7 @@ class MapForm extends Model
             ['groupIds', 'each', 'rule' => ['exist', 'targetClass'=>Group::className(), 'targetAttribute'=>'id']],
             [['from_date', 'to_date'], 'date', 'format' => 'yyyy-MM-dd'],
             ['maxPrice', 'number', 'min' => 0],
+            ['currency', 'in', 'range' => array_keys($currencies), 'strict' => true],
         ];
     }
 
@@ -67,6 +72,7 @@ class MapForm extends Model
             'danceIds' => Yii::t('app', 'Dance Styles'),
             'groupIds' => Yii::t('app', 'Performers'),
             'maxPrice' => Yii::t('app', 'Maximum pass price'),
+            'currency' => Yii::t('app', 'Currency'),
         ];
     }
 
