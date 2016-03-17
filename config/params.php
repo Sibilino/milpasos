@@ -3,8 +3,9 @@
 return [
     'adminEmail' => 'luishernandez.mail@gmail.com',
     'currencies' => [
-        'EUR' => '€',
         'CHF' => 'CHF',
+        'EUR' => '€',
+        'GBP' => '£',
         'HRK' => 'kn',
         'USD' => '$',
     ],
