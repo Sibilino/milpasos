@@ -45,12 +45,12 @@ $features = array_map(function (Event $e) {
             'toAttr' => 'to_date',
         ]) ?>
 
-        <?= $form->field($model, 'maxPrice')->input('number') ?>
     </div>
     <div>
         <?= $form->field($model, 'groupIds')->dropDownList(ArrayHelper::map(Group::find()->orderBy('name')->asArray()->all(), 'id', 'name'), ['multiple'=>true]) ?>
         <?= $form->field($model, 'danceIds')->dropDownList(ArrayHelper::map(Dance::find()->orderBy('name')->asArray()->all(), 'id', 'name'), ['multiple'=>true]) ?>
-
+        <?= $form->field($model, 'maxPrice')->input('number') ?>
+        <?= $form->field($model, 'currency')->dropDownList(Yii::$app->params['currencies']) ?>
         <?= Html::submitButton(Yii::t('app', 'Search'), [
             'class' => 'btn btn-primary',
         ]) ?>
