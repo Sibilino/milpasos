@@ -15,6 +15,7 @@ use yii\db\ActiveRecord;
  * @property string $available_from
  * @property string $available_to
  * @property int $pass_id
+ * @property string $currency 3-letter currency code from parent Pass. Read-only.
  *
  * @property Pass $pass
  */
@@ -76,6 +77,14 @@ class TemporaryPrice extends ActiveRecord
         $to = new DateTime($this->available_to);
         $to->add(new DateInterval('P1D')); // Next day
         return $to->diff($from)->m;
+    }
+
+    /**
+     * @return string 3-letter currency code from parent Pass.
+     */
+    public function getCurrency()
+    {
+        return $this->pass->currency;
     }
 
     /**

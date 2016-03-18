@@ -137,7 +137,7 @@ class Pass extends ActiveRecord
                 }
                 if ($carry !== null) {
                     $carryEuros = $converter->toEur($carry->price, $carry->currency);
-                    if ($carryEuros < $converter->toEur($p->price, $p->pass->currency)) {
+                    if ($carryEuros < $converter->toEur($p->price, $p->currency)) {
                         return $carry;
                     }
                 }

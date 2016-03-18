@@ -194,8 +194,8 @@ class Event extends \yii\db\ActiveRecord
         return array_reduce($this->passes, function ($carry, Pass $pass) {
             $price = $pass->bestAvailablePrice();
             if ($carry !== null) {
-                $carryEuros = Yii::$app->currencyConverter->toEur($carry->price, $carry->pass->currency);
-                if ($carryEuros < Yii::$app->currencyConverter->toEur($price->price, $price->pass->currency)) {
+                $carryEuros = Yii::$app->currencyConverter->toEur($carry->price, $carry->currency);
+                if ($carryEuros < Yii::$app->currencyConverter->toEur($price->price, $price->currency)) {
                     return $carry;
                 }
             }
@@ -245,7 +245,7 @@ class EventQuery extends ActiveQuery
             $maxEuros = Yii::$app->currencyConverter->toEur($form->maxPrice, $form->currency);
             $events = array_filter($events, function (Event $e) use ($maxEuros) {
                 $price = $e->bestAvailablePrice();
-                return $price !== null && Yii::$app->currencyConverter->toEur($price->price, $price->pass->currency) <= $maxEuros;
+                return $price !== null && Yii::$app->currencyConverter->toEur($price->price, $price->currency) <= $maxEuros;
             });
         }
         return $events;
