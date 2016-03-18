@@ -11,6 +11,7 @@ use yii\grid\DataColumn;
 use yii\grid\SerialColumn;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
+use yii\web\View;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
@@ -42,9 +43,27 @@ use yii\widgets\ActiveForm;
         'toAttr' => 'end_date',
     ]) ?>
 
-    <?= $form->field($model, 'address')->widget(app\widgets\GeoComplete::className()) ?>
-
     <?= $form->field($model, 'website')->textInput(['maxlength' => true])?>
+
+    <div id="map" style="width:300px;height:300px;"></div>
+
+    <?php $this->registerJs("
+        var map;
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: {lat: -34.397, lng: 150.644},
+                zoom: 8
+            });
+        }
+    ", View::POS_BEGIN) ?>
+
+    <?php $this->registerJsFile("https://maps.googleapis.com/maps/api/js?key=AIzaSyBEr0tOImJExGdG9hriZazaa1zgZbLhu7Y&libraries=places&callback=initMap",
+        [
+            'async' => true,
+            'defer' => true,
+            'position' => View::POS_END,
+        ]
+    )?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), [
