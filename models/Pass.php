@@ -12,8 +12,6 @@ use yii\db\ActiveRecord;
  * @property string $price
  * @property string $currency
  * @property string $description
- * @property string $available_from
- * @property string $available_to
  * @property boolean $full
  * @property string $event_id
  *
@@ -40,8 +38,6 @@ class Pass extends ActiveRecord
             [['full', 'event_id', 'price', 'currency'], 'required'],
             [['price'], 'number', 'min' => 0],
             [['full'], 'boolean'],
-            [['available_from', 'available_to', 'price'], 'default', 'value' => null],
-            [['available_from', 'available_to'], 'date', 'format' => 'yyyy-MM-dd'],
             [['currency'], 'in', 'range' => array_keys($currencies), 'strict' => true],
             [['event_id'], 'exist', 'targetClass' => Event::className(), 'targetAttribute' => 'id'],
             [['description'], 'string', 'max' => 1000],
@@ -58,8 +54,6 @@ class Pass extends ActiveRecord
             'price' => Yii::t('app', 'Normal Price'),
             'currency' => Yii::t('app', 'Currency'),
             'description' => Yii::t('app', 'Description'),
-            'available_from' => Yii::t('app', 'Available From'),
-            'available_to' => Yii::t('app', 'Available To'),
             'full' => Yii::t('app', "It's a Full Pass"),
             'event_id' => Yii::t('app', 'Event'),
         ];

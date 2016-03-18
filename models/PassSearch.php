@@ -21,7 +21,7 @@ class PassSearch extends Pass
             [['id', 'event_id'], 'integer'],
             [['price'], 'number'],
             [['full'], 'boolean'],
-            [['description', 'available_from', 'available_to', 'full'], 'safe'],
+            [['description', 'full'], 'safe'],
         ];
     }
 
@@ -60,8 +60,6 @@ class PassSearch extends Pass
         $query->andFilterWhere([
             'id' => $this->id,
             'price' => $this->price,
-            'available_from' => $this->available_from,
-            'available_to' => $this->available_to,
             'full' => $this->full,
             'event_id' => $this->event_id,
         ]);

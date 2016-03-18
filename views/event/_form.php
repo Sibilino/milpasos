@@ -112,8 +112,6 @@ use yii\widgets\ActiveForm;
                                     return $column->grid->formatter->asCurrency($pass->price, $pass->currency);
                                 },
                             ],
-                            'available_from:date',
-                            'available_to:date',
                             [
                                 'class' => ActionColumn::className(),
                                 'header' => 'actions',
@@ -128,12 +126,6 @@ use yii\widgets\ActiveForm;
                 <?= $form->field($newPass, 'description')->textInput(['maxlength' => true]) ?>
                 <?= $form->field($newPass, 'price')->textInput(['maxlength' => true]) ?>
                 <?= $form->field($newPass, 'currency')->dropDownList(Yii::$app->params['currencies']) ?>
-                <?= DateRangePicker::widget([
-                    'form' => $form,
-                    'model' => $newPass,
-                    'fromAttr' => 'available_from',
-                    'toAttr' => 'available_to',
-                ]) ?>
                 <?= Html::submitButton("Add", ['class' => 'btn btn-danger']) ?>
 
                 <?php GridForm::end() ?>

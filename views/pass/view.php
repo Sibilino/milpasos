@@ -34,8 +34,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'price',
                 'value' => Yii::$app->formatter->asCurrency($model->price, $model->currency),
             ],
-            'available_from:date',
-            'available_to:date',
             'full:boolean',
             [
                 'format' => 'raw',

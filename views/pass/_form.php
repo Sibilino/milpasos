@@ -33,13 +33,6 @@ use yii\helpers\ArrayHelper;
 
     <?= $form->field($model, 'full')->checkbox(); ?>
 
-    <?= DateRangePicker::widget([
-        'form' => $form,
-        'model' => $model,
-        'fromAttr' => 'available_from',
-        'toAttr' => 'available_to',
-    ]) ?>
-
     <?= $form->field($model, 'event_id')->dropDownList(ArrayHelper::map(Event::find()->all(), 'id', 'name')) ?>
 
     <div class="form-group">
