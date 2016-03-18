@@ -49,7 +49,7 @@ class Event extends \yii\db\ActiveRecord
     {
         return 'event';
     }
-    
+
     /**
      * @inheritdoc
      */
@@ -185,6 +185,24 @@ class Event extends \yii\db\ActiveRecord
             ->inverseOf('event');
     }
 
+    /**
+     * Returns the best available price for a pass for this Event.
+     * @return TemporaryPrice|null
+     */
+    public function bestAvailablePrice()
+    {
+        return array_reduce($this->passes, function ($carry, Pass $pass) {
+            $price = $pass->bestAvailablePrice();
+            if ($carry !== null) {
+                $carryEuros = Yii::$app->currencyConverter->toEur($carry->price, $carry->pass->currency);
+                if ($carryEuros < Yii::$app->currencyConverter->toEur($price->price, $price->pass->currency)) {
+                    return $carry;
+                }
+            }
+            return $price;
+        });
+    }
+
 }
 
 class EventQuery extends ActiveQuery
@@ -203,15 +221,33 @@ class EventQuery extends ActiveQuery
      * @param MapForm $form
      * @return $this
      */
-    public function fromMapForm(MapForm $form)
+    public function searchCharacteristics(MapForm $form)
     {
         return $this
-            ->joinWith(['dances', 'groups', 'passes'], false)
+            ->joinWith(['dances', 'groups'], false) // Do not eager load these potentially heavy relations
+            ->joinWith(['passes', 'passes.temporaryPrices'])
             ->andFilterWhere(['<=','start_date', $form->to_date])
             ->andFilterWhere(['>=','end_date', $form->from_date])
             ->andFilterWhere(['dance.id' => $form->danceIds])
             ->andFilterWhere(['group.id' => $form->groupIds])
             ->andWhere(['pass.full' => 1])
         ;
+    }
+
+    /**
+     * @param MapForm $form
+     * @return array|\yii\db\ActiveRecord[]
+     */
+    public function allFromMapForm(MapForm $form)
+    {
+        $events = $this->searchCharacteristics($form)->all();
+        if ($form->maxPrice) {
+            $maxEuros = Yii::$app->currencyConverter->toEur($form->maxPrice, $form->currency);
+            $events = array_filter($events, function (Event $e) use ($maxEuros) {
+                $price = $e->bestAvailablePrice();
+                return $price !== null && Yii::$app->currencyConverter->toEur($price->price, $price->pass->currency) <= $maxEuros;
+            });
+        }
+        return $events;
     }
 }

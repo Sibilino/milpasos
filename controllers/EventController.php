@@ -155,7 +155,7 @@ class EventController extends Controller
         $model->load(Yii::$app->request->get());
         $model->validate();
         
-        $events = Event::find()->fromMapForm($model)->all();
+        $events = Event::find()->allFromMapForm($model);
 
         return $this->render('map', [
             'model' => $model,

@@ -137,6 +137,16 @@ $features = array_map(function (Event $e) {
                 'start_date:date',
                 'end_date:date',
                 'address',
+                [
+                    'label' => 'Price',
+                    'value' => function (Event $e) {
+                        $price = $e->bestAvailablePrice();
+                        if ($price !== null) {
+                            return Yii::$app->formatter->asCurrency($price->price, $price->pass->currency);
+                        }
+                        return null;
+                    },
+                ]
             ],
         ],
     ]) ?>

@@ -117,6 +117,40 @@ class Pass extends ActiveRecord
     }
 
     /**
+     * Returns the best available price for this Pass at the given $date.
+     * @param null|string $date Optional, default today.
+     * @return TemporaryPrice
+     */
+    public function bestAvailablePrice($date = null)
+    {
+        if ($date === null) {
+            $date = date('Y-m-d');
+        }
+        // Normalize prices to Euros in order to compare between any different currencies
+        $converter = Yii::$app->currencyConverter;
+        $normalEuros = $converter->toEur($this->price, $this->currency);
+        $availablePrice = array_reduce($this->temporaryPrices,
+            // Return available TemporaryPrice with the lowest converted price, or null if none available.
+            function ($carry, TemporaryPrice $p) use ($date, $converter) {
+                if ($p->available_from > $date || $p->available_to < $date) {
+                    return $carry;
+                }
+                if ($carry !== null) {
+                    $carryEuros = $converter->toEur($carry->price, $carry->currency);
+                    if ($carryEuros < $converter->toEur($p->price, $p->pass->currency)) {
+                        return $carry;
+                    }
+                }
+                return $p;
+            }
+        );
+        if ($availablePrice !== null && $converter->toEur($availablePrice->price, $availablePrice->currency) < $normalEuros) {
+            return $availablePrice;
+        }
+        return $this->asTemporaryPrice();
+    }
+
+    /**
      * @return \yii\db\ActiveQuery
      */
     public function getEvent()
@@ -131,5 +165,19 @@ class Pass extends ActiveRecord
     {
         return $this->hasMany(TemporaryPrice::className(), ['pass_id' => 'id'])
             ->inverseOf('pass');
+    }
+
+    /**
+     * Returns a TemporaryPrice object with this Pass' price, but availability dates set to null.
+     * @return TemporaryPrice
+     */
+    private function asTemporaryPrice()
+    {
+        $price = new TemporaryPrice([
+            'pass_id' => $this->id,
+            'price' => $this->price,
+        ]);
+        $price->populateRelation('pass', $this);
+        return $price;
     }
 }
