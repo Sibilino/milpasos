@@ -1,5 +1,6 @@
 <?php
 
+use app\models\Pass;
 use yii\helpers\Html;
 use yii\grid\GridView;
 
@@ -28,8 +29,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'description',
             [
                 'attribute' => 'price',
-                'value' => function ($model) {
-                    return $model->getFormattedPrice();
+                'value' => function (Pass $model) {
+                    return Yii::$app->formatter->asCurrency($model->price, $model->currency);
                 } ,
             ],
             'available_from:date',

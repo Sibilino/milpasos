@@ -137,12 +137,6 @@ $features = array_map(function (Event $e) {
                 'start_date:date',
                 'end_date:date',
                 'address',
-                [
-                    'label' => Yii::t('app', "Current price"),
-                    'value' => function (Event $e) {
-                        return isset($e->currentLowestPrice) ? $e->currentLowestPrice->getFormattedPrice() : null;
-                    }
-                ],
             ],
         ],
     ]) ?>
