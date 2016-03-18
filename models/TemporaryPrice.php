@@ -2,12 +2,10 @@
 
 namespace app\models;
 
-use app\models\interfaces\PriceTrait;
 use DateInterval;
 use DateTime;
 use Yii;
 use yii\db\ActiveRecord;
-use app\models\interfaces\PriceInterface;
 
 /**
  * This is the model class for table "temporary_price".
@@ -20,10 +18,8 @@ use app\models\interfaces\PriceInterface;
  *
  * @property Pass $pass
  */
-class TemporaryPrice extends ActiveRecord implements PriceInterface
+class TemporaryPrice extends ActiveRecord
 {
-    use PriceTrait;
-    
     /**
      * @var string The scenario to be used to represent a price that is being edited through the Pass form.
      */

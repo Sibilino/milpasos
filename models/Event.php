@@ -6,9 +6,7 @@ use app\models\forms\MapForm;
 use Yii;
 use app\behaviors\ImageModelBehavior;
 use app\behaviors\ManyToManyBehavior;
-use app\models\interfaces\PriceInterface;
 use yii\db\ActiveQuery;
-use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "event".
@@ -22,7 +20,6 @@ use yii\helpers\ArrayHelper;
  * @property double $lat
  * @property string $website
  * @property array $danceIds
- * @property null|PriceInterface @currentLowestPrice
  *
  * @property Artist[] $artists
  * @property Dance[] $dances
@@ -136,30 +133,6 @@ class Event extends \yii\db\ActiveRecord
         $loaded = parent::load($data, $formName);
         return ($this->loadImage($data) || $loaded);
     }
-    
-    /**
-     * Returns the current lowest price available for a Full Pass of this Event.
-     * If there are no full passes defined, returns the lowest available price amongst all Passes.
-     * @return null|PriceInterface
-     */
-    public function getCurrentLowestPrice()
-    {
-        if ($this->passes) {
-            $passes = array_filter($this->passes, function (Pass $p) {
-                return (boolean)$p->full;
-            });
-            if (empty($passes)) {
-                $passes = $this->passes; // If no full passes, take any existing passes into account
-            }
-            $prices = ArrayHelper::getColumn($passes, 'currentLowestPrice');
-            $eurPrices = ArrayHelper::index($prices, function (PriceInterface $p) {
-                return $p->toEur();
-            });
-            ksort($eurPrices, SORT_NUMERIC);
-            return reset($eurPrices);
-        }
-        return null;
-    }
 
     /**
      * @inheritdoc
@@ -233,35 +206,11 @@ class EventQuery extends ActiveQuery
     public function fromMapForm(MapForm $form)
     {
         return $this
-            ->joinWith(['dances', 'groups'], false)
-            ->filterWherePrice($form->maxPrice, $form->from_date, $form->to_date)
+            ->joinWith(['dances', 'groups', 'passes'], false)
             ->andFilterWhere(['<=','start_date', $form->to_date])
             ->andFilterWhere(['>=','end_date', $form->from_date])
             ->andFilterWhere(['dance.id' => $form->danceIds])
             ->andFilterWhere(['group.id' => $form->groupIds])
-        ;
-    }
-
-    /**
-     * Selects the Events for which a Pass can be bought for under $maxPrice during the period between $from and $to.
-     * <b>Note:</b> An OR clause will be added to the WHERE part. Make sure to call this method first in the chain of query methods.
-     * @param $maxPrice
-     * @param string|null $from Optional. Defines the beginning of the buying period.
-     * @param string|null $to Optional. Defines the end of the buying period.
-     * @return $this
-     */
-    public function filterWherePrice($maxPrice, $from = null, $to = null) {
-        if (!$maxPrice) {
-            return $this;
-        }
-        return $this
-            ->joinWith(['passes', 'passes.temporaryPrices'])
-            ->andFilterWhere(['<=', 'temporary_price.available_from', $from])
-            ->andFilterWhere(['>=', 'temporary_price.available_to', $from])
-            ->andFilterWhere(['<=', 'temporary_price.available_from', $to])
-            ->andFilterWhere(['>=', 'temporary_price.available_to', $to])
-            ->andWhere(['<=', 'temporary_price.price', $maxPrice])
-            ->orWhere(['<=', 'pass.price', $maxPrice])
             ->andWhere(['pass.full' => 1])
         ;
     }

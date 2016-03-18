@@ -2,11 +2,8 @@
 
 namespace app\models;
 
-use app\models\interfaces\PriceTrait;
 use Yii;
-use app\models\interfaces\PriceInterface;
 use yii\db\ActiveRecord;
-use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "pass".
@@ -19,15 +16,12 @@ use yii\helpers\ArrayHelper;
  * @property string $available_to
  * @property boolean $full
  * @property string $event_id
- * @property PriceInterface $currentLowestPrice
  *
  * @property Event $event
  * @property TemporaryPrice[] $temporaryPrices
  */
-class Pass extends ActiveRecord implements PriceInterface
+class Pass extends ActiveRecord
 {
-    use PriceTrait;
-
     /**
      * @inheritdoc
      */
@@ -69,23 +63,6 @@ class Pass extends ActiveRecord implements PriceInterface
             'full' => Yii::t('app', "It's a Full Pass"),
             'event_id' => Yii::t('app', 'Event'),
         ];
-    }
-    
-    /**
-     * Returns the lowest price that is currently available for this Pass.
-     * @return PriceInterface
-     */
-    public function getCurrentLowestPrice()
-    {
-        $prices = array_filter($this->temporaryPrices, function (TemporaryPrice $p) {
-            return $p->isCurrent();
-        });
-        array_push($prices, $this);
-        $eurPrices = ArrayHelper::index($prices, function (PriceInterface $p) {
-            return $p->toEur();
-        });
-        ksort($eurPrices, SORT_NUMERIC);
-        return reset($eurPrices);
     }
 
     /**
