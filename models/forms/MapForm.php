@@ -57,7 +57,7 @@ class MapForm extends Model
             ['groupIds', 'each', 'rule' => ['exist', 'targetClass'=>Group::className(), 'targetAttribute'=>'id']],
             [['from_date', 'to_date'], 'date', 'format' => 'yyyy-MM-dd'],
             ['maxPrice', 'number', 'min' => 0],
-            ['currency', 'in', 'range' => array_keys($currencies), 'strict' => true],
+            ['currency', 'in', 'range' => array_keys(Yii::$app->params['currencies']), 'strict' => true],
         ];
     }
 
