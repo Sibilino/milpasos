@@ -45,11 +45,19 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'website')->textInput(['maxlength' => true])?>
 
+    <input type="text" id="pac" />
     <div id="map" style="width:300px;height:300px;"></div>
 
     <?php $this->registerJs("
         var map;
         function initMap() {
+            var autocomplete = new google.maps.places.Autocomplete(document.getElementById('pac'));
+            autocomplete.addListener('place_changed', function() {
+                var place = autocomplete.getPlace();
+                map.setCenter(place.geometry.location);
+                map.aa(10); // About city level
+                alert('lon: '+place.geometry.location.lng()+', lat: '+place.geometry.location.lat());
+            });
             map = new google.maps.Map(document.getElementById('map'), {
                 center: {lat: -34.397, lng: 150.644},
                 zoom: 8
