@@ -55,7 +55,7 @@ use yii\widgets\ActiveForm;
             autocomplete.addListener('place_changed', function() {
                 var place = autocomplete.getPlace();
                 map.setCenter(place.geometry.location);
-                map.aa(10); // About city level
+                map.setZoom(10); // About city level
                 alert('lon: '+place.geometry.location.lng()+', lat: '+place.geometry.location.lat());
             });
             map = new google.maps.Map(document.getElementById('map'), {
