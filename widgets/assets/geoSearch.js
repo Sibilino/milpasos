@@ -1,3 +1,0 @@
-milpasos.gmaps.callback = function () {
-
-};
