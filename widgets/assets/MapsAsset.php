@@ -1,6 +1,6 @@
 <?php
 
-namespace app\widgets;
+namespace app\widgets\assets;
 
 use yii\base\InvalidConfigException;
 use \yii\web\AssetBundle;
@@ -12,12 +12,12 @@ use \yii\web\View;
  * For example in the app's components config:
  * 'assetManager' => [
  *       'bundles' => [
- *           'app\widgets\MapsAsset' => [
+ *           'app\widgets\assets\MapsAsset' => [
  *                  'key' => 'your_key',
  *               ],
  *           ]
  *       ],
- * @package app\widgets
+ * @package app\widgets\assets
  */
 class MapsAsset extends AssetBundle
 {
