@@ -2,7 +2,8 @@
 
 namespace app\widgets;
 
-use app\widgets\assets\GeoSearchAsset;
+use app\assets\MilpasosAsset;
+use app\widgets\assets\MapsAsset;
 use yii\base\InvalidConfigException;
 use yii\helpers\Html;
 use yii\widgets\InputWidget;
@@ -37,10 +38,25 @@ class GeoSearch extends InputWidget
      */
     public function run()
     {
-        GeoSearchAsset::register($this->view);
-        
         echo Html::activeHiddenInput($this->model, $this->lonAttribute);
         echo Html::activeHiddenInput($this->model, $this->latAttribute);
         echo Html::activeTextInput($this->model, $this->attribute);
+        
+        MilpasosAsset::register($this->view);
+        $inputId = Html::getInputId($this->model, $this->attribute);
+        $lonId = Html::getInputId($this->model, $this->lonAttribute);
+        $latId = Html::getInputId($this->model, $this->latAttribute);
+        $script=<<<JS
+milpasos.gmaps.callback = function () {
+    var autocomplete = new google.maps.places.Autocomplete(document.getElementById('$inputId'));
+    autocomplete.addListener('place_changed', function() {
+        var place = autocomplete.getPlace();
+        document.getElementById('$lonId').value = place.geometry.location.lng();
+        document.getElementById('$latId').value = place.geometry.location.lat();
+    });
+};
+JS;
+        $this->view->registerJs($script);
+        MapsAsset::register($this->view);
     }
 }
