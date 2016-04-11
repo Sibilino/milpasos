@@ -24,7 +24,11 @@ class MapsAsset extends AssetBundle
     public $key;
 
     public $jsOptions = [
-        'position' => View::POS_HEAD,
+        'async' => true,
+        'defer' => true,
+    ];
+    public $depends = [
+        'app\assets\AppAsset',
     ];
 
     public function init()
@@ -32,7 +36,7 @@ class MapsAsset extends AssetBundle
         if (!$this->key)
             throw new InvalidConfigException;
 
-        $this->js []= "https://maps.googleapis.com/maps/api/js?key=$this->key&libraries=places";
+        $this->js []= "https://maps.googleapis.com/maps/api/js?key=$this->key&libraries=places&callback=milpasos.gmaps.callback";
         parent::init();
     }
 }
