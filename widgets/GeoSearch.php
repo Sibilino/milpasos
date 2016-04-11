@@ -22,6 +22,6 @@ class GeoSearch extends InputWidget
      */
     public function run()
     {
-
+        MapsAsset::register($this->view);
     }
 }
