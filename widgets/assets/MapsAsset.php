@@ -28,7 +28,7 @@ class MapsAsset extends AssetBundle
         'defer' => true,
     ];
     public $depends = [
-        'app\assets\AppAsset',
+        'app\assets\MilpasosAsset',
     ];
 
     public function init()
