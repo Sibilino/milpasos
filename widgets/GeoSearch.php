@@ -38,9 +38,9 @@ class GeoSearch extends InputWidget
      */
     public function run()
     {
-        echo Html::activeHiddenInput($this->model, $this->lonAttribute);
-        echo Html::activeHiddenInput($this->model, $this->latAttribute);
-        echo Html::activeTextInput($this->model, $this->attribute);
+        $html = Html::activeHiddenInput($this->model, $this->lonAttribute);
+        $html .= Html::activeHiddenInput($this->model, $this->latAttribute);
+        $html .= Html::activeTextInput($this->model, $this->attribute);
         
         MilpasosAsset::register($this->view);
         $inputId = Html::getInputId($this->model, $this->attribute);
@@ -58,5 +58,7 @@ milpasos.gmaps.callback = function () {
 JS;
         $this->view->registerJs($script);
         MapsAsset::register($this->view);
+        
+        return $html;
     }
 }
