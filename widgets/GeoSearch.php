@@ -62,7 +62,7 @@ var latInput = document.getElementById('$latId');
 
 milpasos.gmaps.callbacks.push(function () {
     var map = new google.maps.Map(document.getElementById('$mapId'), {
-        center: {lat: -34.397, lng: 150.644},
+        center: {lat: 46.523661, lng: 6.622270},
         zoom: 5
     });
 
