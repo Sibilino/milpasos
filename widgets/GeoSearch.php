@@ -47,14 +47,14 @@ class GeoSearch extends InputWidget
         $lonId = Html::getInputId($this->model, $this->lonAttribute);
         $latId = Html::getInputId($this->model, $this->latAttribute);
         $script=<<<JS
-milpasos.gmaps.callback = function () {
+milpasos.gmaps.callbacks.push(function () {
     var autocomplete = new google.maps.places.Autocomplete(document.getElementById('$inputId'));
     autocomplete.addListener('place_changed', function() {
         var place = autocomplete.getPlace();
         document.getElementById('$lonId').value = place.geometry.location.lng();
         document.getElementById('$latId').value = place.geometry.location.lat();
     });
-};
+});
 JS;
         $this->view->registerJs($script);
         MapsAsset::register($this->view);
