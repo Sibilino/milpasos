@@ -5,7 +5,12 @@ milpasos = (function ($) {
             // Nothing to init
         },
         gmaps: {
-            callback: function () {}
+            initCallback: function () {
+                for (var i=0;i<pub.gmaps.callbacks.length;i++) {
+                    pub.gmaps.callbacks[i]();
+                }
+            },
+            callbacks: []
         }
     };
     
