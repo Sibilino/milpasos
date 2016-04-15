@@ -3,11 +3,17 @@
 namespace app\widgets;
 
 use yii\base\InvalidConfigException;
-use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 
+/**
+ * Class GeoSearch
+ * @package app\widgets
+ */
 class GeoSearch extends LocationWidget
 {
+    /**
+     * @var array
+     */
     public $mapOptions = [];
     /**
      * Initializes the widget.
@@ -24,6 +30,10 @@ class GeoSearch extends LocationWidget
 
     }
 
+    /**
+     * @return string
+     * @throws \Exception
+     */
     protected function renderWidget()
     {
         $html = Html::activeHiddenInput($this->model, $this->lonAttribute);

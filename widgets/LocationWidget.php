@@ -8,6 +8,10 @@ use yii\base\InvalidConfigException;
 use yii\helpers\Html;
 use yii\widgets\InputWidget;
 
+/**
+ * Class LocationWidget
+ * @package app\widgets
+ */
 abstract class LocationWidget extends InputWidget
 {
     /**
@@ -34,6 +38,9 @@ abstract class LocationWidget extends InputWidget
         parent::init();
     }
 
+    /**
+     * @return mixed
+     */
     public function run()
     {
         $html = $this->renderWidget();
@@ -41,18 +48,30 @@ abstract class LocationWidget extends InputWidget
         return $html;
     }
 
+    /**
+     * @return bool
+     */
     protected function isLatLngSet() {
         return Html::getAttributeValue($this->model, $this->lonAttribute) && Html::getAttributeValue($this->model, $this->latAttribute);
     }
 
+    /**
+     * @return float
+     */
     protected function getLat() {
         return (float)Html::getAttributeValue($this->model, $this->latAttribute);
     }
 
+    /**
+     * @return float
+     */
     protected function getLon() {
         return (float)Html::getAttributeValue($this->model, $this->lonAttribute);
     }
 
+    /**
+     * @return mixed
+     */
     abstract protected function renderWidget();
     
 }

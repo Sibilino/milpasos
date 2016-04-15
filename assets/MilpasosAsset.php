@@ -5,6 +5,10 @@ namespace app\assets;
 use yii\helpers\Url;
 use yii\web\AssetBundle;
 
+/**
+ * Class MilpasosAsset
+ * @package app\assets
+ */
 class MilpasosAsset extends AssetBundle
 {
     public $depends = [

@@ -5,10 +5,23 @@ namespace app\widgets;
 use yii\helpers\Html;
 use yii\helpers\Json;
 
+/**
+ * Class GoogleMap
+ * @package app\widgets
+ */
 class GoogleMap extends LocationWidget
 {
+    /**
+     * @var float
+     */
     public $defaultLat = 46.523661;
+    /**
+     * @var float
+     */
     public $defaultLon = 6.622270;
+    /**
+     * @var int
+     */
     public $defaultZoom = 5;
 
     /**
@@ -24,6 +37,9 @@ class GoogleMap extends LocationWidget
     }
 
 
+    /**
+     * @return string
+     */
     protected function renderWidget()
     {
         $mapCenter = Json::encode([
