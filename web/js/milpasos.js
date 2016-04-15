@@ -1,11 +1,14 @@
 milpasos = (function ($) {
-    var mapObjects_ = [];
+    var mapObjects_ = []; // Variable to store data about gmaps objects in a page
     var pub = {
         isActive: true,
         init: function () {
             // Nothing to init
         },
         gmaps: {
+            /**
+             * Calls all functions in callbacks
+             */
             initCallback: function () {
                 for (var i=0;i<pub.gmaps.callbacks.length;i++) {
                     pub.gmaps.callbacks[i]();
