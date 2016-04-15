@@ -61,7 +61,7 @@ milpasos.gmaps.callbacks.push(function () {
     milpasos.gmaps.addMap(mapObject, '$mapId');
 JS;
         if ($this->isLatLngSet()) {
-            $script .= "mapObject.markers.push(new google.maps.Marker({map: map, position: $mapCenter}));";
+            $script .= 'mapObject.markers.push(new google.maps.Marker({map: map, position: $mapCenter}));';
         }
 
         $script .= '});';

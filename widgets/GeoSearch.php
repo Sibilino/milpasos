@@ -43,6 +43,12 @@ class GeoSearch extends LocationWidget
         $html = Html::activeHiddenInput($this->model, $this->lonAttribute);
         $html .= Html::activeHiddenInput($this->model, $this->latAttribute);
         $html .= Html::activeTextInput($this->model, $this->attribute, $this->options);
+        $html .= GoogleMap::widget([
+            'model' => $this->model,
+            'latAttribute' => $this->latAttribute,
+            'lonAttribute' => $this->lonAttribute,
+            'options' => $this->mapOptions,
+        ]);
         
         $inputId = Html::getInputId($this->model, $this->attribute);
         $lonId = Html::getInputId($this->model, $this->lonAttribute);
@@ -79,14 +85,7 @@ input.addEventListener('input', function () {
 });
 JS;
         $this->view->registerJs($script);
-
-        $html .= GoogleMap::widget([
-            'model' => $this->model,
-            'latAttribute' => $this->latAttribute,
-            'lonAttribute' => $this->lonAttribute,
-            'options' => $this->mapOptions,
-        ]);
-
+        
         return $html;
     }
 }
