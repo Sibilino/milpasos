@@ -46,7 +46,14 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'website')->textInput(['maxlength' => true])?>
 
-    <?= $form->field($model, 'address')->widget(GeoSearch::className()); ?>
+    <?= $form->field($model, 'address')->widget(GeoSearch::className(), [
+        'mapOptions' => [
+            'style' => [
+                'width' => '200px',
+                'height' => '200px',
+            ],
+        ],
+    ]); ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), [

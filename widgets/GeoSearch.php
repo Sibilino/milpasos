@@ -2,70 +2,44 @@
 
 namespace app\widgets;
 
-use app\assets\MilpasosAsset;
-use app\widgets\assets\MapsAsset;
 use yii\base\InvalidConfigException;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
-use yii\helpers\Json;
-use yii\widgets\InputWidget;
 
-class GeoSearch extends InputWidget
+class GeoSearch extends LocationWidget
 {
-    /**
-     * @var string The model attribute that will receive the longitude coordinate.
-     */
-    public $lonAttribute = 'lon';
-    /**
-     * @var string The model attribute that will receive the latitude coordinate.
-     */
-    public $latAttribute = 'lat';
-    
+    public $mapOptions = [];
     /**
      * Initializes the widget.
      * If you override this method, make sure you call the parent implementation first.
      */
     public function init()
     {
+        parent::init();
         if (!$this->hasModel())
             throw new InvalidConfigException(self::className()." requires a Model and an Attribute.");
-        if (!in_array($this->lonAttribute, $this->model->attributes()) || !in_array($this->latAttribute, $this->model->attributes()))
-            throw new InvalidConfigException("The Model must have '$this->lonAttribute' and '$this->latAttribute' attributes.");
-        parent::init();
+        if (!isset($this->mapOptions['id'])) {
+            $this->mapOptions['id'] = $this->options['id'].'-gmapwgt';
+        }
+
     }
 
-    /**
-     * Executes the widget.
-     * @return string the result of widget execution to be outputted.
-     */
-    public function run()
+    protected function renderWidget()
     {
         $html = Html::activeHiddenInput($this->model, $this->lonAttribute);
         $html .= Html::activeHiddenInput($this->model, $this->latAttribute);
         $html .= Html::activeTextInput($this->model, $this->attribute);
-        $mapId = $this->getId();
-        $html .= Html::tag('div', '', [
-            'id' => $mapId,
-            'style' => [
-                'width' => '300px',
-                'height' => '300px',
-            ],
+        $html .= GoogleMap::widget([
+            'model' => $this->model,
+            'latAttribute' => $this->latAttribute,
+            'lonAttribute' => $this->lonAttribute,
+            'options' => $this->mapOptions,
         ]);
         
-        MilpasosAsset::register($this->view);
-
         $inputId = Html::getInputId($this->model, $this->attribute);
         $lonId = Html::getInputId($this->model, $this->lonAttribute);
         $latId = Html::getInputId($this->model, $this->latAttribute);
-        if ($this->isLatLngValid()) {
-            $currentLatLng = Json::encode([
-                'lat' => Html::getAttributeValue($this->model, $this->latAttribute),
-                'lng' => Html::getAttributeValue($this->model, $this->lonAttribute),
-            ]);
-            $mapCenter = $currentLatLng;
-        } else {
-            $currentLatLng = 'false';
-            $mapCenter = '{lat: 46.523661, lng: 6.622270}'; // Centered in Europe
-        }
+        $mapId = $this->mapOptions['id'];
 
         $script=<<<JS
 var input = document.getElementById('$inputId');
@@ -73,31 +47,21 @@ var lonInput = document.getElementById('$lonId');
 var latInput = document.getElementById('$latId');
 
 milpasos.gmaps.callbacks.push(function () {
-    var map = new google.maps.Map(document.getElementById('$mapId'), {
-        center: $mapCenter,
-        zoom: 5
-    });
-    
-    var marker;
-    var currentPosition = $currentLatLng;
-    if (currentPosition !== false) {
-        marker = new google.maps.Marker({
-            map: map,
-            position: currentPosition
-        });
-    }
-
     var autocomplete = new google.maps.places.Autocomplete(input);
     autocomplete.addListener('place_changed', function() {
         var place = autocomplete.getPlace();
         lonInput.value = place.geometry.location.lng();
         latInput.value = place.geometry.location.lat();
-        marker = new google.maps.Marker({
-            map: map,
-            position: place.geometry.location
+        var map = milpasos.gmaps.getMap('$mapId');
+        for (var i=0;i<map.markers.length;i++) {
+            map.markers[i].setMap(null); // Remove previous markers
+        }
+        var marker = new google.maps.Marker({
+            position: place.geometry.location,
+            map: map.object
         });
-        map.setCenter(place.geometry.location);
-        map.setZoom(10); // About city level
+        map.markers = [marker];
+        map.object.setCenter(place.geometry.location);
     });
 });
 
@@ -107,12 +71,7 @@ input.addEventListener('input', function () {
 });
 JS;
         $this->view->registerJs($script);
-        MapsAsset::register($this->view);
         
         return $html;
-    }
-
-    private function isLatLngValid() {
-        return Html::getAttributeValue($this->model, $this->lonAttribute) && Html::getAttributeValue($this->model, $this->latAttribute);
     }
 }

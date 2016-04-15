@@ -1,6 +1,7 @@
 <?php
 
 use app\models\Pass;
+use app\widgets\GoogleMap;
 use app\widgets\RelationLinks;
 use yii\data\ActiveDataProvider;
 use yii\grid\ActionColumn;
@@ -50,6 +51,19 @@ $this->params['breadcrumbs'][] = $this->title;
             'start_date',
             'end_date',
             'address',
+            [
+                'attribute' => 'address',
+                'value' => GoogleMap::widget([
+                    'model' => $model,
+                    'options' => [
+                        'style' => [
+                            'width' => '200px',
+                            'height' => '200px',
+                        ],
+                    ],
+                ]),
+                'format' => 'raw',
+            ],
             [
                 'attribute' => 'groupIds',
                 'value' => RelationLinks::widget([

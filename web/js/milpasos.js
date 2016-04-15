@@ -1,4 +1,5 @@
 milpasos = (function ($) {
+    var mapObjects_ = [];
     var pub = {
         isActive: true,
         init: function () {
@@ -10,7 +11,16 @@ milpasos = (function ($) {
                     pub.gmaps.callbacks[i]();
                 }
             },
-            callbacks: []
+            callbacks: [],
+            addMap: function (map, id) {
+                mapObjects_[id] = map;
+            },
+            getMap: function (id) {
+                if (id in mapObjects_) {
+                    return mapObjects_[id];
+                }
+                return null;
+            }
         }
     };
     
