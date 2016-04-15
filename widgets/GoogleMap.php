@@ -48,6 +48,9 @@ class GoogleMap extends LocationWidget
         ]);
         $mapId = $this->options['id'];
 
+        // TODO: Clean this $markers mess up.
+        $markers = $this->isLatLngSet() ? '[marker]' : '[]';
+        
         $script=<<<JS
 milpasos.gmaps.callbacks.push(function () {
     var map = new google.maps.Map(document.getElementById('$mapId'), {
@@ -60,7 +63,7 @@ milpasos.gmaps.callbacks.push(function () {
     });
     milpasos.gmaps.addMap({
         object: map,
-        markers: [marker]
+        markers: $markers
     }, '$mapId');
 });
 JS;
