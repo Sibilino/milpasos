@@ -12,12 +12,10 @@ milpasos = (function ($) {
              * Calls all functions in mapCallbacks_
              */
             initCallback: function () {
-                if (mapLibraryReady_) {
-                    for (var i=0;i<pub.gmaps.mapCallbacks_.length;i++) {
-                        pub.gmaps.mapCallbacks_[i]();
-                    }
-                }
                 mapLibraryReady_ = true;
+                for (var i=0;i<pub.gmaps.mapCallbacks_.length;i++) {
+                    pub.gmaps.mapCallbacks_[i]();
+                }
             },
             addMap: function (map, id) {
                 mapObjects_[id] = map;
