@@ -1,5 +1,7 @@
 milpasos = (function ($) {
     var mapObjects_ = []; // Variable to store data about gmaps objects in a page
+    var mapLibraryReady_ = false;
+    var mapCallbacks_ = [];
     var pub = {
         isActive: true,
         init: function () {
@@ -7,14 +9,16 @@ milpasos = (function ($) {
         },
         gmaps: {
             /**
-             * Calls all functions in callbacks
+             * Calls all functions in mapCallbacks_
              */
             initCallback: function () {
-                for (var i=0;i<pub.gmaps.callbacks.length;i++) {
-                    pub.gmaps.callbacks[i]();
+                if (mapLibraryReady_) {
+                    for (var i=0;i<pub.gmaps.mapCallbacks_.length;i++) {
+                        pub.gmaps.mapCallbacks_[i]();
+                    }
                 }
+                mapLibraryReady_ = true;
             },
-            callbacks: [],
             addMap: function (map, id) {
                 mapObjects_[id] = map;
             },
@@ -23,6 +27,19 @@ milpasos = (function ($) {
                     return mapObjects_[id];
                 }
                 return null;
+            },
+            addMarkerTo: function (mapId, marker) {
+                if (mapId in mapObjects_) {
+                    mapObjects_[mapId].markers.push(marker);
+                    return true;
+                }
+                return false;
+            },
+            addCallback: function (callback) {
+                mapCallbacks_.push(callback);
+                if (mapLibraryReady_) {
+                    callback();
+                }
             }
         }
     };

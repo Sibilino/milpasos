@@ -47,12 +47,9 @@ class GoogleMap extends LocationWidget
             'lng' => $this->isLatLngSet() ? $this->getLon() : $this->defaultLon,
         ]);
         $mapId = $this->options['id'];
-
-        // TODO: Clean this $markers mess up.
-        $markers = $this->isLatLngSet() ? '[marker]' : '[]';
         
         $script=<<<JS
-milpasos.gmaps.callbacks.push(function () {
+milpasos.gmaps.addCallback(function () {
     var map = new google.maps.Map(document.getElementById('$mapId'), {
         center: $mapCenter,
         zoom: $this->defaultZoom
@@ -63,7 +60,7 @@ milpasos.gmaps.callbacks.push(function () {
     });
     milpasos.gmaps.addMap({
         object: map,
-        markers: $markers
+        markers: [marker]
     }, '$mapId');
 });
 JS;

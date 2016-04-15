@@ -43,12 +43,6 @@ class GeoSearch extends LocationWidget
         $html = Html::activeHiddenInput($this->model, $this->lonAttribute);
         $html .= Html::activeHiddenInput($this->model, $this->latAttribute);
         $html .= Html::activeTextInput($this->model, $this->attribute, $this->options);
-        $html .= GoogleMap::widget([
-            'model' => $this->model,
-            'latAttribute' => $this->latAttribute,
-            'lonAttribute' => $this->lonAttribute,
-            'options' => $this->mapOptions,
-        ]);
         
         $inputId = Html::getInputId($this->model, $this->attribute);
         $lonId = Html::getInputId($this->model, $this->lonAttribute);
@@ -60,7 +54,7 @@ var input = document.getElementById('$inputId');
 var lonInput = document.getElementById('$lonId');
 var latInput = document.getElementById('$latId');
 
-milpasos.gmaps.callbacks.push(function () {
+milpasos.gmaps.addCallback(function () {
     var autocomplete = new google.maps.places.Autocomplete(input);
     autocomplete.addListener('place_changed', function() {
         var place = autocomplete.getPlace();
@@ -85,7 +79,14 @@ input.addEventListener('input', function () {
 });
 JS;
         $this->view->registerJs($script);
-        
+
+        $html .= GoogleMap::widget([
+            'model' => $this->model,
+            'latAttribute' => $this->latAttribute,
+            'lonAttribute' => $this->lonAttribute,
+            'options' => $this->mapOptions,
+        ]);
+
         return $html;
     }
 }
