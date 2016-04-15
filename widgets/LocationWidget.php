@@ -70,7 +70,9 @@ abstract class LocationWidget extends InputWidget
     }
 
     /**
-     * @return mixed
+     * Generates the html code and registers the necessary scripts to display the widget.
+     * @return string
+     * @throws \Exception
      */
     abstract protected function renderWidget();
     

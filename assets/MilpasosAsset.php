@@ -6,7 +6,7 @@ use yii\helpers\Url;
 use yii\web\AssetBundle;
 
 /**
- * Class MilpasosAsset
+ * Registers the milpasos js module.
  * @package app\assets
  */
 class MilpasosAsset extends AssetBundle
