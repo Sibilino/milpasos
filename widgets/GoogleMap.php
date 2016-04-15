@@ -64,7 +64,7 @@ JS;
             $script .= 'mapObject.markers.push(new google.maps.Marker({map: map, position: $mapCenter}));';
         }
 
-        $script .= '});'
+        $script .= '});';
         $this->view->registerJs($script);
         return Html::tag('div', '', $this->options);
     }
