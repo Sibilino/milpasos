@@ -4,6 +4,7 @@ use app\models\Dance;
 use app\models\Group;
 use app\models\Pass;
 use app\widgets\DateRangePicker;
+use app\widgets\GeoSearch;
 use app\widgets\GridForm;
 use yii\data\ActiveDataProvider;
 use yii\grid\ActionColumn;
@@ -11,6 +12,7 @@ use yii\grid\DataColumn;
 use yii\grid\SerialColumn;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
+use yii\web\View;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
@@ -42,9 +44,16 @@ use yii\widgets\ActiveForm;
         'toAttr' => 'end_date',
     ]) ?>
 
-    <?= $form->field($model, 'address')->widget(app\widgets\GeoComplete::className()) ?>
-
     <?= $form->field($model, 'website')->textInput(['maxlength' => true])?>
+
+    <?= $form->field($model, 'address')->widget(GeoSearch::className(), [
+        'mapOptions' => [
+            'style' => [
+                'width' => '200px',
+                'height' => '200px',
+            ],
+        ],
+    ]); ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), [

@@ -1,6 +1,6 @@
 <?php
 
-namespace app\widgets;
+namespace app\widgets\assets;
 
 use yii\base\InvalidConfigException;
 use \yii\web\AssetBundle;
@@ -12,19 +12,23 @@ use \yii\web\View;
  * For example in the app's components config:
  * 'assetManager' => [
  *       'bundles' => [
- *           'app\widgets\MapsAsset' => [
+ *           'app\widgets\assets\MapsAsset' => [
  *                  'key' => 'your_key',
  *               ],
  *           ]
  *       ],
- * @package app\widgets
+ * @package app\widgets\assets
  */
 class MapsAsset extends AssetBundle
 {
     public $key;
 
     public $jsOptions = [
-        'position' => View::POS_HEAD,
+        'async' => true,
+        'defer' => true,
+    ];
+    public $depends = [
+        'app\assets\MilpasosAsset',
     ];
 
     public function init()
@@ -32,7 +36,7 @@ class MapsAsset extends AssetBundle
         if (!$this->key)
             throw new InvalidConfigException;
 
-        $this->js []= "https://maps.googleapis.com/maps/api/js?key=$this->key";
+        $this->js []= "https://maps.googleapis.com/maps/api/js?key=$this->key&libraries=places&callback=milpasos.gmaps.initCallback";
         parent::init();
     }
 }
