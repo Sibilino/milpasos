@@ -47,9 +47,6 @@ class GoogleMap extends LocationWidget
             'lng' => $this->isLatLngSet() ? $this->getLon() : $this->defaultLon,
         ]);
         $mapId = $this->options['id'];
-
-        // TODO: Clean this $markers mess up.
-        $markers = $this->isLatLngSet() ? '[marker]' : '[]';
         
         $script=<<<JS
 milpasos.gmaps.callbacks.push(function () {
@@ -57,16 +54,17 @@ milpasos.gmaps.callbacks.push(function () {
         center: $mapCenter,
         zoom: $this->defaultZoom
     });
-    var marker = new google.maps.Marker({
-        map: map,
-        position: $mapCenter
-    });
-    milpasos.gmaps.addMap({
+    var mapObject = {
         object: map,
-        markers: $markers
-    }, '$mapId');
-});
+        markers: []
+    };
+    milpasos.gmaps.addMap(mapObject, '$mapId');
 JS;
+        if ($this->isLatLngSet()) {
+            $script .= 'mapObject.markers.push(new google.maps.Marker({map: map, position: $mapCenter}));';
+        }
+
+        $script .= '});'
         $this->view->registerJs($script);
         return Html::tag('div', '', $this->options);
     }
