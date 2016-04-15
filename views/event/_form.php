@@ -4,6 +4,7 @@ use app\models\Dance;
 use app\models\Group;
 use app\models\Pass;
 use app\widgets\DateRangePicker;
+use app\widgets\GeoSearch;
 use app\widgets\GridForm;
 use yii\data\ActiveDataProvider;
 use yii\grid\ActionColumn;
@@ -45,33 +46,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'website')->textInput(['maxlength' => true])?>
 
-    <input type="text" id="pac" />
-    <div id="map" style="width:300px;height:300px;"></div>
-
-    <?php $this->registerJs("
-        var map;
-        function initMap() {
-            var autocomplete = new google.maps.places.Autocomplete(document.getElementById('pac'));
-            autocomplete.addListener('place_changed', function() {
-                var place = autocomplete.getPlace();
-                map.setCenter(place.geometry.location);
-                map.setZoom(10); // About city level
-                alert('lon: '+place.geometry.location.lng()+', lat: '+place.geometry.location.lat());
-            });
-            map = new google.maps.Map(document.getElementById('map'), {
-                center: {lat: -34.397, lng: 150.644},
-                zoom: 8
-            });
-        }
-    ", View::POS_BEGIN) ?>
-
-    <?php $this->registerJsFile("https://maps.googleapis.com/maps/api/js?key=AIzaSyBEr0tOImJExGdG9hriZazaa1zgZbLhu7Y&libraries=places&callback=initMap",
-        [
-            'async' => true,
-            'defer' => true,
-            'position' => View::POS_END,
-        ]
-    )?>
+    <?= $form->field($model, 'address')->widget(GeoSearch::className()); ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), [

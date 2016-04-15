@@ -6,6 +6,7 @@ use app\assets\MilpasosAsset;
 use app\widgets\assets\MapsAsset;
 use yii\base\InvalidConfigException;
 use yii\helpers\Html;
+use yii\helpers\Json;
 use yii\widgets\InputWidget;
 
 class GeoSearch extends InputWidget
@@ -51,10 +52,21 @@ class GeoSearch extends InputWidget
         ]);
         
         MilpasosAsset::register($this->view);
+
         $inputId = Html::getInputId($this->model, $this->attribute);
         $lonId = Html::getInputId($this->model, $this->lonAttribute);
         $latId = Html::getInputId($this->model, $this->latAttribute);
-        
+        if ($this->isLatLngValid()) {
+            $currentLatLng = Json::encode([
+                'lat' => Html::getAttributeValue($this->model, $this->latAttribute),
+                'lng' => Html::getAttributeValue($this->model, $this->lonAttribute),
+            ]);
+            $mapCenter = $currentLatLng;
+        } else {
+            $currentLatLng = 'false';
+            $mapCenter = '{lat: 46.523661, lng: 6.622270}'; // Centered in Europe
+        }
+
         $script=<<<JS
 var input = document.getElementById('$inputId');
 var lonInput = document.getElementById('$lonId');
@@ -62,18 +74,26 @@ var latInput = document.getElementById('$latId');
 
 milpasos.gmaps.callbacks.push(function () {
     var map = new google.maps.Map(document.getElementById('$mapId'), {
-        center: {lat: 46.523661, lng: 6.622270},
+        center: $mapCenter,
         zoom: 5
     });
+    
+    var marker;
+    var currentPosition = $currentLatLng;
+    if (currentPosition !== false) {
+        marker = new google.maps.Marker({
+            map: map,
+            position: currentPosition
+        });
+    }
 
     var autocomplete = new google.maps.places.Autocomplete(input);
     autocomplete.addListener('place_changed', function() {
         var place = autocomplete.getPlace();
         lonInput.value = place.geometry.location.lng();
         latInput.value = place.geometry.location.lat();
-        var marker = new google.maps.Marker({
+        marker = new google.maps.Marker({
             map: map,
-            title: place.name,
             position: place.geometry.location
         });
         map.setCenter(place.geometry.location);
@@ -90,5 +110,9 @@ JS;
         MapsAsset::register($this->view);
         
         return $html;
+    }
+
+    private function isLatLngValid() {
+        return Html::getAttributeValue($this->model, $this->lonAttribute) && Html::getAttributeValue($this->model, $this->latAttribute);
     }
 }
