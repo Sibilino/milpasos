@@ -13,8 +13,8 @@ milpasos = (function ($) {
              */
             initCallback: function () {
                 mapLibraryReady_ = true;
-                for (var i=0;i<pub.gmaps.mapCallbacks_.length;i++) {
-                    pub.gmaps.mapCallbacks_[i]();
+                for (var i=0;i<mapCallbacks_.length;i++) {
+                    mapCallbacks_[i]();
                 }
             },
             addMap: function (map, id) {
