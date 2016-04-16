@@ -60,21 +60,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 'format' => 'html',
             ],
-            [
-                'label' => Yii::t('app', 'Map'),
-                'value' => function (Event $model) {
-                    return GoogleMap::widget([
-                        'model' => $model,
-                        'options' => [
-                            'style' => [
-                                'width' => '200px',
-                                'height' => '200px',
-                            ],
-                        ],
-                    ]);
-                },
-                'format' => 'raw',
-            ],
             'address',
 
             ['class' => 'yii\grid\ActionColumn'],
