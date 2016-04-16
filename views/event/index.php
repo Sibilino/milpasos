@@ -1,6 +1,7 @@
 <?php
 
 use app\models\Event;
+use app\widgets\GoogleMap;
 use app\widgets\RelationLinks;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
@@ -40,6 +41,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 'format' => 'html',
             ],
+            'start_date:date',
+            'end_date:date',
             [
                 'attribute' => 'danceIds',
                 'value' => function (Event $model) {
@@ -47,9 +50,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 'format' => 'html',
             ],
-            'start_date:date',
-            'end_date:date',
-            'address',
             [
                 'attribute' => 'groupIds',
                 'value' => function (Event $model) {
@@ -60,6 +60,22 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 'format' => 'html',
             ],
+            [
+                'label' => Yii::t('app', 'Map'),
+                'value' => function (Event $model) {
+                    return GoogleMap::widget([
+                        'model' => $model,
+                        'options' => [
+                            'style' => [
+                                'width' => '200px',
+                                'height' => '200px',
+                            ],
+                        ],
+                    ]);
+                },
+                'format' => 'raw',
+            ],
+            'address',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
