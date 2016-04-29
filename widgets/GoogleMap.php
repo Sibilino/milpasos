@@ -62,17 +62,26 @@ milpasos.gmaps.addCallback(function () {
         center: $mapCenter,
         zoom: $this->defaultZoom
     });
-    var marker = new google.maps.Marker({
-        map: map,
-        position: $mapCenter
-    });
     milpasos.gmaps.addMap({
         object: map,
-        markers: [marker]
+        markers: []
     }, '$mapId');
 });
 JS;
         $this->view->registerJs($script);
+
+        if ($this->isLatLngSet()) {
+            $script =<<<JS
+milpasos.gmaps.addCallback(function () {
+    milpasos.gmaps.addMarkerTo('$mapId', new google.maps.Marker({
+        map: milpasos.gmaps.getMap('$mapId').object,
+        position: $mapCenter
+    }));
+});
+JS;
+            $this->view->registerJs($script);
+        }
+
         return Html::tag('div', '', $this->options);
     }
 }

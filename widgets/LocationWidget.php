@@ -52,7 +52,7 @@ abstract class LocationWidget extends InputWidget
      * @return bool
      */
     protected function isLatLngSet() {
-        return Html::getAttributeValue($this->model, $this->lonAttribute) && Html::getAttributeValue($this->model, $this->latAttribute);
+        return Html::getAttributeValue($this->model, $this->lonAttribute) !== null && Html::getAttributeValue($this->model, $this->latAttribute) !== null;
     }
 
     /**
