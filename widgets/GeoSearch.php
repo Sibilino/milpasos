@@ -7,6 +7,15 @@ use yii\helpers\Html;
 
 /**
  * This widget displays an address search bar that shows selected results in a map.
+ * The config requires a model, an attribute (for the generated input), a lonAttribute and a latAttribute.
+ * The Google Maps library also requires a key to be specified in your app's configuration:
+ * 'assetManager' => [
+ *       'bundles' => [
+ *           'app\widgets\assets\MapsAsset' => [
+ *                  'key' => 'your_key',
+ *               ],
+ *           ]
+ *       ],
  * @package app\widgets
  */
 class GeoSearch extends LocationWidget

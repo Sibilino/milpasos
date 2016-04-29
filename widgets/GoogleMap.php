@@ -6,7 +6,16 @@ use yii\helpers\Html;
 use yii\helpers\Json;
 
 /**
- * Class GoogleMap
+ * This widget renders a Map of the location defined in the model's data, with a marker in the middle.
+ * The config requires a model, a lonAttribute and a latAttribute.
+ * The Google Maps library also requires a key to be specified in your app's configuration:
+ * 'assetManager' => [
+ *       'bundles' => [
+ *           'app\widgets\assets\MapsAsset' => [
+ *                  'key' => 'your_key',
+ *               ],
+ *           ]
+ *       ],
  * @package app\widgets
  */
 class GoogleMap extends LocationWidget
@@ -26,7 +35,6 @@ class GoogleMap extends LocationWidget
 
     /**
      * Initializes the widget.
-     * If you override this method, make sure you call the parent implementation first.
      */
     public function init()
     {
@@ -38,7 +46,7 @@ class GoogleMap extends LocationWidget
 
 
     /**
-     * @return string
+     * @return string The HTML code to be passed to the view.
      */
     protected function renderWidget()
     {
