@@ -11,9 +11,8 @@ use yii\grid\ActionColumn;
 use yii\grid\DataColumn;
 use yii\grid\SerialColumn;
 use yii\helpers\ArrayHelper;
-use yii\helpers\Html;
-use yii\web\View;
-use yii\widgets\ActiveForm;
+use yii\bootstrap\Html;
+use yii\bootstrap\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Event */
@@ -42,6 +41,11 @@ use yii\widgets\ActiveForm;
         'model' => $model,
         'fromAttr' => 'start_date',
         'toAttr' => 'end_date',
+        'options' => [
+            'options' => [
+                'class' => 'form-control',
+            ],
+        ],
     ]) ?>
 
     <?= $form->field($model, 'website')->textInput(['maxlength' => true])?>

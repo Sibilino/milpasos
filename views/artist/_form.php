@@ -3,8 +3,8 @@
 use app\models\Dance;
 use app\models\Group;
 use yii\helpers\ArrayHelper;
-use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use yii\bootstrap\Html;
+use yii\bootstrap\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Artist */

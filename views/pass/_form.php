@@ -1,7 +1,6 @@
 <?php
 
 use app\models\Event;
-use app\models\Pass;
 use app\models\TemporaryPrice;
 use app\widgets\DateRangePicker;
 use yii\data\ActiveDataProvider;
@@ -9,8 +8,8 @@ use yii\grid\ActionColumn;
 use yii\grid\DataColumn;
 use yii\grid\GridView;
 use yii\grid\SerialColumn;
-use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use yii\bootstrap\Html;
+use yii\bootstrap\ActiveForm;
 use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
