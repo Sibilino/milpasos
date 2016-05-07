@@ -23,30 +23,50 @@ use yii\bootstrap\ActiveForm;
 
 <div class="event-form">
 
-    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
-    
-    <?php if ($model->imageUrl): ?>
-        <img src="<?= $model->imageUrl ?>">
-    <?php endif; ?>
-    <?= $form->field($model, 'imageUrl')->fileInput() ?>
+    <?php $form = ActiveForm::begin(['options' => [
+        'enctype' => 'multipart/form-data',
+    ]]); ?>
 
-    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+    <div class="row">
+        <div class="col-sm-6">
+            <?php if ($model->imageUrl): ?>
+                <img src="<?= $model->imageUrl ?>">
+            <?php endif; ?>
+            <?= $form->field($model, 'imageUrl')->fileInput() ?>
+        </div>
+        <div class="col-sm-6">
+            <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+        </div>
 
-    <?= $form->field($model, 'danceIds')->checkboxList(ArrayHelper::map(Dance::find()->all(), 'id', 'name')) ?>
+    </div>
 
-    <?= $form->field($model, 'groupIds')->checkboxList(ArrayHelper::map(Group::find()->all(), 'id', 'name')) ?>
+    <div class="row">
+        <div class="col-sm-6">
+            <?= $form->field($model, 'danceIds')->checkboxList(ArrayHelper::map(Dance::find()->all(), 'id', 'name')) ?>
+        </div>
+        <div class="col-sm-6">
+            <?= $form->field($model, 'groupIds')->checkboxList(ArrayHelper::map(Group::find()->all(), 'id', 'name')) ?>
+        </div>
+    </div>
 
-    <?= DateRangePicker::widget([
-        'form' => $form,
-        'model' => $model,
-        'fromAttr' => 'start_date',
-        'toAttr' => 'end_date',
-        'options' => [
-            'options' => [
-                'class' => 'form-control',
+    <div class="row">
+        <?= DateRangePicker::widget([
+            'form' => $form,
+            'model' => $model,
+            'fromAttr' => 'start_date',
+            'toAttr' => 'end_date',
+            'pickerConfig' => [
+                'options' => [
+                    'class' => 'form-control',
+                ],
             ],
-        ],
-    ]) ?>
+            'fieldOptions' => [
+                'options' => [
+                    'class' => 'col-sm-6',
+                ],
+            ],
+        ]) ?>
+    </div>
 
     <?= $form->field($model, 'website')->textInput(['maxlength' => true])?>
 
