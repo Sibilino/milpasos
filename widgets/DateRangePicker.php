@@ -36,11 +36,15 @@ class DateRangePicker extends Widget
      */
     public $toAttr;
     /**
-     * @var array Options to apply to BOTH datepicker sub-widgets.
+     * @var array Config to apply to BOTH datepicker sub-widgets, upon its construction.
      */
-    public $options = [
+    public $pickerConfig = [
         'dateFormat' => 'yyyy-MM-dd',
     ];
+    /**
+     * @var array The HTML options to apply to BOTH datepicker form field containers.
+     */
+    public $fieldOptions = [];
     /**
      * @var array Options to use as clientOptions in the "from" datepicker.
      */
@@ -91,8 +95,8 @@ class DateRangePicker extends Widget
         $fromOptions = array_merge($defaults, $this->fromOptions);
         $this->addMask($fromOptions);
 
-        echo $this->form->field($this->model, $this->fromAttr)->widget(DatePicker::className(), ArrayHelper::merge(
-            $this->options, ['clientOptions' => $fromOptions]
+        echo $this->form->field($this->model, $this->fromAttr, $this->fieldOptions)->widget(DatePicker::className(), ArrayHelper::merge(
+            $this->pickerConfig, ['clientOptions' => $fromOptions]
         ));
 
         $defaults = [
@@ -104,8 +108,8 @@ class DateRangePicker extends Widget
         $toOptions = array_merge($defaults, $this->toOptions);
         $this->addMask($toOptions);
 
-        echo $this->form->field($this->model, $this->toAttr)->widget(DatePicker::className(), ArrayHelper::merge(
-            $this->options, ['clientOptions' => $toOptions]
+        echo $this->form->field($this->model, $this->toAttr, $this->fieldOptions)->widget(DatePicker::className(), ArrayHelper::merge(
+            $this->pickerConfig, ['clientOptions' => $toOptions]
         ));
     }
 
