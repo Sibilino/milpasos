@@ -78,7 +78,10 @@ milpasos.gmaps.addCallback(function () {
             map: map.object
         });
         map.markers = [marker];
-        map.object.setCenter(place.geometry.location);
+        map.object.setOptions({
+            center: place.geometry.location,
+            zoom: 18
+        });
     });
 });
 
