@@ -16,7 +16,7 @@ use yii\bootstrap\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Event */
-/* @var $form yii\widgets\ActiveForm */
+/* @var $form yii\bootstrap\ActiveForm */
 /* @var $newLink app\models\Link */
 /* @var $newPass app\models\Pass */
 ?>
@@ -157,6 +157,7 @@ use yii\bootstrap\ActiveForm;
 
                 <?= Html::activeHiddenInput($newPass, 'event_id') ?>
                 <?= $form->field($newPass, 'description')->textInput(['maxlength' => true]) ?>
+                <?= $form->field($newPass, 'full')->checkbox() ?>
                 <?= $form->field($newPass, 'price')->textInput(['maxlength' => true]) ?>
                 <?= $form->field($newPass, 'currency')->dropDownList(Yii::$app->params['currencies']) ?>
                 <?= Html::submitButton("Add", ['class' => 'btn btn-danger']) ?>
