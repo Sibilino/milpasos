@@ -10,6 +10,7 @@ use yii\base\Event;
 use yii\base\Model;
 use yii\db\ActiveRecord;
 use yii\db\AfterSaveEvent;
+use Imagine\Image\ImageInterface;
 use yii\imagine\Image;
 use yii\validators\ImageValidator;
 use yii\web\UploadedFile;
@@ -124,7 +125,7 @@ class ImageModelBehavior extends Behavior
             try {
                 $originalFile = Yii::getAlias('@webroot')."/$this->folder/".$this->owner->id.'.'.$this->_image->extension;
                 $this->_image->saveAs($originalFile);
-                Image::thumbnail($originalFile, $this->width, $this->height)->save($this->getImagePath());
+                Image::thumbnail($originalFile, $this->width, $this->height, ImageInterface::THUMBNAIL_INSET)->save($this->getImagePath());
             } catch (Exception $e) {
                 $this->owner->addError($this->imageAttr, "Could not save image: ".$e->getMessage().".");
                 return false;
