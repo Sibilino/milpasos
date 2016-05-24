@@ -38,6 +38,7 @@ class Pass extends ActiveRecord
             [['full', 'event_id', 'price', 'currency'], 'required'],
             [['price'], 'number', 'min' => 0],
             [['full'], 'boolean'],
+            [['full'], 'default', 'value' => false],
             [['currency'], 'in', 'range' => array_keys($currencies), 'strict' => true],
             [['event_id'], 'exist', 'targetClass' => Event::className(), 'targetAttribute' => 'id'],
             [['description'], 'string', 'max' => 1000],
