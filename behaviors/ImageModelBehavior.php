@@ -49,6 +49,12 @@ class ImageModelBehavior extends Behavior
      * @var int The width to which the image will be converted upon saving.
      */
     public $width = 150;
+    /**
+     * Whether to save the currently loaded image immediately after validation of the model (if the image turns out to be valid).
+     * Saving on validation is useful to keep a new uploaded image even though the model has other errors that prevent it from being saved.
+     * @var boolean Default is true.
+     */
+    public $saveImageOnValidation = true;
 
     /**
      * @var array The configuration array to be used to validate an uploaded image.
@@ -63,6 +69,10 @@ class ImageModelBehavior extends Behavior
      * @var UploadedFile Internal variable where image uploads are stored before being saved.
      */
     private $_image;
+    /**
+     * @var boolean Whether the current image has already been saved.
+     */
+    private $_saved = false;
 
     /**
      * Attaches handlers to the following events:
@@ -111,6 +121,7 @@ class ImageModelBehavior extends Behavior
      * @return bool Whether an image was actually loaded.
      */
     public function loadImage() {
+        $this->_saved = false;
         $this->_image = UploadedFile::getInstance($this->owner, $this->imageAttr);
         return ($this->_image !== null);
     }
@@ -121,7 +132,7 @@ class ImageModelBehavior extends Behavior
      * @return bool Whether the save operation was successful.
      */
     public function saveImage(AfterSaveEvent $event) {
-        if ($this->_image && !$this->owner->hasErrors()) {
+        if (!$this->_saved && $this->_image && !$this->owner->hasErrors()) {
             try {
                 $originalFile = Yii::getAlias('@webroot')."/$this->folder/".$this->owner->id.'.'.$this->_image->extension;
                 $this->_image->saveAs($originalFile);
@@ -131,6 +142,7 @@ class ImageModelBehavior extends Behavior
                 return false;
             }
         }
+        $this->_saved = true;
         return true;
     }
 
@@ -154,6 +166,8 @@ class ImageModelBehavior extends Behavior
             $error = '';
             if (!$validator->validate($this->_image, $error)) {
                 $this->owner->addError($this->imageAttr, $error);
+            } elseif ($this->saveImageOnValidation) {
+                $this->saveImage();
             }
         }
     }
