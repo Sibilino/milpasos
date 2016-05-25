@@ -36,11 +36,10 @@ class DateRangePicker extends Widget
      */
     public $toAttr;
     /**
-     * @var array Config to apply to BOTH datepicker sub-widgets, upon its construction.
+     * Config to apply to BOTH datepicker sub-widgets, upon its construction. A dateFormat of 'yyyy-mm-dd' is initialized as default.
+     * @var array 
      */
-    public $pickerConfig = [
-        'dateFormat' => 'yyyy-MM-dd',
-    ];
+    public $pickerConfig = [];
     /**
      * @var array The HTML options to apply to BOTH datepicker form field containers.
      */
@@ -58,7 +57,7 @@ class DateRangePicker extends Widget
      */
     public $mask = "9999-99-99";
     /**
-     * @var string The placeholder to be used for the date inputs (before translation). Defaults to "yyyy-mm-dd".
+     * @var string The placeholder to be used for the date inputs (before translation). Defaults to "yyyy-MM-dd".
      */
     public $placeholder = "yyyy-mm-dd";
 
@@ -78,6 +77,9 @@ class DateRangePicker extends Widget
         }
         if (!isset($this->toOptions['id'])) {
             $this->toOptions['id'] = Html::getInputId($this->model, $this->toAttr);
+        }
+        if (!isset($this->pickerConfig['dateFormat'])) {
+            $this->pickerConfig['dateFormat'] = 'yyyy-MM-dd';
         }
     }
 
