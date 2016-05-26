@@ -22,7 +22,8 @@ use yii\web\UploadedFile;
  * <li>Declare an attribute in the active record and configure it in this Behavior's $imageAttr.</li>
  * <li>Override the record's load() function to call $this->loadImage($data).</li>
  * The ActiveRecord's $imageAttr attribute is automatically updated with the URL of the corresponding image, both when
- * loading the record or when saving it.
+ * loading the record or when saving it. The image is saved immediately after validating it, unless
+ * $saveImageOnValidation is set to false (where the image will not be saved until a proper save() is called).
  * </ol>
  *
  * @property \yii\db\ActiveRecord $owner
@@ -128,11 +129,10 @@ class ImageModelBehavior extends Behavior
 
     /**
      * Saves the image loaded by loadImage() as a thumbnail with dimensions $width x $height.
-     * @param AfterSaveEvent $event
      * @return bool Whether the save operation was successful.
      */
-    public function saveImage(AfterSaveEvent $event) {
-        if (!$this->_saved && $this->_image && !$this->owner->hasErrors()) {
+    public function saveImage() {
+        if (!$this->_saved && $this->_image) {
             try {
                 $originalFile = Yii::getAlias('@webroot')."/$this->folder/".$this->owner->id.'.'.$this->_image->extension;
                 $this->_image->saveAs($originalFile);
@@ -143,14 +143,14 @@ class ImageModelBehavior extends Behavior
             }
         }
         $this->_saved = true;
+        $this->populateImageAttr();
         return true;
     }
 
     /**
      * Sets the owner's imageAttr to the URL of its image, if it exists on disk.
-     * @param Event $event
      */
-    public function populateImageAttr(Event $event) {
+    public function populateImageAttr() {
         if (file_exists($this->getImagePath())) {
             $this->owner->{$this->imageAttr} = $this->getImageUrl();
         }
