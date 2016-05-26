@@ -252,12 +252,15 @@ class EventQuery extends ActiveQuery
     {
         $events = $this->searchCharacteristics($form)->all();
         if ($form->maxPrice) {
+            // Filter events by maximum price
             $maxEuros = Yii::$app->currencyConverter->toEur($form->maxPrice, $form->currency);
             $events = array_filter($events, function (Event $e) use ($maxEuros) {
                 $price = $e->bestAvailablePrice();
-                return $price !== null && Yii::$app->currencyConverter->toEur($price->price, $price->currency) <= $maxEuros;
+                $bestEuros = Yii::$app->currencyConverter->toEur($price->price, $price->currency);
+                return $price !== null && $bestEuros <= $maxEuros;
             });
         }
-        return $events;
+        // If expensive events were removed, the array must be reordered to avoid problems in OpenLayers map
+        return array_values($events);
     }
 }
