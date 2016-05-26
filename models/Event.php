@@ -26,6 +26,7 @@ use yii\db\ActiveQuery;
  * @property Group[] $groups
  * @property Link[] $links
  * @property Pass[] $passes
+ * @property Pass[] $fullPasses
  */
 class Event extends \yii\db\ActiveRecord
 {
@@ -144,7 +145,7 @@ class Event extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return EventQuery
      */
     public function getArtists()
     {
@@ -152,7 +153,7 @@ class Event extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return EventQuery
      */
     public function getDances()
     {
@@ -160,7 +161,7 @@ class Event extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return EventQuery
      */
     public function getGroups()
     {
@@ -168,7 +169,7 @@ class Event extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return EventQuery
      */
     public function getLinks()
     {
@@ -177,7 +178,7 @@ class Event extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return EventQuery
      */
     public function getPasses()
     {
@@ -186,12 +187,21 @@ class Event extends \yii\db\ActiveRecord
     }
 
     /**
+     * @return EventQuery
+     */
+    public function getFullPasses() {
+        return $this->getPasses()->where(['full'=>1]);
+    }
+
+    /**
      * Returns the best available price for a pass for this Event.
+     * @param boolean $onlyFullPass Whether to consider full passes only. Default true.
      * @return TemporaryPrice|null
      */
-    public function bestAvailablePrice()
+    public function bestAvailablePrice($onlyFullPass = true)
     {
-        return array_reduce($this->passes, function ($carry, Pass $pass) {
+        $passes = $onlyFullPass ? $this->fullPasses : $this->passes;
+        return array_reduce($passes, function ($carry, Pass $pass) {
             $price = $pass->bestAvailablePrice();
             if ($carry !== null) {
                 $carryEuros = Yii::$app->currencyConverter->toEur($carry->price, $carry->currency);
