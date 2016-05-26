@@ -73,10 +73,12 @@ JS;
         if ($this->isLatLngSet()) {
             $script =<<<JS
 milpasos.gmaps.addCallback(function () {
+    var map = milpasos.gmaps.getMap('$mapId').object;
     milpasos.gmaps.addMarkerTo('$mapId', new google.maps.Marker({
-        map: milpasos.gmaps.getMap('$mapId').object,
+        map: map,
         position: $mapCenter
     }));
+    map.setZoom(12);
 });
 JS;
             $this->view->registerJs($script);
