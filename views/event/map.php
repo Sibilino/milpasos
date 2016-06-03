@@ -29,84 +29,108 @@ $features = array_map(function (Event $e) {
 
 ?>
 
-<div>
-    <?php $form = ActiveForm::begin([
-        'options' => [
-            'class' => 'form-inline',
-        ],
-    ]); ?>
+<div class="row">
+    <div class="col-xs-4">
+        <?php $form = ActiveForm::begin([
+            'layout' => 'horizontal',
+            'fieldConfig' => [
+                'horizontalCssClasses' => [
+                    'offset' => 'col-sm-offset-4',
+                    'label' => 'col-sm-4',
+                    'wrapper' => 'col-sm-8',
+                ],
+            ],
+            'options' => [
+                'class' => 'compact',
+            ],
+        ]); ?>
 
-    <div>
+        <div>
 
-        <?= DateRangePicker::widget([
-            'form' => $form,
-            'model' => $model,
-            'fromAttr' => 'from_date',
-            'toAttr' => 'to_date',
+            <?= DateRangePicker::widget([
+                'form' => $form,
+                'model' => $model,
+                'fromAttr' => 'from_date',
+                'toAttr' => 'to_date',
+                'pickerConfig' => [
+                    'options' => [
+                        'class' => 'form-control',
+                    ],
+                ],
+            ]) ?>
+
+        </div>
+        <div>
+            <?= $form->field($model, 'groupIds')->dropDownList(ArrayHelper::map(Group::find()->orderBy('name')->asArray()->all(), 'id', 'name'), ['multiple'=>true]) ?>
+            <?= $form->field($model, 'danceIds')->dropDownList(ArrayHelper::map(Dance::find()->orderBy('name')->asArray()->all(), 'id', 'name'), ['multiple'=>true]) ?>
+            <?= $form->field($model, 'maxPrice')->input('number') ?>
+            <?= $form->field($model, 'currency')->dropDownList(Yii::$app->params['currencies']) ?>
+            <div class="form-group">
+                <div class="col-sm-8 col-sm-offset-4">
+                    <?= Html::submitButton(Yii::t('app', 'Search'), [
+                        'class' => 'btn btn-primary',
+                    ]) ?>
+                </div>
+            </div>
+        </div>
+
+        <?php ActiveForm::end(); ?>
+    </div>
+
+    <div class="col-xs-8">
+        <?= OpenLayers::widget([
+            'id' => 'main-map',
+            'options' => [
+                'class' => 'event-map',
+            ],
+            'mapOptionScript' => Url::to('@web/js/mapOptions.js'),
+            'mapOptions' => [
+                'layers' => [
+                    'Tile' => [
+                        'source' => new OL('source.MapQuest', [
+                            'layer' => 'sat',
+                        ]),
+                    ],
+                    'Vector' => [
+                        'source' => new OL('source.Cluster', [
+                            'distance' => 30,
+                            'source' => new OL('source.Vector', [
+                                'features' => $features,
+                            ]),
+                        ]),
+                        'style' => new JsExpression("function(feature, resolution) {
+                            return [
+                                ".new OL('style.Style', [
+                                    'image' => new OL('style.Circle', [
+                                        'radius' => 10,
+                                        'stroke' => new OL('style.Stroke', [
+                                            'color' => '#FFFFFF',
+                                        ]),
+                                        'fill' => new OL('style.Fill', [
+                                            'color' => '#3399CC',
+                                        ]),
+                                    ]),
+                                    'text' => new OL('style.Text', [
+                                        'text' => new JsExpression('feature.get("features").length.toString()'),
+                                        'fill' => new OL('style.Fill', [
+                                            'color' => '#FFFFFF',
+                                        ]),
+                                    ]),
+                                ])."
+                            ];
+                        }"),
+                    ],
+                ],
+                'view' => [
+                    'center' => new OL('proj.fromLonLat', [6.62232,46.5235]),
+                    'zoom' => 2,
+                ],
+            ],
         ]) ?>
 
     </div>
-    <div>
-        <?= $form->field($model, 'groupIds')->dropDownList(ArrayHelper::map(Group::find()->orderBy('name')->asArray()->all(), 'id', 'name'), ['multiple'=>true]) ?>
-        <?= $form->field($model, 'danceIds')->dropDownList(ArrayHelper::map(Dance::find()->orderBy('name')->asArray()->all(), 'id', 'name'), ['multiple'=>true]) ?>
-        <?= $form->field($model, 'maxPrice')->input('number') ?>
-        <?= $form->field($model, 'currency')->dropDownList(Yii::$app->params['currencies']) ?>
-        <?= Html::submitButton(Yii::t('app', 'Search'), [
-            'class' => 'btn btn-primary',
-        ]) ?>
-    </div>
-
-    <?php ActiveForm::end(); ?>
 </div>
-
-<?= OpenLayers::widget([
-    'id' => 'main-map',
-    'mapOptionScript' => Url::to('@web/js/mapOptions.js'),
-    'mapOptions' => [
-        'layers' => [
-            'Tile' => [
-                'source' => new OL('source.MapQuest', [
-                    'layer' => 'sat',
-                ]),
-            ],
-            'Vector' => [
-                'source' => new OL('source.Cluster', [
-                    'distance' => 30,
-                    'source' => new OL('source.Vector', [
-                        'features' => $features,
-                    ]),
-                ]),
-                'style' => new JsExpression("function(feature, resolution) {
-                    return [
-                        ".new OL('style.Style', [
-                            'image' => new OL('style.Circle', [
-                                'radius' => 10,
-                                'stroke' => new OL('style.Stroke', [
-                                    'color' => '#FFFFFF',
-                                ]),
-                                'fill' => new OL('style.Fill', [
-                                    'color' => '#3399CC',
-                                ]),
-                            ]),
-                            'text' => new OL('style.Text', [
-                                'text' => new JsExpression('feature.get("features").length.toString()'),
-                                'fill' => new OL('style.Fill', [
-                                    'color' => '#FFFFFF',
-                                ]),
-                            ]),
-                        ])."
-                    ];
-                }"),
-            ],
-        ],
-        'view' => [
-            'center' => new OL('proj.fromLonLat', [6.62232,46.5235]),
-            'zoom' => 2,
-        ],
-    ],
-]) ?>
-
-<div class="body-content">
+<div>
 
     <?php $form = GridForm::begin([
         'id' => 'selection-form',
@@ -156,5 +180,4 @@ $features = array_map(function (Event $e) {
         ->label(false)->error(false) ?>
 
     <?php GridForm::end() ?>
-
 </div>

@@ -89,3 +89,12 @@ a.desc:after {
     padding: 10px 20px;
     margin: 0 0 15px 0;
 }
+
+.compact .form-group {
+    margin-bottom: 0;
+}
+
+.event-map {
+    height: 397px;
+    margin-bottom: 8px;
+}
