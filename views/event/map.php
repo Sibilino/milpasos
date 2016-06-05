@@ -30,14 +30,14 @@ $features = array_map(function (Event $e) {
 ?>
 
 <div class="row">
-    <div class="col-xs-4">
+    <div class="col-sm-4">
         <?php $form = ActiveForm::begin([
             'layout' => 'horizontal',
             'fieldConfig' => [
                 'horizontalCssClasses' => [
-                    'offset' => 'col-sm-offset-4',
-                    'label' => 'col-sm-4',
-                    'wrapper' => 'col-sm-8',
+                    'offset' => 'col-xs-offset-4',
+                    'label' => 'col-xs-4',
+                    'wrapper' => 'col-xs-8',
                 ],
             ],
             'options' => [
@@ -77,7 +77,7 @@ $features = array_map(function (Event $e) {
         <?php ActiveForm::end(); ?>
     </div>
 
-    <div class="col-xs-8">
+    <div class="col-sm-8">
         <?= OpenLayers::widget([
             'id' => 'main-map',
             'options' => [
