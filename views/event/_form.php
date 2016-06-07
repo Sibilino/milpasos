@@ -6,6 +6,7 @@ use app\models\Pass;
 use app\widgets\DateRangePicker;
 use app\widgets\GeoSearch;
 use app\widgets\GridForm;
+use app\widgets\PriceInput;
 use yii\data\ActiveDataProvider;
 use yii\grid\ActionColumn;
 use yii\grid\DataColumn;
@@ -158,8 +159,8 @@ use yii\bootstrap\ActiveForm;
                 <?= Html::activeHiddenInput($newPass, 'event_id') ?>
                 <?= $form->field($newPass, 'description')->textInput(['maxlength' => true]) ?>
                 <?= $form->field($newPass, 'full')->checkbox() ?>
-                <?= $form->field($newPass, 'price')->textInput(['maxlength' => true]) ?>
-                <?= $form->field($newPass, 'currency')->dropDownList(Yii::$app->params['currencies']) ?>
+                <?= $form->field($newPass, 'price')->widget(PriceInput::className()) ?>
+
                 <?= Html::submitButton("Add", ['class' => 'btn btn-danger']) ?>
 
                 <?php GridForm::end() ?>

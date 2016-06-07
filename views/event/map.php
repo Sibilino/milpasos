@@ -9,6 +9,7 @@ use app\models\Dance;
 use app\models\Group;
 use app\widgets\DateRangePicker;
 use app\widgets\GridForm;
+use app\widgets\PriceInput;
 use sibilino\yii2\openlayers\OL;
 use sibilino\yii2\openlayers\OpenLayers;
 use yii\data\ActiveDataProvider;
@@ -63,8 +64,8 @@ $features = array_map(function (Event $e) {
         <div>
             <?= $form->field($model, 'groupIds')->dropDownList(ArrayHelper::map(Group::find()->orderBy('name')->asArray()->all(), 'id', 'name'), ['multiple'=>true]) ?>
             <?= $form->field($model, 'danceIds')->dropDownList(ArrayHelper::map(Dance::find()->orderBy('name')->asArray()->all(), 'id', 'name'), ['multiple'=>true]) ?>
-            <?= $form->field($model, 'maxPrice')->input('number') ?>
-            <?= $form->field($model, 'currency')->dropDownList(Yii::$app->params['currencies']) ?>
+            <?= $form->field($model, 'maxPrice')->widget(PriceInput::className()) ?>
+            
             <div class="form-group">
                 <div class="col-sm-8 col-sm-offset-4">
                     <?= Html::submitButton(Yii::t('app', 'Search'), [

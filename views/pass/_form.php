@@ -3,6 +3,7 @@
 use app\models\Event;
 use app\models\TemporaryPrice;
 use app\widgets\DateRangePicker;
+use app\widgets\PriceInput;
 use yii\data\ActiveDataProvider;
 use yii\grid\ActionColumn;
 use yii\grid\DataColumn;
@@ -26,9 +27,7 @@ use yii\helpers\ArrayHelper;
 
     <?= $form->field($model, 'description')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'price')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'currency')->dropDownList(Yii::$app->params['currencies']) ?>
+    <?= $form->field($model, 'price')->widget(PriceInput::className()) ?>
 
     <?= $form->field($model, 'full')->checkbox(); ?>
 
