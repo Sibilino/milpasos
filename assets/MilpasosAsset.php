@@ -14,14 +14,8 @@ class MilpasosAsset extends AssetBundle
     public $depends = [
         'yii\web\YiiAsset',
     ];
-
-    /**
-     * Initializes the bundle.
-     * If you override this method, make sure you call the parent implementation in the last.
-     */
-    public function init()
-    {
-        $this->js []= Url::to('@web/js/milpasos.js');
-        parent::init();
-    }
+    public $baseUrl = '@web';
+    public $js = [
+        'js/milpasos.js',
+    ];
 }
