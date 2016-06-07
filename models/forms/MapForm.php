@@ -71,7 +71,7 @@ class MapForm extends Model
             'to_date' => Yii::t('app', 'To date'),
             'danceIds' => Yii::t('app', 'Dance Styles'),
             'groupIds' => Yii::t('app', 'Performers'),
-            'maxPrice' => Yii::t('app', 'Maximum pass price'),
+            'maxPrice' => Yii::t('app', 'Max price'),
             'currency' => Yii::t('app', 'Currency'),
         ];
     }
