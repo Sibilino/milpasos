@@ -1,0 +1,11 @@
+/* Styles for the PriceInput widget */
+
+.price-input-widget input {
+    display: inline-block;
+    width: 60%;
+}
+
+.price-input-widget select {
+    display: inline-block;
+    width: 40%;
+}
