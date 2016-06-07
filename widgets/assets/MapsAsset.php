@@ -4,7 +4,6 @@ namespace app\widgets\assets;
 
 use yii\base\InvalidConfigException;
 use \yii\web\AssetBundle;
-use \yii\web\View;
 
 /**
  * Class MapsAsset registers the Google Maps API library.
