@@ -4,6 +4,7 @@ namespace app\widgets;
 
 use yii\base\InvalidConfigException;
 use yii\helpers\Html;
+use yii\helpers\Json;
 
 /**
  * This widget displays an address search bar that shows selected results in a map.
@@ -24,6 +25,10 @@ class GeoSearch extends LocationWidget
      * @var array Html options to be applied to the map square.
      */
     public $mapOptions = [];
+    /**
+     * @var boolean Whether to ask the user for his location when the model's attribute is empty. Default false.
+     */
+    public $askForLocation = false;
 
     /**
      * Initializes required options and checks their validity.
@@ -90,7 +95,29 @@ input.addEventListener('input', function () {
     latInput.value = '';
 });
 JS;
+
+
+
         $this->view->registerJs($script);
+
+
+        if ($this->askForLocation && !$this->model->{$this->attribute}) {
+            $yourLocationLabel = Json::encode(\Yii::t('app', "Your current location"));
+
+            $script = <<<JS
+if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function (position) {
+        var input = document.getElementById('$inputId');
+        input.value = $yourLocationLabel;
+        input.addEventListener('input', function () { this.value = ''; })
+        document.getElementById('$lonId').value = position.coords.latitude;
+        document.getElementById('$latId').value = position.coords.latitude;
+    });    
+}
+JS;
+            $this->view->registerJs($script);
+
+        }
 
         $html .= GoogleMap::widget([
             'model' => $this->model,
