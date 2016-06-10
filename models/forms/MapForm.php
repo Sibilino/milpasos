@@ -42,6 +42,18 @@ class MapForm extends Model
      * @var string The code of the currency in which $maxPrice is specified.
      */
     public $currency;
+    /**
+     * @var string The address specified in the input for lon/lat search.
+     */
+    public $address;
+    /**
+     * @var float The longitude of the position at which to center the event search.
+     */
+    public $lon;
+    /**
+     * @var float The latitude of the position at which to center the event search.
+     */
+    public $lat;
 
     public function rules()
     {
@@ -57,6 +69,15 @@ class MapForm extends Model
             ['groupIds', 'each', 'rule' => ['exist', 'targetClass'=>Group::className(), 'targetAttribute'=>'id']],
             [['from_date', 'to_date'], 'date', 'format' => 'yyyy-MM-dd'],
             ['maxPrice', 'number', 'min' => 0],
+            [['address'], 'string', 'max' => 500],
+            [['lon'], 'number', 'min' => -180, 'max' => 180],
+            [['lat'], 'number', 'min' => -90, 'max' => 90],
+            // Address must be blank if lon lat are also blank
+            [['address'], 'compare', 'compareValue' => '', 'enableClientValidation' => false,
+                'when' => function (MapForm $model) {
+                    return empty($model->lon) && empty($model->lat);
+                }, 'message' => Yii::t('app', "Please select an address from the list of suggestions."),
+            ],
             ['currency', 'in', 'range' => array_keys(Yii::$app->params['currencies']), 'strict' => true],
         ];
     }
@@ -73,6 +94,9 @@ class MapForm extends Model
             'groupIds' => Yii::t('app', 'Performers'),
             'maxPrice' => Yii::t('app', 'Max price'),
             'currency' => Yii::t('app', 'Currency'),
+            'address' => Yii::t('app', 'Address'),
+            'lon' => Yii::t('app', 'Lon'),
+            'lat' => Yii::t('app', 'Lat'),
         ];
     }
 

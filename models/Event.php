@@ -88,7 +88,7 @@ class Event extends \yii\db\ActiveRecord
             [['name', 'website'], 'string', 'max' => 250],
             ['website', 'url', 'defaultScheme' => 'http'],
             [['address'], 'string', 'max' => 500],
-            [['address'], 'required', 'message' => "Please select an address from the list of suggestions."],
+            [['address'], 'required', 'message' => Yii::t('app', "Please select an address from the list of suggestions.")],
             [['danceIds'], 'default', 'value' => []],
             [['groupIds'], 'default', 'value' => []],
         ];
