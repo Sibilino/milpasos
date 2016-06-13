@@ -48,8 +48,31 @@ milpasos.gmaps = (function ($) {
                 return maps_[id];
             }
             return null;
+        },
+        /**
+         * Adds the marker to the internal array of markers corresponding to the map with the given id.
+         * @param marker
+         * @param mapId
+         * @returns boolean True on success, false when mapId is not found.
+         **/
+        addMarker: function (marker, mapId) {
+            if (mapId in markers_) {
+                markers_[mapId].push(marker);
+                return true;
+            }
+            return false;
+        },
+        /**
+         * Returns the array of the markers added with to the map with the given id, or null if the id is not found.
+         * @param id
+         * @returns array|null
+         */
+        getMarkers: function (id) {
+            if (id in markers_) {
+                return markers_[id];
+            }
+            return null;
         }
-        
     };
     return pub;
 })(jQuery);
