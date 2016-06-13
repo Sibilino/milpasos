@@ -1,9 +1,8 @@
 milpasos.gmaps = (function ($) {
     var mapLibraryReady_ = false;
     var mapCallbacks_ = [];
-    var maps_ = [];
-    var markers = [];
-    var pub = {
+    var data_ = {};
+    return {
         isActive: true,
         /**
          * Calls all functions in mapCallbacks_ and remembers that the maps library is ready.
@@ -35,8 +34,10 @@ milpasos.gmaps = (function ($) {
             if (typeof markers === "undefined") {
                 markers = [];
             }
-            maps_[id] = map;
-            markers_[id] = markers;
+            data_[id] = {
+                map: map,
+                markers: markers
+            };
         },
         /**
          * Returns the map object that was added with the given id, or null if the map id is not found.
@@ -44,8 +45,8 @@ milpasos.gmaps = (function ($) {
          * @returns {*}|null
          */
         getMap: function (id) {
-            if (id in maps_) {
-                return maps_[id];
+            if (id in data_) {
+                return data_[id].map;
             }
             return null;
         },
@@ -56,8 +57,8 @@ milpasos.gmaps = (function ($) {
          * @returns boolean True on success, false when mapId is not found.
          **/
         addMarker: function (marker, mapId) {
-            if (mapId in markers_) {
-                markers_[mapId].push(marker);
+            if (mapId in data_) {
+                data_[mapId].markers.push(marker);
                 return true;
             }
             return false;
@@ -68,11 +69,10 @@ milpasos.gmaps = (function ($) {
          * @returns array|null
          */
         getMarkers: function (id) {
-            if (id in markers_) {
-                return markers_[id];
+            if (id in data_) {
+                return data_[id].markers;
             }
             return null;
         }
     };
-    return pub;
 })(jQuery);
