@@ -38,19 +38,19 @@ class GeoSearch extends LocationWidget
     /**
      * @var string Json representation of the string holding the search input's id.
      */
-    private $_inputId;
+    protected $_inputId;
     /**
      * @var string Json representation of the string holding the lon input's id.
      */
-    private $_lonId;
+    protected $_lonId;
     /**
      * @var string Json representation of the string holding the lat input's id.
      */
-    private $_latId;
+    protected $_latId;
     /**
      * @var string Json representation of the string holding the map div's id.
      */
-    private $_mapId;
+    protected $_mapId;
 
     /**
      * Initializes required options and checks their validity.
