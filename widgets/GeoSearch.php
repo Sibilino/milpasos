@@ -155,7 +155,10 @@ if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function (position) {
         var input = document.getElementById($this->_inputId);
         input.value = $yourLocationLabel;
-        input.addEventListener('input', function () { this.value = ''; })
+        input.addEventListener('input', function (e) {
+            e.target.removeEventListener(e.type, arguments.callee); // one-time event
+            this.value = ''; // TODO: Fix this line eliminating first change.
+        });
         document.getElementById($this->_lonId).value = position.coords.latitude;
         document.getElementById($this->_latId).value = position.coords.latitude;
     });
