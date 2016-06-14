@@ -27,19 +27,26 @@ milpasos.gmaps = (function ($) {
             }
         },
         /**
-         * Adds the map to the internal data array, so that it is available through getMap().
-         * @param map
+         * Creates the Google Map with the given config and associates it to the given id for later retrieval through getMap().
+         * An optional array of marker configs can be given, so that the corresponding markers are created via addMarker().
          * @param id The id to be associated with the map for later retrieval.
-         * @param markers Optional array of Marker objects that have already been associated to the map.
+         * @param config The configuration to be passed to the map constructor.
+         * @param markers Optional array of Marker configuration objects. The 'map' property of each of the configs will be set automatically.
          */
-        addMap: function (map, id, markers) {
+        addMap: function (id, config, markers) {
             if (typeof markers === "undefined") {
                 markers = [];
             }
-            data_[id] = {
-                map: map,
-                markers: markers
-            };
+            var module = this;
+            module.whenReady(function () {
+                data_[id] = {
+                    map: new google.maps.Map(document.getElementById(id), config),
+                    markers: []
+                };
+                for (var i=0;i<markers.length;i++) {
+                    module.addMarker(id, markers[i]);
+                }
+            });
         },
         /**
          * Returns the map object that was added with the given id, or null if the map id is not found.
@@ -55,7 +62,7 @@ milpasos.gmaps = (function ($) {
         /**
          * Creates a marker with the given config and associates it to the map with the given mapId.
          * @param mapId
-         * @param config
+         * @param config The map property is not necessary; it will be set automatically.
          * @returns boolean True on success, false when mapId is not found.
          **/
         addMarker: function (mapId, config) {
