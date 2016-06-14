@@ -39,7 +39,7 @@ class MapsAsset extends AssetBundle
         if (!$this->key)
             throw new InvalidConfigException;
 
-        $this->js []= "https://maps.googleapis.com/maps/api/js?key=$this->key&libraries=places&callback=milpasos.gmaps.initCallback";
+        $this->js []= "https://maps.googleapis.com/maps/api/js?key=$this->key&libraries=places&callback=milpasos.gmaps.ready";
         parent::init();
     }
 }
