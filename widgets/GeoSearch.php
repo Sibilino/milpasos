@@ -2,6 +2,7 @@
 
 namespace app\widgets;
 
+use app\widgets\assets\MapsAsset;
 use yii\base\InvalidConfigException;
 use yii\helpers\Html;
 use yii\helpers\Json;
@@ -54,39 +55,37 @@ class GeoSearch extends LocationWidget
      */
     protected function renderWidget()
     {
+        MapsAsset::register($this->view);
+        
         $html = Html::activeHiddenInput($this->model, $this->lonAttribute);
         $html .= Html::activeHiddenInput($this->model, $this->latAttribute);
         $html .= Html::activeTextInput($this->model, $this->attribute, $this->options);
         
-        $inputId = Html::getInputId($this->model, $this->attribute);
-        $lonId = Html::getInputId($this->model, $this->lonAttribute);
-        $latId = Html::getInputId($this->model, $this->latAttribute);
-        $mapId = $this->mapOptions['id'];
+        $inputId = Json::encode(Html::getInputId($this->model, $this->attribute));
+        $lonId = Json::encode(Html::getInputId($this->model, $this->lonAttribute));
+        $latId = Json::encode(Html::getInputId($this->model, $this->latAttribute));
+        $mapId = Json::encode($this->mapOptions['id']);
 
         $script=<<<JS
-var input = document.getElementById('$inputId');
-var lonInput = document.getElementById('$lonId');
-var latInput = document.getElementById('$latId');
+var input = document.getElementById($inputId);
+var lonInput = document.getElementById($lonId);
+var latInput = document.getElementById($latId);
 
-milpasos.gmaps.addCallback(function () {
+milpasos.gmaps.whenReady(function () {
     var autocomplete = new google.maps.places.Autocomplete(input);
     autocomplete.addListener('place_changed', function() {
         var place = autocomplete.getPlace();
         lonInput.value = place.geometry.location.lng();
         latInput.value = place.geometry.location.lat();
-        var map = milpasos.gmaps.getMap('$mapId');
-        for (var i=0;i<map.markers.length;i++) {
-            map.markers[i].setMap(null); // Remove previous markers
+        var map = milpasos.gmaps.getMap($mapId);
+        if (map !== null) {
+            milpasos.gmaps.clearMarkers($mapId);
+            milpasos.gmaps.addMarker($mapId, {position: place.geometry.location});
+            map.setOptions({
+                center: place.geometry.location,
+                zoom: 18
+            });
         }
-        var marker = new google.maps.Marker({
-            position: place.geometry.location,
-            map: map.object
-        });
-        map.markers = [marker];
-        map.object.setOptions({
-            center: place.geometry.location,
-            zoom: 18
-        });
     });
 });
 
@@ -107,11 +106,11 @@ JS;
             $script = <<<JS
 if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function (position) {
-        var input = document.getElementById('$inputId');
+        var input = document.getElementById($inputId);
         input.value = $yourLocationLabel;
         input.addEventListener('input', function () { this.value = ''; })
-        document.getElementById('$lonId').value = position.coords.latitude;
-        document.getElementById('$latId').value = position.coords.latitude;
+        document.getElementById($lonId).value = position.coords.latitude;
+        document.getElementById($latId).value = position.coords.latitude;
     });    
 }
 JS;
