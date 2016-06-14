@@ -96,7 +96,7 @@ class GeoSearch extends LocationWidget
             ]);
         }
 
-        $this->registerAtocompleteScript();
+        $this->registerAutocompleteScript();
         if ($this->askForLocation && !$this->model->{$this->attribute}) {
             $this->registerAskLocationScript();
         }
