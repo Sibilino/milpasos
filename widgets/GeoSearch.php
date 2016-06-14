@@ -34,6 +34,23 @@ class GeoSearch extends LocationWidget
      * @var boolean Whether to ask the user for his location when the model's attribute is empty. Default false.
      */
     public $askForLocation = false;
+    
+    /**
+     * @var string Json representation of the string holding the search input's id.
+     */
+    private $_inputId;
+    /**
+     * @var string Json representation of the string holding the lon input's id.
+     */
+    private $_lonId;
+    /**
+     * @var string Json representation of the string holding the lat input's id.
+     */
+    private $_latId;
+    /**
+     * @var string Json representation of the string holding the map div's id.
+     */
+    private $_mapId;
 
     /**
      * Initializes required options and checks their validity.
@@ -50,6 +67,10 @@ class GeoSearch extends LocationWidget
         if (!isset($this->mapOptions['id'])) {
             $this->mapOptions['id'] = $this->options['id'].'-gmapwgt';
         }
+        $this->_inputId = Json::encode(Html::getInputId($this->model, $this->attribute));
+        $this->_lonId = Json::encode(Html::getInputId($this->model, $this->lonAttribute));
+        $this->_latId = Json::encode(Html::getInputId($this->model, $this->latAttribute));
+        $this->_mapId = Json::encode($this->mapOptions['id']);
     }
 
     /**
@@ -64,11 +85,6 @@ class GeoSearch extends LocationWidget
         $html = Html::activeHiddenInput($this->model, $this->lonAttribute);
         $html .= Html::activeHiddenInput($this->model, $this->latAttribute);
         $html .= Html::activeTextInput($this->model, $this->attribute, $this->options);
-        
-        $inputId = Json::encode(Html::getInputId($this->model, $this->attribute));
-        $lonId = Json::encode(Html::getInputId($this->model, $this->lonAttribute));
-        $latId = Json::encode(Html::getInputId($this->model, $this->latAttribute));
-        $mapId = Json::encode($this->mapOptions['id']);
         
         if ($this->showMap) {
             // If the map has to be shown, better to register it BEFORE the javascript code that may add markers to it.
@@ -97,9 +113,9 @@ class GeoSearch extends LocationWidget
      **/
     protected function registerAutocompleteScript() {
         $script=<<<JS
-var input = document.getElementById($inputId);
-var lonInput = document.getElementById($lonId);
-var latInput = document.getElementById($latId);
+var input = document.getElementById($this->_inputId);
+var lonInput = document.getElementById($this->_lonId);
+var latInput = document.getElementById($this->_latId);
 
 milpasos.gmaps.whenReady(function () {
     var autocomplete = new google.maps.places.Autocomplete(input);
@@ -107,10 +123,10 @@ milpasos.gmaps.whenReady(function () {
         var place = autocomplete.getPlace();
         lonInput.value = place.geometry.location.lng();
         latInput.value = place.geometry.location.lat();
-        var map = milpasos.gmaps.getMap($mapId);
+        var map = milpasos.gmaps.getMap($this->_mapId);
         if (map !== null) {
-            milpasos.gmaps.clearMarkers($mapId);
-            milpasos.gmaps.addMarker($mapId, {position: place.geometry.location});
+            milpasos.gmaps.clearMarkers($this->_mapId);
+            milpasos.gmaps.addMarker($this->_mapId, {position: place.geometry.location});
             map.setOptions({
                 center: place.geometry.location,
                 zoom: 18
@@ -137,12 +153,12 @@ JS;
         $script = <<<JS
 if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function (position) {
-        var input = document.getElementById($inputId);
+        var input = document.getElementById($this->_inputId);
         input.value = $yourLocationLabel;
         input.addEventListener('input', function () { this.value = ''; })
-        document.getElementById($lonId).value = position.coords.latitude;
-        document.getElementById($latId).value = position.coords.latitude;
-    });    
+        document.getElementById($this->_lonId).value = position.coords.latitude;
+        document.getElementById($this->_latId).value = position.coords.latitude;
+    });
 }
 JS;
         $this->view->registerJs($script);
