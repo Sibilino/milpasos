@@ -2,6 +2,7 @@
 
 namespace app\widgets;
 
+use app\widgets\assets\MapsAsset;
 use yii\helpers\Html;
 use yii\helpers\Json;
 
@@ -29,9 +30,13 @@ class GoogleMap extends LocationWidget
      */
     public $defaultLon = 6.622270;
     /**
-     * @var int
+     * @var int The zoom level for the map when no markers are visible.
      */
     public $defaultZoom = 5;
+    /**
+     * @var int The zoom level for the map when a marker is visible.
+     **/
+    public $markerZoom = 12;
 
     /**
      * Initializes the widget.
@@ -44,45 +49,26 @@ class GoogleMap extends LocationWidget
         parent::init();
     }
 
-
     /**
      * @return string The HTML code to be passed to the view.
      */
     protected function renderWidget()
     {
-        $mapCenter = Json::encode([
+        MapsAsset::register($this->view);
+        
+        $mapCenter = [
             'lat' => $this->isLatLngSet() ? $this->getLat() : $this->defaultLat,
             'lng' => $this->isLatLngSet() ? $this->getLon() : $this->defaultLon,
-        ]);
-        $mapId = $this->options['id'];
+        ];
         
-        $script=<<<JS
-milpasos.gmaps.addCallback(function () {
-    var map = new google.maps.Map(document.getElementById('$mapId'), {
-        center: $mapCenter,
-        zoom: $this->defaultZoom
-    });
-    milpasos.gmaps.addMap({
-        object: map,
-        markers: []
-    }, '$mapId');
-});
-JS;
-        $this->view->registerJs($script);
-
-        if ($this->isLatLngSet()) {
-            $script =<<<JS
-milpasos.gmaps.addCallback(function () {
-    var map = milpasos.gmaps.getMap('$mapId').object;
-    milpasos.gmaps.addMarkerTo('$mapId', new google.maps.Marker({
-        map: map,
-        position: $mapCenter
-    }));
-    map.setZoom(12);
-});
-JS;
-            $this->view->registerJs($script);
-        }
+        $mapId = Json::encode($this->options['id']);
+        $config = Json::encode([
+            'center' => $mapCenter,
+            'zoom' => $this->isLatLngSet() ? $this->markerZoom : $this->defaultZoom,
+        ]);
+        $markers = Json::encode($this->isLatLngSet() ? ['position'=>$mapCenter] : []);
+        
+        $this->view->registerJs("milpasos.gmaps.addMap($mapId, $config, $markers);");
 
         return Html::tag('div', '', $this->options);
     }
