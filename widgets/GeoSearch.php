@@ -8,7 +8,7 @@ use yii\helpers\Html;
 use yii\helpers\Json;
 
 /**
- * This widget displays an address search bar that shows selected results in a map.
+ * This widget displays an address search bar that optionally shows selected results in a map.
  * The config requires a model, an attribute (for the generated input), a lonAttribute and a latAttribute.
  * The Google Maps library also requires a key to be specified in your app's configuration:
  * 'assetManager' => [
@@ -22,6 +22,10 @@ use yii\helpers\Json;
  */
 class GeoSearch extends LocationWidget
 {
+    /**
+     * @var boolean Whether to show a Google Map box after the search input.
+     **/
+    public $showMap = true;
     /**
      * @var array Html options to be applied to the map square.
      */
@@ -65,7 +69,33 @@ class GeoSearch extends LocationWidget
         $lonId = Json::encode(Html::getInputId($this->model, $this->lonAttribute));
         $latId = Json::encode(Html::getInputId($this->model, $this->latAttribute));
         $mapId = Json::encode($this->mapOptions['id']);
+        
+        if ($this->showMap) {
+            // If the map has to be shown, better to register it BEFORE the javascript code that may add markers to it.
+            $mapHtml = GoogleMap::widget([ // mapHtml is saved, to be appended later to the output string.
+                'model' => $this->model,
+                'latAttribute' => $this->latAttribute,
+                'lonAttribute' => $this->lonAttribute,
+                'options' => $this->mapOptions,
+            ]);
+        }
 
+        $this->registerAtocompleteScript();
+        if ($this->askForLocation && !$this->model->{$this->attribute}) {
+            $this->registerAskLocationScript();
+        }
+
+        if ($this->showMap) {
+            $html .= $mapHtml;
+        }
+
+        return $html;
+    }
+    
+    /**
+     * Registers the JS code that gives the autocomplete search input its active functionality.
+     **/
+    protected function registerAutocompleteScript() {
         $script=<<<JS
 var input = document.getElementById($inputId);
 var lonInput = document.getElementById($lonId);
@@ -95,15 +125,16 @@ input.addEventListener('input', function () {
 });
 JS;
 
-
-
         $this->view->registerJs($script);
+    }
+    
+    /**
+     * Registers the JS code that ask the user for their location and sets the position into the lat & lon inputs.
+     **/
+    protected function registerAskLocationScript() {
+        $yourLocationLabel = Json::encode(\Yii::t('app', "Your current location"));
 
-
-        if ($this->askForLocation && !$this->model->{$this->attribute}) {
-            $yourLocationLabel = Json::encode(\Yii::t('app', "Your current location"));
-
-            $script = <<<JS
+        $script = <<<JS
 if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function (position) {
         var input = document.getElementById($inputId);
@@ -114,17 +145,6 @@ if (navigator.geolocation) {
     });    
 }
 JS;
-            $this->view->registerJs($script);
-
-        }
-
-        $html .= GoogleMap::widget([
-            'model' => $this->model,
-            'latAttribute' => $this->latAttribute,
-            'lonAttribute' => $this->lonAttribute,
-            'options' => $this->mapOptions,
-        ]);
-
-        return $html;
+        $this->view->registerJs($script);
     }
 }
