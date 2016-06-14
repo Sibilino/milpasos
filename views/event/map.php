@@ -66,7 +66,10 @@ $features = array_map(function (Event $e) {
             <?= $form->field($model, 'groupIds')->dropDownList(ArrayHelper::map(Group::find()->orderBy('name')->asArray()->all(), 'id', 'name'), ['multiple'=>true]) ?>
             <?= $form->field($model, 'danceIds')->dropDownList(ArrayHelper::map(Dance::find()->orderBy('name')->asArray()->all(), 'id', 'name'), ['multiple'=>true]) ?>
             <?= $form->field($model, 'maxPrice')->widget(PriceInput::className()) ?>
-            <?= $form->field($model, 'address')->widget(GeoSearch::className(), ['askForLocation' => true]) ?>
+            <?= $form->field($model, 'address')->widget(GeoSearch::className(), [
+                'askForLocation' => true,
+                'showMap' => false,
+            ]) ?>
             
             <div class="form-group">
                 <div class="col-sm-8 col-sm-offset-4">
