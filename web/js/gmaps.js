@@ -88,6 +88,21 @@ milpasos.gmaps = (function ($) {
                 return data_[mapId].markers;
             }
             return null;
+        },
+        /**
+         * Removes all markers from the map with the given id.
+         * @param mapId
+         * @return boolean True on success, false if the mapId was not found.
+         **/
+        clearMarkers: function (mapId) {
+            if (mapId in data_) {
+                for(var i=0;i<data_[mapId].markers.length;i++) {
+                    data_[mapId].markers[i].setMap(null);
+                }
+                data_[mapId].markers = [];
+                return true;
+            }
+            return false;
         }
     };
 })(jQuery);
