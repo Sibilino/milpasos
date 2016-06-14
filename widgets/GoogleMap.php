@@ -66,7 +66,7 @@ class GoogleMap extends LocationWidget
             'center' => $mapCenter,
             'zoom' => $this->isLatLngSet() ? $this->markerZoom : $this->defaultZoom,
         ]);
-        $markers = Json::encode($this->isLatLngSet() ? ['position'=>$mapCenter] : []);
+        $markers = Json::encode($this->isLatLngSet() ? [['position'=>$mapCenter]] : []);
         
         $this->view->registerJs("milpasos.gmaps.addMap($mapId, $config, $markers);");
 
