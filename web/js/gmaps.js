@@ -73,12 +73,12 @@ milpasos.gmaps = (function ($) {
         },
         /**
          * Returns the array of the markers added with to the map with the given id, or null if the id is not found.
-         * @param id
+         * @param mapId
          * @returns array|null
          */
-        getMarkers: function (id) {
-            if (id in data_) {
-                return data_[id].markers;
+        getMarkers: function (mapId) {
+            if (mapId in data_) {
+                return data_[mapId].markers;
             }
             return null;
         }
