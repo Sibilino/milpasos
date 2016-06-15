@@ -225,6 +225,24 @@ class EventQuery extends ActiveQuery
     {
         return $this->andWhere(['>=','end_date', date('Y-m-d')]);
     }
+    
+    /**
+     * Selects the Events are at the given $lon $lat, inside a rectangle with the given tolerances as sides.
+     * @param number $lon 
+     * @param number $lat
+     * @param number $lonTolerance Optional, default 5.
+     * @param number $latTolerance Optional, default 5.
+     * @return $this
+     */
+    public function near($lon, $lat, $lonTolerance = 5, $latTolerance = 5)
+    {
+        return $this
+            ->andFilterWhere(['>=', 'lon', $lon - $toleranceDegrees/2])
+            ->andFilterWhere(['<=', 'lon', $lon + $toleranceDegrees/2])
+            ->andFilterWhere(['>=', 'lat', $lat - $toleranceDegrees/2])
+            ->andFilterWhere(['<=', 'lat', $lat + $toleranceDegrees/2])
+        ;
+    }
 
     /**
      * Selects the Events that correspond to the filtering data passed in $form, except for Price.
