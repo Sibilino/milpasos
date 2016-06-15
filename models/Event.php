@@ -238,10 +238,10 @@ class EventQuery extends ActiveQuery
     public function near($lon, $lat, $lonTolerance = 5, $latTolerance = 5)
     {
         return $this
-            ->andFilterWhere(['>=', 'lon', $lon - $toleranceDegrees/2])
-            ->andFilterWhere(['<=', 'lon', $lon + $toleranceDegrees/2])
-            ->andFilterWhere(['>=', 'lat', $lat - $toleranceDegrees/2])
-            ->andFilterWhere(['<=', 'lat', $lat + $toleranceDegrees/2])
+            ->andFilterWhere(['>=', 'lon', $lon - $lonTolerance/2])
+            ->andFilterWhere(['<=', 'lon', $lon + $lonTolerance/2])
+            ->andFilterWhere(['>=', 'lat', $lat - $latTolerance/2])
+            ->andFilterWhere(['<=', 'lat', $lat + $latTolerance/2])
         ;
     }
 
