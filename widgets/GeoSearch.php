@@ -34,6 +34,18 @@ class GeoSearch extends LocationWidget
      * @var boolean Whether to ask the user for his location when the model's attribute is empty. Default false.
      */
     public $askForLocation = false;
+    /**
+     * Additional JavaScript function to be assigend to the search field's "place_changed" event. Must not be plain string.
+     * The function will have access to the following variables:
+     * <ul>
+     * <li>input</li>
+     * <li>lonInput</li>
+     * <li>latInput</li>
+     * <li>autocomplete</li>
+     * </ul>
+     * @var string
+     **/
+    public $onPlaceChanged = '';
     
     /**
      * @var string Json representation of the string holding the search input's id.
@@ -112,6 +124,7 @@ class GeoSearch extends LocationWidget
      * Registers the JS code that gives the autocomplete search input its active functionality.
      **/
     protected function registerAutocompleteScript() {
+        $customListener = $this->onPlaceChanged ? "autocomplete.addListener('place_changed', $this->onPlaceChanged);" : '';
         $script=<<<JS
 var input = document.getElementById($this->_inputId);
 var lonInput = document.getElementById($this->_lonId);
@@ -133,6 +146,7 @@ milpasos.gmaps.whenReady(function () {
             });
         }
     });
+    $customListener
 });
 
 input.addEventListener('input', function () {
