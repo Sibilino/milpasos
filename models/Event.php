@@ -228,6 +228,7 @@ class EventQuery extends ActiveQuery
     
     /**
      * Selects the Events are at the given $lon $lat, inside a rectangle with the given tolerances as sides.
+     * Uses andFilterWhere for all the added conditions.
      * @param number $lon 
      * @param number $lat
      * @param number $lonTolerance Optional, default 5.
@@ -258,6 +259,7 @@ class EventQuery extends ActiveQuery
             ->andFilterWhere(['>=','end_date', $form->from_date])
             ->andFilterWhere(['dance.id' => $form->danceIds])
             ->andFilterWhere(['group.id' => $form->groupIds])
+            ->near($form->lon, $form->lat)
             ->andWhere(['pass.full' => 1])
         ;
     }
