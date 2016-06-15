@@ -227,11 +227,11 @@ class EventQuery extends ActiveQuery
     }
 
     /**
-     * Selects the Events that correspond to the filtering data passed in $form.
+     * Selects the Events that correspond to the filtering data passed in $form, except for Price.
      * @param MapForm $form
      * @return $this
      */
-    public function searchCharacteristics(MapForm $form)
+    public function fromFormWithoutPrice(MapForm $form)
     {
         return $this
             ->joinWith(['dances', 'groups'], false) // Do not eager load these potentially heavy relations
@@ -250,7 +250,7 @@ class EventQuery extends ActiveQuery
      */
     public function allFromMapForm(MapForm $form)
     {
-        $events = $this->searchCharacteristics($form)->all();
+        $events = $this->fromFormWithoutPrice($form)->all();
         if ($form->maxPrice) {
             // Filter events by maximum price
             $maxEuros = Yii::$app->currencyConverter->toEur($form->maxPrice, $form->currency);
