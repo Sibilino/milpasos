@@ -6,7 +6,7 @@ use yii\base\InvalidConfigException;
 use \yii\web\AssetBundle;
 
 /**
- * Class MapsAsset registers the Google Maps API library.
+ * Class GMapsLibrary registers the Google Maps API library.
  * This bundle requires the $key property, configured by the Asset Manager.
  * For example in the app's components config:
  * 'assetManager' => [
