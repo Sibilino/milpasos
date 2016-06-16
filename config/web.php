@@ -49,7 +49,7 @@ $config = yii\helpers\ArrayHelper::merge([
             ],
             'assetManager' => [
                 'bundles' => [
-                    'app\widgets\assets\MapsAsset' => [
+                    'app\widgets\assets\GMapsLibrary' => [
                         'key' => 'AIzaSyBEr0tOImJExGdG9hriZazaa1zgZbLhu7Y',
                     ],
                 ]
