@@ -27,7 +27,7 @@ class GMapsLibrary extends AssetBundle
         'defer' => true,
     ];
     public $depends = [
-        'app\assets\GMapsModule',
+        'app\widgets\assets\GMapsModule',
     ];
 
     public function init()
