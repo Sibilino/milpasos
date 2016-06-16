@@ -3,7 +3,7 @@
 namespace app\widgets;
 
 use app\assets\MilpasosAsset;
-use app\widgets\assets\MapsAsset;
+use app\widgets\assets\GMapsLibrary;
 use yii\base\InvalidConfigException;
 use yii\helpers\Html;
 use yii\widgets\InputWidget;
@@ -44,7 +44,7 @@ abstract class LocationWidget extends InputWidget
     public function run()
     {
         $html = $this->renderWidget();
-        MapsAsset::register($this->view);
+        GMapsLibrary::register($this->view);
         return $html;
     }
 
