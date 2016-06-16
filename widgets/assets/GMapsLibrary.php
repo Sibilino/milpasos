@@ -11,17 +11,16 @@ use \yii\web\AssetBundle;
  * For example in the app's components config:
  * 'assetManager' => [
  *       'bundles' => [
- *           'app\widgets\assets\MapsAsset' => [
+ *           'app\widgets\assets\GMapsLibrary' => [
  *                  'key' => 'your_key',
  *               ],
  *           ]
  *       ],
  * @package app\widgets\assets
  */
-class MapsAsset extends AssetBundle
+class GMapsLibrary extends AssetBundle
 {
     public $key;
-    public $baseUrl = '@web';
 
     public $jsOptions = [
         'async' => true,
@@ -29,9 +28,6 @@ class MapsAsset extends AssetBundle
     ];
     public $depends = [
         'app\assets\MilpasosAsset',
-    ];
-    public $js = [
-        'js/gmaps.js',
     ];
 
     public function init()
