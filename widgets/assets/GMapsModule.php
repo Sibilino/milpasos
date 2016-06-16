@@ -16,6 +16,5 @@ class GMapsModule extends AssetBundle
     ];
     public $depends = [
         'app\assets\MilpasosAsset',
-        'app\assets\GMapsLibrary',
     ];
 }
