@@ -2,7 +2,7 @@
 
 namespace app\widgets;
 
-use app\widgets\assets\MapsAsset;
+use app\widgets\assets\GMapsLibrary;
 use yii\helpers\Html;
 use yii\helpers\Json;
 
@@ -12,7 +12,7 @@ use yii\helpers\Json;
  * The Google Maps library also requires a key to be specified in your app's configuration:
  * 'assetManager' => [
  *       'bundles' => [
- *           'app\widgets\assets\MapsAsset' => [
+ *           'app\widgets\assets\GMapsLibrary' => [
  *                  'key' => 'your_key',
  *               ],
  *           ]
@@ -54,7 +54,7 @@ class GoogleMap extends LocationWidget
      */
     protected function renderWidget()
     {
-        MapsAsset::register($this->view);
+        GMapsLibrary::register($this->view);
         
         $mapCenter = [
             'lat' => $this->isLatLngSet() ? $this->getLat() : $this->defaultLat,
