@@ -67,7 +67,7 @@ $features = array_map(function (Event $e) {
             <?= $form->field($model, 'danceIds')->dropDownList(ArrayHelper::map(Dance::find()->orderBy('name')->asArray()->all(), 'id', 'name'), ['multiple'=>true]) ?>
             <?= $form->field($model, 'maxPrice')->widget(PriceInput::className()) ?>
             <?= $form->field($model, 'address')->widget(GeoSearch::className(), [
-                'askForLocation' => true,
+                'currentLocationButton' => true,
                 'showMap' => false,
             ]) ?>
             

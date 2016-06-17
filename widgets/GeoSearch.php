@@ -31,9 +31,11 @@ class GeoSearch extends LocationWidget
      */
     public $mapOptions = [];
     /**
-     * @var boolean Whether to ask the user for his location when the model's attribute is empty. Default false.
+     * Whether to also show a button that set the user's current location in the lon lat fields.
+     * Optional, default false.
+     * @var boolean
      */
-    public $askForLocation = false;
+    public $currentLocationButton = false;
     /**
      * Additional JavaScript function to be assigend to the search field's "place_changed" event. Must not be plain string.
      * The function will have access to the following variables:
@@ -76,9 +78,6 @@ class GeoSearch extends LocationWidget
         if (!isset($this->options['class'])) {
             $this->options['class'] = 'form-control';
         }
-        if ($this->askForLocation) {
-            Html::addCssClass($this->options, 'has-location-btn');
-        }
         if (!isset($this->mapOptions['id'])) {
             $this->mapOptions['id'] = $this->options['id'].'-gmapwgt';
         }
@@ -99,7 +98,7 @@ class GeoSearch extends LocationWidget
         
         $html = Html::activeHiddenInput($this->model, $this->lonAttribute);
         $html .= Html::activeHiddenInput($this->model, $this->latAttribute);
-        $html .= Html::beginTag('div', ['class'=>'input-group']);
+        $html .= Html::beginTag('div', $this->currentLocationButton ? ['class'=>'input-group'] : []);
         $html .= Html::activeTextInput($this->model, $this->attribute, $this->options);
         
         if ($this->showMap) {
@@ -114,7 +113,7 @@ class GeoSearch extends LocationWidget
 
         $this->registerAutocompleteScript();
 
-        if ($this->askForLocation && !$this->model->{$this->attribute}) {
+        if ($this->currentLocationButton) {
             $html .= $this->locationButton();
         }
 
@@ -165,9 +164,12 @@ JS;
         $this->view->registerJs($script);
     }
 
+    /**
+     * @return string Generates the button that sets the user's current location.
+     */
     protected function locationButton()
     {
-        $this->registerAskLocationScript();
+        $this->registerLocationScript();
         $icon = Html::tag('span', '', ['class'=>'glyphicon glyphicon-screenshot']);
         $button = Html::button($icon, ['id' => $this->id.'-loc-btn', 'class' => 'btn btn-default']);
         return Html::tag('span', $button, ['class'=>'input-group-btn']);
@@ -176,7 +178,7 @@ JS;
     /**
      * Registers the JS code that ask the user for their location and sets the position into the lat & lon inputs.
      **/
-    protected function registerAskLocationScript() {
+    protected function registerLocationScript() {
         $yourLocationLabel = Json::encode(\Yii::t('app', "Your current location"));
         $buttonId = Json::encode($this->id.'-loc-btn');
 
