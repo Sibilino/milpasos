@@ -228,21 +228,25 @@ class EventQuery extends ActiveQuery
     
     /**
      * Selects the Events are at the given $lon $lat, inside a rectangle with the given tolerances as sides.
-     * Uses andFilterWhere for all the added conditions.
+     * This condition is ignored if both $lon and $lat are null.
      * @param number $lon 
      * @param number $lat
-     * @param number $lonTolerance Optional, default 5.
-     * @param number $latTolerance Optional, default 5.
+     * @param number $lonTolerance Optional, default 10.
+     * @param number $latTolerance Optional, default 10.
      * @return $this
      */
-    public function near($lon, $lat, $lonTolerance = 5, $latTolerance = 5)
+    public function near($lon, $lat, $lonTolerance = 10, $latTolerance = 10)
     {
+        if ($lat === null && $lon === null) {
+            return $this;
+        }
         return $this
-            ->andFilterWhere(['>=', 'lon', $lon - $lonTolerance/2])
-            ->andFilterWhere(['<=', 'lon', $lon + $lonTolerance/2])
-            ->andFilterWhere(['>=', 'lat', $lat - $latTolerance/2])
-            ->andFilterWhere(['<=', 'lat', $lat + $latTolerance/2])
+            ->andWhere(['>=', 'lon', $lon - $lonTolerance/2])
+            ->andWhere(['<=', 'lon', $lon + $lonTolerance/2])
+            ->andWhere(['>=', 'lat', $lat - $latTolerance/2])
+            ->andWhere(['<=', 'lat', $lat + $latTolerance/2])
         ;
+
     }
 
     /**
