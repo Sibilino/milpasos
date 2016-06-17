@@ -76,6 +76,9 @@ class GeoSearch extends LocationWidget
         if (!isset($this->options['class'])) {
             $this->options['class'] = 'form-control';
         }
+        if ($this->askForLocation) {
+            Html::addCssClass($this->options, 'has-location-btn');
+        }
         if (!isset($this->mapOptions['id'])) {
             $this->mapOptions['id'] = $this->options['id'].'-gmapwgt';
         }
@@ -96,6 +99,7 @@ class GeoSearch extends LocationWidget
         
         $html = Html::activeHiddenInput($this->model, $this->lonAttribute);
         $html .= Html::activeHiddenInput($this->model, $this->latAttribute);
+        $html .= Html::beginTag('div', ['class'=>'input-group']);
         $html .= Html::activeTextInput($this->model, $this->attribute, $this->options);
         
         if ($this->showMap) {
@@ -109,9 +113,12 @@ class GeoSearch extends LocationWidget
         }
 
         $this->registerAutocompleteScript();
+
         if ($this->askForLocation && !$this->model->{$this->attribute}) {
-            $this->registerAskLocationScript();
+            $html .= $this->locationButton();
         }
+
+        $html .= Html::endTag('div');
 
         if ($this->showMap) {
             $html .= $mapHtml;
@@ -157,25 +164,39 @@ JS;
 
         $this->view->registerJs($script);
     }
+
+    protected function locationButton()
+    {
+        $this->registerAskLocationScript();
+        $icon = Html::tag('span', '', ['class'=>'glyphicon glyphicon-screenshot']);
+        $button = Html::button($icon, ['id' => $this->id.'-loc-btn', 'class' => 'btn btn-default']);
+        return Html::tag('span', $button, ['class'=>'input-group-btn']);
+    }
     
     /**
      * Registers the JS code that ask the user for their location and sets the position into the lat & lon inputs.
      **/
     protected function registerAskLocationScript() {
         $yourLocationLabel = Json::encode(\Yii::t('app', "Your current location"));
+        $buttonId = Json::encode($this->id.'-loc-btn');
 
         $script = <<<JS
+var locButton = document.getElementById($buttonId);
 if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(function (position) {
-        var input = document.getElementById($this->_inputId);
-        input.value = $yourLocationLabel;
-        input.addEventListener('focus', function (e) {
-            e.target.removeEventListener(e.type, arguments.callee); // one-time event
-            this.value = '';
-        });
-        document.getElementById($this->_lonId).value = position.coords.latitude;
-        document.getElementById($this->_latId).value = position.coords.latitude;
+    locButton.addEventListener('click', function (e) {
+        navigator.geolocation.getCurrentPosition(function (position) {
+            var input = document.getElementById($this->_inputId);
+            input.value = $yourLocationLabel;
+            input.addEventListener('focus', function (e) {
+                e.target.removeEventListener(e.type, arguments.callee); // one-time event
+                this.value = '';
+            });
+            document.getElementById($this->_lonId).value = position.coords.latitude;
+            document.getElementById($this->_latId).value = position.coords.latitude;
+        }); 
     });
+} else {
+    locButton.disabled = true;
 }
 JS;
         $this->view->registerJs($script);
