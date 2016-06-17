@@ -237,15 +237,16 @@ class EventQuery extends ActiveQuery
      */
     public function near($lon, $lat, $lonTolerance = 10, $latTolerance = 10)
     {
-        if ($lat === null && $lon === null) {
-            return $this;
+        if (is_numeric($lon) && is_numeric($lat)) {
+            return $this
+                ->andWhere(['>=', 'lon', $lon - $lonTolerance/2])
+                ->andWhere(['<=', 'lon', $lon + $lonTolerance/2])
+                ->andWhere(['>=', 'lat', $lat - $latTolerance/2])
+                ->andWhere(['<=', 'lat', $lat + $latTolerance/2])
+            ;
         }
-        return $this
-            ->andWhere(['>=', 'lon', $lon - $lonTolerance/2])
-            ->andWhere(['<=', 'lon', $lon + $lonTolerance/2])
-            ->andWhere(['>=', 'lat', $lat - $latTolerance/2])
-            ->andWhere(['<=', 'lat', $lat + $latTolerance/2])
-        ;
+
+        return $this;
 
     }
 

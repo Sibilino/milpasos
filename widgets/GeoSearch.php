@@ -188,13 +188,17 @@ if (navigator.geolocation) {
     locButton.addEventListener('click', function (e) {
         navigator.geolocation.getCurrentPosition(function (position) {
             var input = document.getElementById($this->_inputId);
+            var lonInput = document.getElementById($this->_lonId);
+            var latInput = document.getElementById($this->_latId);
             input.value = $yourLocationLabel;
             input.addEventListener('focus', function (e) {
                 e.target.removeEventListener(e.type, arguments.callee); // one-time event
                 this.value = '';
+                lonInput.value = '';
+                latInput.value = '';
             });
-            document.getElementById($this->_lonId).value = position.coords.latitude;
-            document.getElementById($this->_latId).value = position.coords.latitude;
+            lonInput.value = position.coords.latitude;
+            latInput.value = position.coords.latitude;
         }); 
     });
 } else {
