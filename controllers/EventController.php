@@ -10,6 +10,7 @@ use app\models\Pass;
 use Yii;
 use app\models\Event;
 use app\models\EventSearch;
+use yii\helpers\ArrayHelper;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use app\models\Link;
@@ -152,11 +153,15 @@ class EventController extends Controller
         $mapForm = new MapForm([
             'from_date' => date('Y-m-d'),
         ]);
+        
         $mapForm->load(Yii::$app->request->post());
         $mapForm->validate();
         
         $listForm = new EventListForm();
-        $listForm->load(Yii::$app->request->get());
+        if (!$listForm->load(Yii::$app->request->get())) {
+            // No events requested. By default, show all events from the map selection.
+            $listForm->eventIds = ArrayHelper::getColumn($mapForm->events, 'id');
+        }
         $listForm->validate();
         
         return $this->render('map', [
