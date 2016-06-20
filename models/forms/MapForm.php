@@ -51,6 +51,11 @@ class MapForm extends Model
      * @var float The latitude of the position at which to center the event search.
      */
     public $lat;
+    
+    /**
+     * @var Event[]|null Cache of event objects to prevent multiple db aceesses per request.
+     **/
+    private _events;
 
     public function rules()
     {
@@ -97,12 +102,15 @@ class MapForm extends Model
     }
 
     /**
-     * Returns the Events found using the filtering conditions in this MapForm.
+     * Returns the Events found using the filtering conditions in this MapForm, and caches the results.
      * @return Event[]
      **/
     public function getEvents()
     {
-        return Event::find()->allFromMapForm($this);
+        if (!isset($this->_events)) {
+            $this->_events = Event::find()->allFromMapForm($this);
+        }
+        return $this->_events;
     }
 
 }
