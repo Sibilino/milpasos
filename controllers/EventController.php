@@ -3,7 +3,9 @@
 namespace app\controllers;
 
 use app\behaviors\RememberLastPageBehavior;
+use app\models\forms\EventListForm;
 use app\models\forms\MapForm;
+use app\models\forms\EventListForm;
 use app\models\Pass;
 use Yii;
 use app\models\Event;
@@ -143,23 +145,23 @@ class EventController extends Controller
 
     /**
      * Shows a map-based event search page.
-     * @param array $selectionIds Array of the ids of the events to be shown in detail next to the map.
      * @return string
      */
     public function actionMap()
     {
-        $model = new MapForm([
+        $mapForm = new MapForm([
             'from_date' => date('Y-m-d'),
         ]);
-        $model->load(Yii::$app->request->post());
-        $model->load(Yii::$app->request->get());
-        $model->validate();
+        $mapForm->load(Yii::$app->request->post());
+        $mapForm->validate();
         
-        $events = Event::find()->allFromMapForm($model);
-
+        $listForm = new EventListForm();
+        $listForm->load(Yii::$app->request->get());
+        $listForm->validate();
+        
         return $this->render('map', [
-            'model' => $model,
-            'events' => $events,
+            'mapForm' => $mapForm,
+            'listForm' => $listForm,
         ]);
     }
 
