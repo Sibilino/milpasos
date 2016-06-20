@@ -1,7 +1,8 @@
 <?php
 
 /* @var $this yii\web\View */
-/* @var $model app\models\forms\MapForm */
+/* @var $mapForm app\models\forms\MapForm */
+/* @var $listForm app\models\forms\EventListForm */
 /* @var $events app\models\Event[] */
 
 use app\models\Event;
@@ -27,7 +28,7 @@ $features = array_map(function (Event $e) {
         'geometry' => new OL('geom.Point', new OL('proj.fromLonLat', [$e->lon,$e->lat])),
         'eventId' => $e->id,
     ]);
-}, $events);
+}, $mapForm->events);
 
 ?>
 
@@ -51,7 +52,7 @@ $features = array_map(function (Event $e) {
 
             <?= DateRangePicker::widget([
                 'form' => $form,
-                'model' => $model,
+                'model' => $mapForm,
                 'fromAttr' => 'from_date',
                 'toAttr' => 'to_date',
                 'pickerConfig' => [
@@ -63,10 +64,10 @@ $features = array_map(function (Event $e) {
 
         </div>
         <div>
-            <?= $form->field($model, 'groupIds')->dropDownList(ArrayHelper::map(Group::find()->orderBy('name')->asArray()->all(), 'id', 'name'), ['multiple'=>true]) ?>
-            <?= $form->field($model, 'danceIds')->dropDownList(ArrayHelper::map(Dance::find()->orderBy('name')->asArray()->all(), 'id', 'name'), ['multiple'=>true]) ?>
-            <?= $form->field($model, 'maxPrice')->widget(PriceInput::className()) ?>
-            <?= $form->field($model, 'address')->widget(GeoSearch::className(), [
+            <?= $form->field($mapForm, 'groupIds')->dropDownList(ArrayHelper::map(Group::find()->orderBy('name')->asArray()->all(), 'id', 'name'), ['multiple'=>true]) ?>
+            <?= $form->field($mapForm, 'danceIds')->dropDownList(ArrayHelper::map(Dance::find()->orderBy('name')->asArray()->all(), 'id', 'name'), ['multiple'=>true]) ?>
+            <?= $form->field($mapForm, 'maxPrice')->widget(PriceInput::className()) ?>
+            <?= $form->field($mapForm, 'address')->widget(GeoSearch::className(), [
                 'currentLocationButton' => true,
                 'showMap' => false,
             ]) ?>
@@ -147,7 +148,7 @@ $features = array_map(function (Event $e) {
         'gridOptions' => [
             'emptyText' => Yii::t('app', 'Select an event on the map.'),
             'dataProvider' => new ActiveDataProvider([
-                'query' => Event::find()->where(['id'=>$model->eventIds]),
+                'query' => Event::find()->where(['id'=>$listForm->eventIds]),
                 'sort' => [
                     'attributes' => ['start_date', 'end_date'],
                     'defaultOrder' => ['start_date'=>SORT_ASC],
@@ -181,8 +182,8 @@ $features = array_map(function (Event $e) {
         ],
     ]) ?>
 
-    <?= $form->field($model, 'eventIds')
-        ->hiddenInput(['value'=>implode(',',$model->eventIds)])
+    <?= $form->field($listForm, 'eventIds')
+        ->hiddenInput(['value'=>implode(',',$listForm->eventIds), 'id'=>'event-list-input'])
         ->label(false)->error(false) ?>
 
     <?php GridForm::end() ?>
