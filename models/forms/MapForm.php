@@ -2,6 +2,7 @@
 
 namespace app\models\forms;
 
+use app\models\Event;
 use app\models\Dance;
 use app\models\Group;
 use Yii;
@@ -9,6 +10,7 @@ use yii\base\Model;
 
 /**
  * Represents the data in the user filters and other inputs that control the events shown in the main Map.
+ * @property Event[] $events Returns the Events found using the filtering conditions in this MapForm.
  * @package app\models\forms
  */
 class MapForm extends Model
@@ -94,5 +96,13 @@ class MapForm extends Model
         ];
     }
 
+    /**
+     * Returns the Events found using the filtering conditions in this MapForm.
+     * @return Event[]
+     **/
+    public function getEvents()
+    {
+        return Event::find()->allFromMapForm($this);
+    }
 
 }
