@@ -29,7 +29,7 @@ sibilino.olwidget.mapOptions["main-map"] = (function ($) {
             idLists.push(cluster.get("features").map(function ($f) {return $f.get("eventId");}).join('-'));
         });
         $('#selection-input').val(idLists.join('-'));
-        $('#selection-form').submit();
+        $('#selection-input').closest('form').submit();
     });
     return {
         interactions: ol.interaction.defaults().extend([select])

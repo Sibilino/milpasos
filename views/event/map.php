@@ -139,7 +139,6 @@ $features = array_map(function (Event $e) {
 <div>
 
     <?php $form = GridForm::begin([
-        'id' => 'selection-form',
         'method' => 'get',
         'options' => [
             'style' => ['display' => 'none'],
