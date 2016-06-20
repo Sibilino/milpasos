@@ -55,7 +55,7 @@ class MapForm extends Model
     /**
      * @var Event[]|null Cache of event objects to prevent multiple db aceesses per request.
      **/
-    private _events;
+    private $_events;
 
     public function rules()
     {

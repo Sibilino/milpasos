@@ -3,7 +3,6 @@
 namespace app\controllers;
 
 use app\behaviors\RememberLastPageBehavior;
-use app\models\forms\EventListForm;
 use app\models\forms\MapForm;
 use app\models\forms\EventListForm;
 use app\models\Pass;

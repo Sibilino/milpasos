@@ -1,5 +1,6 @@
-?php
+<?php
 namespace app\models\forms;
+
 use app\models\Event;
 use Yii;
 use yii\base\Model;
