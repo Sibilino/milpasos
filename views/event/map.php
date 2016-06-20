@@ -3,7 +3,6 @@
 /* @var $this yii\web\View */
 /* @var $mapForm app\models\forms\MapForm */
 /* @var $listForm app\models\forms\EventListForm */
-/* @var $events app\models\Event[] */
 
 use app\models\Event;
 use app\models\Dance;
