@@ -2,22 +2,17 @@
 
 namespace app\models\forms;
 
-use app\models\Event;
 use app\models\Dance;
 use app\models\Group;
 use Yii;
 use yii\base\Model;
 
 /**
- * Represents the data in the user filters and other inputs in the Map page.
+ * Represents the data in the user filters and other inputs that control the events shown in the main Map.
  * @package app\models\forms
  */
 class MapForm extends Model
 {
-    /**
-     * @var array|string Array or dash-separated list of ids of the events that the user selected in the map.
-     */
-    public $eventIds;
     /**
      * @var string The beginning of the period during which searched events must be active.
      */
@@ -58,13 +53,12 @@ class MapForm extends Model
     public function rules()
     {
         return [
-            [['eventIds', 'danceIds', 'groupIds'], 'default', 'value' => []],
-            [['eventIds', 'danceIds', 'groupIds'], 'filter', 'filter' => function ($value) {
+            [['danceIds', 'groupIds'], 'default', 'value' => []],
+            [['danceIds', 'groupIds'], 'filter', 'filter' => function ($value) {
                 return explode('-', $value);
             }, 'when' => function (MapForm $model, $attribute) {
                 return is_string($model->$attribute);
             }], // Transform dash-separated string to array
-            ['eventIds', 'each', 'rule' => ['exist', 'targetClass'=>Event::className(), 'targetAttribute'=>'id']],
             ['danceIds', 'each', 'rule' => ['exist', 'targetClass'=>Dance::className(), 'targetAttribute'=>'id']],
             ['groupIds', 'each', 'rule' => ['exist', 'targetClass'=>Group::className(), 'targetAttribute'=>'id']],
             [['from_date', 'to_date'], 'date', 'format' => 'yyyy-MM-dd'],
