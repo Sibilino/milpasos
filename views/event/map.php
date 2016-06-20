@@ -183,8 +183,10 @@ $features = array_map(function (Event $e) {
     ]) ?>
 
     <?= $form->field($listForm, 'eventIds')
-        ->hiddenInput(['value'=>implode(',',$listForm->eventIds)])
-        ->label(false)->error(false) ?>
+        ->hiddenInput([
+            'value'=>implode('-',$listForm->eventIds),
+            'id'=>'selection-input',
+        ])->label(false)->error(false) ?>
 
     <?php GridForm::end() ?>
 </div>
