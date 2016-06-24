@@ -194,6 +194,22 @@ class Event extends \yii\db\ActiveRecord
     }
 
     /**
+     * Whether this Event is within $maxDistanceKm of the given $lon $lat.
+     * @param $lon
+     * @param $lat
+     * @param int $maxDistanceKm Optional, default 100.
+     * @return bool
+     */
+    public function isNear($lon, $lat, $maxDistanceKm = 100) {
+        $radiusOfEarth = 6371;// In km.
+        $diffLatitude = $lat - $this->lat;
+        $diffLongitude = $lon - $this->lon;
+        $a = sin($diffLatitude / 2) * sin($diffLatitude / 2) +
+            cos($this->lat) * cos($lat) * sin($diffLongitude / 2) * sin($diffLongitude / 2);
+        return $radiusOfEarth * 2 * asin(sqrt($a)) <= $maxDistanceKm;
+    }
+
+    /**
      * Returns the best available price for a pass for this Event.
      * @param boolean $onlyFullPass Whether to consider full passes only. Default true.
      * @return TemporaryPrice|null
