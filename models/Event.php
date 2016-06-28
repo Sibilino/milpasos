@@ -241,6 +241,30 @@ class EventQuery extends ActiveQuery
     {
         return $this->andWhere(['>=','end_date', date('Y-m-d')]);
     }
+    
+    /**
+     * Selects the Events are at the given $lon $lat, inside a rectangle with the given tolerances as sides.
+     * This condition is ignored if both $lon and $lat are null.
+     * @param number $lon 
+     * @param number $lat
+     * @param number $lonTolerance Optional, default 10.
+     * @param number $latTolerance Optional, default 10.
+     * @return $this
+     */
+    public function near($lon, $lat, $lonTolerance = 10, $latTolerance = 10)
+    {
+        if (is_numeric($lon) && is_numeric($lat)) {
+            return $this
+                ->andWhere(['>=', 'lon', $lon - $lonTolerance/2])
+                ->andWhere(['<=', 'lon', $lon + $lonTolerance/2])
+                ->andWhere(['>=', 'lat', $lat - $latTolerance/2])
+                ->andWhere(['<=', 'lat', $lat + $latTolerance/2])
+            ;
+        }
+
+        return $this;
+
+    }
 
     /**
      * Selects the Events that correspond to the filtering data passed in $form, except for Price.
@@ -256,6 +280,7 @@ class EventQuery extends ActiveQuery
             ->andFilterWhere(['>=','end_date', $form->from_date])
             ->andFilterWhere(['dance.id' => $form->danceIds])
             ->andFilterWhere(['group.id' => $form->groupIds])
+            ->near($form->lon, $form->lat)
             ->andWhere(['pass.full' => 1])
         ;
     }
