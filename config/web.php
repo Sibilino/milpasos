@@ -58,9 +58,9 @@ $config = yii\helpers\ArrayHelper::merge([
             'currencyConverter' => [
                 'class' => 'app\components\MockCurrencyConverter',
                 'rates' => [
-                    'CHF' => 0.91,
+                    'CHF' => 0.92,
                     'EUR' => 1,
-                    'GBP' => 1.27,
+                    'GBP' => 1.21,
                     'HRK' => 0.13,
                     'USD' => 0.9,
                 ],
