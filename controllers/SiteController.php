@@ -49,7 +49,7 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
-        return $this->redirect(['event/map']);
+        return $this->goHome();
     }
 
     public function actionLogin()
