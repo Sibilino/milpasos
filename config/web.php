@@ -5,6 +5,7 @@ $params = require(__DIR__ . '/params.php');
 $config = yii\helpers\ArrayHelper::merge([
         'id' => 'basic',
         'basePath' => dirname(__DIR__),
+        'homeUrl' => ['event/map'],
         'bootstrap' => ['log'],
         'components' => [
             'cache' => [
