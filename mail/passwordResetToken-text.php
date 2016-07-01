@@ -1,7 +1,5 @@
 <?php
 
-use Yii;
-
 /* @var $this yii\web\View */
 /* @var $user app\models\User */
 
