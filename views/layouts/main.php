@@ -35,22 +35,26 @@ MilpasosAsset::register($this);
             'class' => 'navbar-inverse navbar-fixed-top',
         ],
     ]);
+    $items = [
+        ['label' => Yii::t('app', "Home"), 'url' => ['/event/map']],
+        ['label' => Yii::t('app', "Events"), 'url' => ['/event/index']],
+        ['label' => Yii::t('app', "Passes"), 'url' => ['/pass/index']],
+        ['label' => Yii::t('app', "Artists"), 'url' => ['/artist/index']],
+        ['label' => Yii::t('app', "Groups"), 'url' => ['/group/index']],
+    ];
+    if (Yii::$app->user->isGuest) {
+        $items []= ['label' => 'Login', 'url' => ['/site/login']];
+    } else {
+        $items []= ['label' => Yii::t('app', "Sign up"), 'url' => ['/site/signup']];
+        $items []= [
+            'label' => 'Logout (' . Yii::$app->user->identity->username . ')',
+            'url' => ['/site/logout'],
+            'linkOptions' => ['data-method' => 'post']
+        ];
+    }
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
-        'items' => [
-            ['label' => Yii::t('app', "Home"), 'url' => ['/event/map']],
-            ['label' => Yii::t('app', "Events"), 'url' => ['/event/index']],
-            ['label' => Yii::t('app', "Passes"), 'url' => ['/pass/index']],
-            ['label' => Yii::t('app', "Artists"), 'url' => ['/artist/index']],
-            ['label' => Yii::t('app', "Groups"), 'url' => ['/group/index']],
-            Yii::$app->user->isGuest ?
-                ['label' => 'Login', 'url' => ['/site/login']] :
-                [
-                    'label' => 'Logout (' . Yii::$app->user->identity->username . ')',
-                    'url' => ['/site/logout'],
-                    'linkOptions' => ['data-method' => 'post']
-                ],
-        ],
+        'items' => $items,
     ]);
     NavBar::end();
     ?>
