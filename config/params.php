@@ -9,4 +9,5 @@ return [
         'HRK' => 'kn',
         'USD' => '$',
     ],
+    'user.passwordResetTokenExpire' => 3600,
 ];
