@@ -1,5 +1,7 @@
 <?php
 
+use yii\swiftmailer\Mailer;
+
 $params = require(__DIR__ . '/params.php');
 
 $config = yii\helpers\ArrayHelper::merge([
@@ -19,7 +21,15 @@ $config = yii\helpers\ArrayHelper::merge([
                 'errorAction' => 'site/error',
             ],
             'mailer' => [
-                'class' => 'yii\swiftmailer\Mailer',
+                'class' => Mailer::className(),
+                'transport' => [
+                    'class' => 'Swift_SmtpTransport',
+                    'host' => 'smtp.sendgrid.net',
+                    'username' => 'milpasos-smtp',
+                    'password' => 'fourth4itselfnewliquid',
+                    'port' => '587',
+                    'encryption' => 'tls',
+                ],
             ],
             'log' => [
                 'traceLevel' => YII_DEBUG ? 3 : 0,
