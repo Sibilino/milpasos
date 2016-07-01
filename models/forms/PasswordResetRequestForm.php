@@ -11,6 +11,7 @@ use app\models\User;
 class PasswordResetRequestForm extends Model
 {
     public $email;
+    public $verifyCode;
 
 
     /**
@@ -27,6 +28,20 @@ class PasswordResetRequestForm extends Model
                 'filter' => ['status' => User::STATUS_ACTIVE],
                 'message' => Yii::t('app', 'There is no user with such email.'),
             ],
+            ['verifyCode', 'captcha'],
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     * @return array attribute labels (name => label)
+     * @see generateAttributeLabel()
+     */
+    public function attributeLabels()
+    {
+        return [
+            'email' => Yii::t('app', "email"),
+            'verifyCode' => Yii::t('app', "Verification Code"),
         ];
     }
 

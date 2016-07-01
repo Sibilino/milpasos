@@ -13,6 +13,7 @@ class SignupForm extends Model
     public $username;
     public $email;
     public $password;
+    public $verifyCode;
 
 
     /**
@@ -34,8 +35,25 @@ class SignupForm extends Model
 
             ['password', 'required'],
             ['password', 'string', 'min' => 6],
+            ['verifyCode', 'captcha'],
         ];
     }
+
+    /**
+     * @inheritdoc
+     * @return array attribute labels (name => label)
+     * @see generateAttributeLabel()
+     */
+    public function attributeLabels()
+    {
+        return [
+            'username' => Yii::t('app', "Username"),
+            'email' => Yii::t('app', "Email"),
+            'password' => Yii::t('app', "Password"),
+            'verifyCode' => Yii::t('app', "Verify Code"),
+        ];
+    }
+
 
     /**
      * Signs user up.
