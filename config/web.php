@@ -5,7 +5,8 @@ use yii\swiftmailer\Mailer;
 $params = require(__DIR__ . '/params.php');
 
 $config = yii\helpers\ArrayHelper::merge([
-        'id' => 'basic',
+        'id' => 'milpasos',
+        'name' => 'Milpasos.com',
         'basePath' => dirname(__DIR__),
         'homeUrl' => ['event/map'],
         'bootstrap' => ['log'],
