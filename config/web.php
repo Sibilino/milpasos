@@ -71,6 +71,13 @@ $config = yii\helpers\ArrayHelper::merge([
                     'HRK' => 0.13,
                     'USD' => 0.9,
                 ],
+                'currencyLabels' => [
+                    'EUR' => '€', // Default
+                    'CHF' => 'CHF',
+                    'GBP' => '£',
+                    'HRK' => 'kn',
+                    'USD' => '$',
+                ],
             ],
         ],
         'params' => $params,
