@@ -79,7 +79,7 @@ class MapForm extends Model
                     return empty($model->lon) && empty($model->lat);
                 }, 'message' => Yii::t('app', "Please select an address from the list of suggestions."),
             ],
-            ['currency', 'in', 'range' => array_keys(Yii::$app->params['currencies']), 'strict' => true],
+            ['currency', 'in', 'range' => array_keys(Yii::$app->currencyConverter->currencyLabels), 'strict' => true],
         ];
     }
 
