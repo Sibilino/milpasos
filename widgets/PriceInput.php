@@ -40,7 +40,7 @@ class PriceInput extends InputWidget
 
         echo Html::beginTag('div', ['class'=>'price-input-widget']);
         echo Html::activeInput('number',$this->model, $this->attribute, ArrayHelper::merge(['class'=>'form-control'], $this->options));
-        echo Html::activeDropDownList($this->model, $this->currencyAttr, Yii::$app->params['currencies'], ArrayHelper::merge(['class'=>'form-control'], $this->options));
+        echo Html::activeDropDownList($this->model, $this->currencyAttr, Yii::$app->currencyConverter->currencyLabels, ArrayHelper::merge(['class'=>'form-control'], $this->options));
         echo Html::endTag('div');
     }
 
