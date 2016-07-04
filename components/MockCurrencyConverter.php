@@ -14,6 +14,10 @@ class MockCurrencyConverter extends Component
      * Array of currency_code => rate_to_EUR
      */
     public $rates = [];
+    /**
+     * Array of currency_code => display_label
+     **/
+    public $currencyLabels = [];
 
     /**
      * Returns the equivalent price in Euros for the given amount in a configured currency.
