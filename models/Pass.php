@@ -33,7 +33,7 @@ class Pass extends ActiveRecord
      */
     public function rules()
     {
-        $currencies = Yii::$app->params['currencies'];
+        $currencies = Yii::$app->currencyConverter->currencyLabels;
         return [
             [['full', 'event_id', 'price', 'currency'], 'required'],
             [['price'], 'number', 'min' => 0],
