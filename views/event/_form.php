@@ -37,6 +37,7 @@ use yii\bootstrap\ActiveForm;
         </div>
         <div class="col-sm-6">
             <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'website')->textInput(['maxlength' => true])?>
         </div>
 
     </div>
@@ -69,8 +70,6 @@ use yii\bootstrap\ActiveForm;
         ]) ?>
     </div>
 
-    <?= $form->field($model, 'website')->textInput(['maxlength' => true])?>
-
     <?= $form->field($model, 'address')->widget(GeoSearch::className(), [
         'mapOptions' => [
             'style' => [
@@ -89,43 +88,6 @@ use yii\bootstrap\ActiveForm;
     <?php ActiveForm::end(); ?>
 
     <?php if (!$model->isNewRecord):?>
-        <?php if (isset($newLink)): ?>
-            <div id="links">
-                <h2><?= Yii::t('app', "Links") ?></h2>
-
-                <?php $form = GridForm::begin([
-                    'gridOptions' => [
-                        'dataProvider' => new ActiveDataProvider([
-                            'query' => $model->getLinks(),
-                        ]),
-                        "columns" => [
-                            [
-                                'class' => SerialColumn::className(),
-                            ],
-                            'title',
-                            [
-                                'attribute' => 'url',
-                                "format" => 'url',
-                            ],
-                            [
-                                'class' => ActionColumn::className(),
-                                'header' => 'actions',
-                                'template' => '{update}{delete}',
-                                'controller' => 'link',
-                            ],
-                        ],
-                    ],
-                ]); ?>
-
-                <?= Html::activeHiddenInput($newLink, 'event_id') ?>
-                <?= $form->field($newLink, 'title')->textInput() ?>
-                <?= $form->field($newLink, 'url')->textInput() ?>
-                <?= Html::submitButton("Add", ['class' => 'btn btn-danger']) ?>
-
-                <?php GridForm::end() ?>
-
-            </div>
-        <?php endif;?>
         <?php if (isset($newPass)): ?>
             <div id="passes">
                 <h2><?= Yii::t('app', "Passes") ?></h2>
@@ -167,6 +129,43 @@ use yii\bootstrap\ActiveForm;
 
             </div>
         <?php endif; ?>
+        <?php if (isset($newLink)): ?>
+            <div id="links">
+                <h2><?= Yii::t('app', "Other links") ?></h2>
+
+                <?php $form = GridForm::begin([
+                    'gridOptions' => [
+                        'dataProvider' => new ActiveDataProvider([
+                            'query' => $model->getLinks(),
+                        ]),
+                        "columns" => [
+                            [
+                                'class' => SerialColumn::className(),
+                            ],
+                            'title',
+                            [
+                                'attribute' => 'url',
+                                "format" => 'url',
+                            ],
+                            [
+                                'class' => ActionColumn::className(),
+                                'header' => 'actions',
+                                'template' => '{update}{delete}',
+                                'controller' => 'link',
+                            ],
+                        ],
+                    ],
+                ]); ?>
+
+                <?= Html::activeHiddenInput($newLink, 'event_id') ?>
+                <?= $form->field($newLink, 'title')->textInput() ?>
+                <?= $form->field($newLink, 'url')->textInput() ?>
+                <?= Html::submitButton("Add", ['class' => 'btn btn-danger']) ?>
+
+                <?php GridForm::end() ?>
+
+            </div>
+        <?php endif;?>
     <?php endif; ?>
 </div>
 
