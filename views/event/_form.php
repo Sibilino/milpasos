@@ -2,14 +2,11 @@
 
 use app\models\Dance;
 use app\models\Group;
-use app\models\Pass;
 use app\widgets\DateRangePicker;
 use app\widgets\GeoSearch;
 use app\widgets\GridForm;
-use app\widgets\PriceInput;
 use yii\data\ActiveDataProvider;
 use yii\grid\ActionColumn;
-use yii\grid\DataColumn;
 use yii\grid\SerialColumn;
 use yii\helpers\ArrayHelper;
 use yii\bootstrap\Html;
@@ -51,85 +48,35 @@ use yii\bootstrap\ActiveForm;
         </div>
     </div>
 
+
+
     <div class="row">
-        <?= DateRangePicker::widget([
-            'form' => $form,
-            'model' => $model,
-            'fromAttr' => 'start_date',
-            'toAttr' => 'end_date',
-            'pickerConfig' => [
-                'options' => [
-                    'class' => 'form-control',
-                ],
-            ],
-            'fieldOptions' => [
-                'options' => [
-                    'class' => 'col-sm-6',
-                ],
-            ],
-        ]) ?>
-    </div>
-
-    <?= $form->field($model, 'address')->widget(GeoSearch::className(), [
-        'mapOptions' => [
-            'style' => [
-                'width' => '200px',
-                'height' => '200px',
-            ],
-        ],
-    ]); ?>
-
-    <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), [
-            'class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
-        ]) ?>
-    </div>
-
-    <?php ActiveForm::end(); ?>
-
-    <?php if (!$model->isNewRecord):?>
-        <?php if (isset($newPass)): ?>
-            <div id="passes">
-                <h2><?= Yii::t('app', "Passes") ?></h2>
-
-                <?php $form = GridForm::begin([
-                    'gridOptions' => [
-                        'dataProvider' => new ActiveDataProvider([
-                            'query' => $model->getPasses(),
-                        ]),
-                        "columns" => [
-                            [
-                                'class' => SerialColumn::className(),
-                            ],
-                            'description',
-                            [
-                                'attribute' => 'price',
-                                'value' => function (Pass $pass, $key, $index, DataColumn $column) {
-                                    return $column->grid->formatter->asCurrency($pass->price, $pass->currency);
-                                },
-                            ],
-                            [
-                                'class' => ActionColumn::className(),
-                                'header' => 'actions',
-                                'template' => '{update}{delete}',
-                                'controller' => 'pass',
-                            ],
-                        ],
+        <div class="col-md-6">
+            <?= $form->field($model, 'address')->widget(GeoSearch::className(), [
+                'mapOptions' => [
+                    'style' => [
+                        'width' => '200px',
+                        'height' => '200px',
                     ],
-                ]); ?>
-
-                <?= Html::activeHiddenInput($newPass, 'event_id') ?>
-                <?= $form->field($newPass, 'description')->textInput(['maxlength' => true]) ?>
-                <?= $form->field($newPass, 'full')->checkbox() ?>
-                <?= $form->field($newPass, 'price')->widget(PriceInput::className()) ?>
-
-                <?= Html::submitButton("Add", ['class' => 'btn btn-danger']) ?>
-
-                <?php GridForm::end() ?>
-
-            </div>
-        <?php endif; ?>
-        <?php if (isset($newLink)): ?>
+                ],
+            ]); ?>
+        </div>
+        <div class="col-md-6">
+            <?= DateRangePicker::widget([
+                'form' => $form,
+                'model' => $model,
+                'fromAttr' => 'start_date',
+                'toAttr' => 'end_date',
+                'pickerConfig' => [
+                    'options' => [
+                        'class' => 'form-control',
+                    ],
+                ],
+            ]) ?>
+        </div>
+    </div>
+    <?php if (!$model->isNewRecord && isset($newLink)):?>
+        <div>
             <div id="links">
                 <h2><?= Yii::t('app', "Other links") ?></h2>
 
@@ -165,8 +112,17 @@ use yii\bootstrap\ActiveForm;
                 <?php GridForm::end() ?>
 
             </div>
-        <?php endif;?>
+        </div>
     <?php endif; ?>
+
+    <div class="form-group">
+        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), [
+            'class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
+        ]) ?>
+    </div>
+
+    <?php ActiveForm::end(); ?>
+
 </div>
 
 <?php

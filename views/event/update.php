@@ -1,5 +1,11 @@
 <?php
 
+use app\models\Pass;
+use yii\data\ActiveDataProvider;
+use yii\grid\ActionColumn;
+use yii\grid\DataColumn;
+use yii\grid\GridView;
+use yii\grid\SerialColumn;
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
@@ -18,10 +24,52 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <?= $this->render('_form', [
-        'model' => $model,
-        'newLink' => $newLink,
-        'newPass' => $newPass,
-    ]) ?>
+    <div class="row">
+        <div class="col-md-4">
+            <?= $this->render('_form', [
+                'model' => $model,
+                'newLink' => $newLink,
+                'newPass' => $newPass,
+            ]) ?>
+        </div>
+
+        <div class="col-md-4">
+
+                <?= $this->render('/pass/_form', [
+                    'model' => $newPass,
+                    'prices' => $newPass->generatePriceList(),
+                ]) ?>
+
+        </div>
+
+        <div class="col-md-4">
+            <h2><?= Yii::t('app', "Existing passes") ?></h2>
+
+            <?= GridView::widget([
+                'dataProvider' => new ActiveDataProvider([
+                    'query' => $model->getPasses(),
+                ]),
+                "columns" => [
+                    [
+                        'class' => SerialColumn::className(),
+                    ],
+                    'description',
+                    [
+                        'attribute' => 'price',
+                        'value' => function (Pass $pass, $key, $index, DataColumn $column) {
+                            return $column->grid->formatter->asCurrency($pass->price, $pass->currency);
+                        },
+                    ],
+                    [
+                        'class' => ActionColumn::className(),
+                        'header' => 'actions',
+                        'template' => '{update}{delete}',
+                        'controller' => 'pass',
+                    ],
+                ],
+            ]) ?>
+        </div>
+
+    </div>
 
 </div>

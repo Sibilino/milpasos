@@ -86,7 +86,6 @@ class EventController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['update', 'id' => $model->id]);
         } else {
-            $this->layout = 'fluid';
             return $this->render('create', [
                 'model' => $model,
             ]);

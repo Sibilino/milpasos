@@ -98,3 +98,7 @@ a.desc:after {
     height: 397px;
     margin-bottom: 8px;
 }
+
+.padded.container-fluid {
+    padding: 60px 25px 0;
+}
