@@ -9,6 +9,7 @@ use app\models\Pass;
 use Yii;
 use app\models\Event;
 use app\models\EventSearch;
+use yii\base\Model;
 use yii\helpers\ArrayHelper;
 use yii\filters\AccessControl;
 use yii\web\Controller;
