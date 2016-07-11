@@ -16,7 +16,6 @@ use yii\bootstrap\ActiveForm;
 /* @var $model app\models\Event */
 /* @var $form yii\bootstrap\ActiveForm */
 /* @var $newLink app\models\Link */
-/* @var $newPass app\models\Pass */
 ?>
 
 <div class="event-form">
