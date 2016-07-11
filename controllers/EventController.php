@@ -116,7 +116,14 @@ class EventController extends Controller
                 $newPass = new Pass(['event_id' => $id]);
             }
         }
-
+        
+        $prices = $newPass->generatePriceList();
+        if (Model::loadMultiple($prices, Yii::$app->request->post()) && !$newPass->hasErrors()) {
+            if ($newPass->updatePriceList($prices)) {
+                $prices = $newPass->generatePriceList();
+            }
+        }
+        
         if ($model->load(Yii::$app->request->post())) {
             if ($model->save() && !$newLink->hasErrors() && !$newPass->hasErrors()) {
                 return $this->redirect($this->lastPage);
@@ -128,6 +135,7 @@ class EventController extends Controller
             'model' => $model,
             'newLink' => $newLink,
             'newPass' => $newPass,
+            'prices' => $prices,
         ]);
     }
 
