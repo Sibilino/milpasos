@@ -21,10 +21,6 @@ use yii\helpers\ArrayHelper;
 
 <div class="pass-form">
 
-    <?php $form = ActiveForm::begin([
-        'enableClientValidation' => false,
-    ]); ?>
-
     <?= $form->field($model, 'description')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'price')->widget(PriceInput::className()) ?>
@@ -86,7 +82,5 @@ use yii\helpers\ArrayHelper;
             ],
         ]) ?>
     </div>
-    
-    <?php ActiveForm::end() ?>
 
 </div>
