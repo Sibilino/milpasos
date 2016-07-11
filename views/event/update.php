@@ -12,6 +12,7 @@ use yii\helpers\Html;
 /* @var $model app\models\Event */
 /* @var $newLink app\models\Link */
 /* @var $newPass app\models\Pass */
+/* @var $prices app\models\TemporaryPrice[] */
 
 $this->title = Yii::t('app', 'Update {modelClass}: ', [
     'modelClass' => 'Event',
@@ -29,7 +30,6 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
             <?= $this->render('_form', [
                 'model' => $model,
                 'newLink' => $newLink,
-                'newPass' => $newPass,
             ]) ?>
         </div>
 
@@ -37,7 +37,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 
                 <?= $this->render('/pass/_form', [
                     'model' => $newPass,
-                    'prices' => $newPass->generatePriceList(),
+                    'prices' => $prices,
                 ]) ?>
 
         </div>
