@@ -26,6 +26,12 @@ class GridForm extends ActiveForm
      * @var array The options for the GridView widget.
      */
     public $gridOptions = [];
+    /**
+     * Template for the widget's output, where {form} and {grid} will be replaced by the corresponding HTML.
+     * Default is '{form}{grid}'.
+     * @var string
+     */
+    public $template = '{form}{grid}';
 
     /**
      * Initializes required config, echoes the starting html tags and returns the ActiveForm object.
@@ -44,7 +50,8 @@ class GridForm extends ActiveForm
         $this->gridPjaxOptions = ArrayHelper::merge([
             'id' => $this->options['id']."-pjax-grid",
         ], $this->gridPjaxOptions);
-
+        
+        ob_start();
         Pjax::begin($this->formPjaxOptions);
         parent::init();
     }
@@ -56,8 +63,16 @@ class GridForm extends ActiveForm
     {
         parent::run();
         Pjax::end();
+        $formContent = ob_get_clean();
 
+        ob_start();
         $this->generateGrid();
+        $gridContent = ob_get_clean();
+
+        echo strtr($this->template, [
+            '{form}' => $formContent,
+            '{grid}' => $gridContent,
+        ]);
 
         $formPjaxId = $this->formPjaxOptions['id'];
         $gridPjaxId = $this->gridPjaxOptions['id'];
