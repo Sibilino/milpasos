@@ -74,46 +74,7 @@ use yii\bootstrap\ActiveForm;
             ]) ?>
         </div>
     </div>
-    <?php if (!$model->isNewRecord && isset($newLink)):?>
-        <div>
-            <div id="links">
-                <h2><?= Yii::t('app', "Other links") ?></h2>
-
-                <?php $form = GridForm::begin([
-                    'gridOptions' => [
-                        'dataProvider' => new ActiveDataProvider([
-                            'query' => $model->getLinks(),
-                        ]),
-                        "columns" => [
-                            [
-                                'class' => SerialColumn::className(),
-                            ],
-                            'title',
-                            [
-                                'attribute' => 'url',
-                                "format" => 'url',
-                            ],
-                            [
-                                'class' => ActionColumn::className(),
-                                'header' => 'actions',
-                                'template' => '{update}{delete}',
-                                'controller' => 'link',
-                            ],
-                        ],
-                    ],
-                ]); ?>
-
-                <?= Html::activeHiddenInput($newLink, 'event_id') ?>
-                <?= $form->field($newLink, 'title')->textInput() ?>
-                <?= $form->field($newLink, 'url')->textInput() ?>
-                <?= Html::submitButton("Add", ['class' => 'btn btn-danger']) ?>
-
-                <?php GridForm::end() ?>
-
-            </div>
-        </div>
-    <?php endif; ?>
-
+    
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), [
             'class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
@@ -121,6 +82,44 @@ use yii\bootstrap\ActiveForm;
     </div>
 
     <?php ActiveForm::end(); ?>
+    
+    <?php if (!$model->isNewRecord && isset($newLink)):?>
+        <div id="links">
+            <h2><?= Yii::t('app', "Other links") ?></h2>
+
+            <?php $form = GridForm::begin([
+                'gridOptions' => [
+                    'dataProvider' => new ActiveDataProvider([
+                        'query' => $model->getLinks(),
+                    ]),
+                    "columns" => [
+                        [
+                            'class' => SerialColumn::className(),
+                        ],
+                        'title',
+                        [
+                            'attribute' => 'url',
+                            "format" => 'url',
+                        ],
+                        [
+                            'class' => ActionColumn::className(),
+                            'header' => 'actions',
+                            'template' => '{update}{delete}',
+                            'controller' => 'link',
+                        ],
+                    ],
+                ],
+            ]); ?>
+
+            <?= Html::activeHiddenInput($newLink, 'event_id') ?>
+            <?= $form->field($newLink, 'title')->textInput() ?>
+            <?= $form->field($newLink, 'url')->textInput() ?>
+            <?= Html::submitButton("Add", ['class' => 'btn btn-danger']) ?>
+
+            <?php GridForm::end() ?>
+
+        </div>
+    <?php endif; ?>
 
 </div>
 
