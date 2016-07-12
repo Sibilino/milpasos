@@ -93,9 +93,7 @@ $features = array_map(function (Event $e) {
             'mapOptions' => [
                 'layers' => [
                     'Tile' => [
-                        'source' => new OL('source.MapQuest', [
-                            'layer' => 'sat',
-                        ]),
+                        'source' => new OL('source.OSM'),
                     ],
                     'Vector' => [
                         'source' => new OL('source.Cluster', [
