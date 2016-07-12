@@ -10,7 +10,6 @@ use yii\grid\DataColumn;
 use yii\grid\GridView;
 use yii\grid\SerialColumn;
 use yii\bootstrap\Html;
-use yii\bootstrap\ActiveForm;
 use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */

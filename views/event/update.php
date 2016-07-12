@@ -23,53 +23,59 @@ $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id
 $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 ?>
 <div class="event-update">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
+    
     <div class="row">
         <div class="col-md-4">
-            <?= $this->render('_form', [
-                'model' => $model,
-                'newLink' => $newLink,
-            ]) ?>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <?= $this->render('_form', [
+                        'model' => $model,
+                        'newLink' => $newLink,
+                    ]) ?>
+                </div>
+            </div>
         </div>
 
         <div class="col-md-8">
-            
-            <?php $form = GridForm::begin([
-                'gridOptions' => [
-                    'dataProvider' => new ActiveDataProvider([
-                        'query' => $model->getPasses(),
-                    ]),
-                    "columns" => [
-                        [
-                            'class' => SerialColumn::className(),
-                        ],
-                        'description',
-                        [
-                            'attribute' => 'price',
-                            'value' => function (Pass $pass, $key, $index, DataColumn $column) {
-                                return $column->grid->formatter->asCurrency($pass->price, $pass->currency);
-                            },
-                        ],
-                        [
-                            'class' => ActionColumn::className(),
-                            'header' => 'actions',
-                            'template' => '{update}{delete}',
-                            'controller' => 'pass',
-                        ],
-                    ],
-                ],
-            ]); ?>
+            <div class="panel panel-default">
+                <div class="panel-body">
 
-            <?= $this->render('/pass/_form', [
-                'model' => $newPass,
-                'prices' => $prices,
-                'form' => $form,
-            ]) ?>
-            
-            <?php GridForm::end() ?>
+                    <?php $form = GridForm::begin([
+                        'gridOptions' => [
+                            'dataProvider' => new ActiveDataProvider([
+                                'query' => $model->getPasses(),
+                            ]),
+                            "columns" => [
+                                [
+                                    'class' => SerialColumn::className(),
+                                ],
+                                'description',
+                                [
+                                    'attribute' => 'price',
+                                    'value' => function (Pass $pass, $key, $index, DataColumn $column) {
+                                        return $column->grid->formatter->asCurrency($pass->price, $pass->currency);
+                                    },
+                                ],
+                                [
+                                    'class' => ActionColumn::className(),
+                                    'header' => 'actions',
+                                    'template' => '{update}{delete}',
+                                    'controller' => 'pass',
+                                ],
+                            ],
+                        ],
+                    ]); ?>
 
+                    <?= $this->render('/pass/_form', [
+                        'model' => $newPass,
+                        'prices' => $prices,
+                        'form' => $form,
+                    ]) ?>
+
+                    <?php GridForm::end() ?>
+
+                </div>
+            </div>
         </div>
 
     </div>

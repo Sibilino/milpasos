@@ -126,9 +126,7 @@ class EventController extends Controller
         }
         
         if ($model->load(Yii::$app->request->post())) {
-            if ($model->save() && !$newLink->hasErrors() && !$newPass->hasErrors()) {
-                return $this->redirect($this->lastPage);
-            }
+            $model->save();
         }
 
         $this->layout = 'fluid';
