@@ -88,6 +88,9 @@ use yii\bootstrap\ActiveForm;
             <h2><?= Yii::t('app', "Other links") ?></h2>
 
             <?php $form = GridForm::begin([
+                'options' => [
+                    'class' => 'form-horizontal',
+                ],
                 'gridOptions' => [
                     'dataProvider' => new ActiveDataProvider([
                         'query' => $model->getLinks(),
@@ -111,10 +114,12 @@ use yii\bootstrap\ActiveForm;
                 ],
             ]); ?>
 
-            <?= Html::activeHiddenInput($newLink, 'event_id') ?>
-            <?= $form->field($newLink, 'title')->textInput() ?>
-            <?= $form->field($newLink, 'url')->textInput() ?>
-            <?= Html::submitButton("Add", ['class' => 'btn btn-danger']) ?>
+            <div class="form-group">
+                <?= Html::activeHiddenInput($newLink, 'event_id') ?>
+                <?= $form->field($newLink, 'title')->textInput(['class'=>'col-md-4']) ?>
+                <?= $form->field($newLink, 'url')->textInput(['class'=>'col-md-5']) ?>
+                <?= Html::submitButton("Save link", ['class' => 'btn btn-danger col-md-3']) ?>
+            </div>
 
             <?php GridForm::end() ?>
 
