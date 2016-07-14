@@ -2,11 +2,14 @@
 
 namespace app\widgets;
 
+use yii\helpers\Url;
 use yii\widgets\ListView;
+use yii\widgets\Pjax;
 
 class ListForm extends ListView
 {
     public $formView;
+    public $formViewParams = [];
     public $openParam = 'open-model';
     
     private $_openModelKey;
@@ -22,11 +25,26 @@ class ListForm extends ListView
         Pjax::end();
     }
     
-    public function renderItems() {
-        return parent::renderItems().$this->renderForm();
+    public function renderItem($model, $key, $index) {
+        if ($key == $this->_openModelKey) {
+            return $this->renderForm($model, $key, $index);
+        }
+        return parent::renderItem($model, $key, $index);
     }
     
-    public function renderForm() {
-        return ''; //@TODO
+    public function renderForm($model, $key, $index) {
+        $openUrl = Url::current([
+            $this->openParam => $key,
+        ]);
+        if (is_string($this->formView)) {
+            return $this->getView()->render($this->formView, array_merge([
+                'model' => $model,
+                'key' => $key,
+                'index' => $index,
+                'widget' => $this,
+                'openUrl' => $openUrl,
+            ], $this->formViewParams));
+        }
+        return call_user_func($this->formView, $model, $key, $index, $this, $openUrl);
     }
 }
