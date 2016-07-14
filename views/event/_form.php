@@ -10,6 +10,7 @@ use yii\grid\ActionColumn;
 use yii\grid\SerialColumn;
 use yii\helpers\ArrayHelper;
 use yii\bootstrap\Html;
+use yii\bootstrap\ActiveField;
 use yii\bootstrap\ActiveForm;
 
 /* @var $this yii\web\View */
@@ -89,6 +90,7 @@ use yii\bootstrap\ActiveForm;
 
             <?php $form = GridForm::begin([
                 'template' => '{grid}{form}',
+                'fieldClass' => ActiveField::className(),
                 'options' => [
                     'class' => 'form-horizontal',
                 ],
@@ -118,8 +120,14 @@ use yii\bootstrap\ActiveForm;
 
             <div class="form-group">
                 <?= Html::activeHiddenInput($newLink, 'event_id') ?>
-                <?= $form->field($newLink, 'title')->textInput(['class'=>'col-md-4']) ?>
-                <?= $form->field($newLink, 'url')->textInput(['class'=>'col-md-5']) ?>
+                <?= $form->field($newLink, 'title')->label(false)->textInput([
+                    'placeholder' => Html::encode($newLink->getAttributeLabel('title')),
+                    'class' => 'col-md-4',
+                ]) ?>
+                <?= $form->field($newLink, 'url')->label(false)->textInput([
+                    'placeholder' => Html::encode($newLink->getAttributeLabel('url')),
+                    'class' => 'col-md-5',
+                ]) ?>
                 <?= Html::submitButton("Add link", ['class' => 'btn btn-danger col-md-3']) ?>
             </div>
 
