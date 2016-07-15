@@ -112,18 +112,21 @@ class EventController extends Controller
             }
         }
         if ($newPass->load(Yii::$app->request->post())) {
-            if ($newPass->save()) {
-                // Clear new Pass inputs so the user can add another new Pass
-                $newPass = new Pass(['event_id' => $id]);
-            }
+            $newPass->save();
         }
-        
+
         $prices = $newPass->generatePriceList();
-        if (Model::loadMultiple($prices, Yii::$app->request->post()) && !$newPass->hasErrors()) {
-            if ($newPass->updatePriceList($prices)) {
-                $prices = $newPass->generatePriceList();
+        if (!$newPass->isNewRecord && !$newPass->hasErrors()) {
+            if (Model::loadMultiple($prices, Yii::$app->request->post())) {
+                if ($newPass->updatePriceList($prices)) {
+                    $newPass = new Pass(['event_id' => $id]); // Clear new Pass inputs so the user can add another new Pass
+                    $prices = $newPass->generatePriceList();
+                }
+            } else {
+                $newPass = new Pass(['event_id' => $id]); // Clear new Pass inputs so the user can add another new Pass
             }
         }
+
         
         if ($model->load(Yii::$app->request->post())) {
             $model->save();
