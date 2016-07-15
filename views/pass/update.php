@@ -1,6 +1,5 @@
 <?php
 
-use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
@@ -18,16 +17,9 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <?php $form = ActiveForm::begin([
-        'enableClientValidation' => false,
-    ]); ?>
-    
     <?= $this->render('_form', [
         'model' => $model,
         'prices' => $prices,
-        'form' => $form,
     ]) ?>
-    
-    <?php ActiveForm::end() ?>
 
 </div>
