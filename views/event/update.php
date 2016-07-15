@@ -5,6 +5,7 @@ use app\models\Pass;
 use app\widgets\ListForm;
 use yii\data\ActiveDataProvider;
 use yii\helpers\Html;
+use yii\widgets\Pjax;
 
 /* @var $model app\models\Event */
 /* @var $newLink app\models\Link */
@@ -36,18 +37,32 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
             <div class="panel panel-default">
                 <div class="panel-body">
 
-                    <?= ListForm::widget([
-                        'itemView' => function (Pass $model, $key, $index, ListForm $widget) {
-                            return Html::a(Html::encode(Html::getAttributeValue($model, 'description')), $widget->getOpenUrl($key));
-                        },
-                        'formView' => '/pass/_form',
-                        'formViewParams' => [
+                    <?php Pjax::begin() ?>
+                    <?php
+                        $list = ListForm::begin([
+                            'itemView' => function (Pass $model, $key, $index, ListForm $widget) {
+                                return Html::a(Html::encode(Html::getAttributeValue($model, 'description')), $widget->getOpenUrl($key));
+                            },
+                            'formView' => '/pass/_form',
+                            'formViewParams' => [
+                                'prices' => $prices,
+                            ],
+                            'dataProvider' => new ActiveDataProvider([
+                                'query' => $model->getPasses(),
+                            ]),
+                        ]);
+                        ListForm::end();
+                    ?>
+                    <?php if ($list->hasOpenModel()):?>
+                        <?= Html::a(Yii::t('app', "Add a new pass"), $list->getCloseUrl()) ?>
+                    <?php else: ?>
+                        <h2><?= Yii::t('app', "New pass") ?></h2>
+                        <?= $this->render('/pass/_form', [
+                            'model' => $newPass,
                             'prices' => $prices,
-                        ],
-                        'dataProvider' => new ActiveDataProvider([
-                            'query' => $model->getPasses(),
-                        ]),
-                    ]) ?>
+                        ]) ?>
+                    <?php endif; ?>
+                    <?php Pjax::end() ?>
 
                 </div>
             </div>

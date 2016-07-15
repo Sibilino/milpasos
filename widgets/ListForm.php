@@ -5,7 +5,6 @@ namespace app\widgets;
 use Yii;
 use yii\helpers\Url;
 use yii\widgets\ListView;
-use yii\widgets\Pjax;
 
 /**
  * This widget displays a ListView where one of the items can be opened to display a form.
@@ -25,9 +24,10 @@ class ListForm extends ListView
      */
     public $formViewParams = [];
     /**
-     * @var string The GET parameter that will hold the list element that is currently open. Default is 'open-model'.
+     * The GET parameter that will hold the list element that is currently open. Optional, default is this widget's id.
+     * @var string
      */
-    public $openParam = 'open-model';
+    public $openParam;
 
     /**
      * @var mixed The key of the model that was specified as open in the current GET request parameters.
@@ -39,16 +39,10 @@ class ListForm extends ListView
      */
     public function init() {
         parent::init();
+        if (!isset($this->openParam)) {
+            $this->openParam = $this->getId();
+        }
         $this->_openModelKey = Yii::$app->request->getQueryParam($this->openParam);
-    }
-
-    /**
-     * Displays the widget within a Pjax container.
-     */
-    public function run() {
-        Pjax::begin();
-        parent::run();
-        Pjax::end();
     }
 
     /**
@@ -103,5 +97,12 @@ class ListForm extends ListView
         return Url::current([
             $this->openParam => null,
         ]);
+    }
+
+    /**
+     * @return bool Whether this widget currently has an open model.
+     */
+    public function hasOpenModel() {
+        return $this->_openModelKey !== null;
     }
 }
