@@ -90,10 +90,6 @@ use yii\bootstrap\ActiveForm;
 
             <?php $form = GridForm::begin([
                 'template' => '{grid}{form}',
-                'fieldClass' => ActiveField::className(),
-                'options' => [
-                    'class' => 'form-horizontal',
-                ],
                 'gridOptions' => [
                     'emptyText' => Yii::t('app', "No other links for this event."),
                     'dataProvider' => new ActiveDataProvider([
@@ -118,17 +114,23 @@ use yii\bootstrap\ActiveForm;
                 ],
             ]); ?>
 
-            <div class="form-group">
-                <?= Html::activeHiddenInput($newLink, 'event_id') ?>
-                <?= $form->field($newLink, 'title')->label(false)->textInput([
-                    'placeholder' => Html::encode($newLink->getAttributeLabel('title')),
-                    'class' => 'col-md-4',
-                ]) ?>
-                <?= $form->field($newLink, 'url')->label(false)->textInput([
-                    'placeholder' => Html::encode($newLink->getAttributeLabel('url')),
-                    'class' => 'col-md-5',
-                ]) ?>
-                <?= Html::submitButton("Add link", ['class' => 'btn btn-danger col-md-3']) ?>
+            <div class="row">
+                <div class="col-md-4">
+                    <?= Html::activeHiddenInput($newLink, 'event_id') ?>
+                    <?= $form->field($newLink, 'title')->label(false)->textInput([
+                        'placeholder' => Html::encode($newLink->getAttributeLabel('title')),
+                        'class' => 'form-control',
+                    ]) ?>
+                </div>
+                <div class="col-md-5">
+                    <?= $form->field($newLink, 'url')->label(false)->textInput([
+                        'placeholder' => Html::encode($newLink->getAttributeLabel('url')),
+                        'class' => 'form-control',
+                    ]) ?>
+                </div>
+                <div class="col-md-3">
+                    <?= Html::submitButton("Add link", ['class' => 'btn btn-danger form-control']) ?>
+                </div>
             </div>
 
             <?php GridForm::end() ?>
