@@ -38,30 +38,39 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
                 <div class="panel-body">
 
                     <?php Pjax::begin() ?>
-                    <?php
-                        $list = ListForm::begin([
-                            'itemView' => function (Pass $model, $key, $index, ListForm $widget) {
-                                return Html::a(Html::encode(Html::getAttributeValue($model, 'description')), $widget->getOpenUrl($key));
-                            },
-                            'formView' => '/pass/_form',
-                            'formViewParams' => [
-                                'prices' => $prices,
-                            ],
-                            'dataProvider' => new ActiveDataProvider([
-                                'query' => $model->getPasses(),
-                            ]),
-                        ]);
-                        ListForm::end();
-                    ?>
-                    <?php if ($list->hasOpenModel()):?>
-                        <?= Html::a(Yii::t('app', "Add a new pass"), $list->getCloseUrl()) ?>
-                    <?php else: ?>
-                        <h2><?= Yii::t('app', "New pass") ?></h2>
-                        <?= $this->render('/pass/_form', [
-                            'model' => $newPass,
-                            'prices' => $prices,
-                        ]) ?>
-                    <?php endif; ?>
+                    <ul>
+                        <?php
+                            $list = ListForm::begin([
+                                'itemView' => function (Pass $model, $key, $index, ListForm $widget) {
+                                    $link = Html::a(Html::encode(Html::getAttributeValue($model, 'description')), $widget->getOpenUrl($key));
+                                    return Html::tag('li', $link);
+                                },
+                                'formView' => '/pass/_form',
+                                'formViewParams' => [
+                                    'prices' => $prices,
+                                ],
+                                'dataProvider' => new ActiveDataProvider([
+                                    'query' => $model->getPasses(),
+                                ]),
+                            ]);
+                            ListForm::end();
+                        ?>
+
+                        <?php if ($list->hasOpenModel()):?>
+                            <li>
+                                <?= Html::a(Yii::t('app', "Add a new pass"), $list->getCloseUrl()) ?>
+                            </li>
+                        <?php else: ?>
+                            <li>
+                                <?= Yii::t('app', "New pass") ?>
+                                <?= $this->render('/pass/_form', [
+                                    'model' => $newPass,
+                                    'prices' => $prices,
+                                ]) ?>
+                            </li>
+                        <?php endif; ?>
+                    </ul>
+
                     <?php Pjax::end() ?>
 
                 </div>

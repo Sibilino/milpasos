@@ -21,7 +21,11 @@ use yii\helpers\ArrayHelper;
 
 <div class="pass-form">
 
-    <?php if (isset($widget)) echo Html::a(Yii::t('app', "Close"), $widget->getCloseUrl()) ?>
+    <?php if (isset($widget)):?>
+        <li>
+            <?= Html::encode(Html::getAttributeValue($model, 'description')).' - '.Html::a(Yii::t('app', "Close"), $widget->getCloseUrl()) ?>
+        </li>
+    <?php endif; ?>
 
     <?php $form = ActiveForm::begin([
         'enableClientValidation' => false,
