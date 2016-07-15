@@ -4,6 +4,7 @@ use app\models\Event;
 use app\models\TemporaryPrice;
 use app\widgets\DateRangePicker;
 use app\widgets\PriceInput;
+use yii\bootstrap\ActiveForm;
 use yii\data\ActiveDataProvider;
 use yii\grid\ActionColumn;
 use yii\grid\DataColumn;
@@ -15,10 +16,12 @@ use yii\helpers\ArrayHelper;
 /* @var $this yii\web\View */
 /* @var $model app\models\Pass */
 /* @var $prices app\models\TemporaryPrice[] */
-/* @var $form yii\widgets\ActiveForm */
+/* @var $widget app\widgets\ListForm In case this view is rendered inside a ListForm */
 ?>
 
 <div class="pass-form">
+
+    <?php if (isset($widget)) echo Html::a(Yii::t('app', "Close"), $widget->getCloseUrl()) ?>
 
     <?php $form = ActiveForm::begin([
         'enableClientValidation' => false,

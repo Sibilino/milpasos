@@ -1,15 +1,11 @@
 <?php
 
+/* @var $this yii\web\View */
 use app\models\Pass;
-use app\widgets\GridForm;
+use app\widgets\ListForm;
 use yii\data\ActiveDataProvider;
-use yii\grid\ActionColumn;
-use yii\grid\DataColumn;
-use yii\grid\GridView;
-use yii\grid\SerialColumn;
 use yii\helpers\Html;
 
-/* @var $this yii\web\View */
 /* @var $model app\models\Event */
 /* @var $newLink app\models\Link */
 /* @var $newPass app\models\Pass */
@@ -40,39 +36,18 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
             <div class="panel panel-default">
                 <div class="panel-body">
 
-                    <?php $form = GridForm::begin([
-                        'gridOptions' => [
-                            'dataProvider' => new ActiveDataProvider([
-                                'query' => $model->getPasses(),
-                            ]),
-                            "columns" => [
-                                [
-                                    'class' => SerialColumn::className(),
-                                ],
-                                'description',
-                                [
-                                    'attribute' => 'price',
-                                    'value' => function (Pass $pass, $key, $index, DataColumn $column) {
-                                        return $column->grid->formatter->asCurrency($pass->price, $pass->currency);
-                                    },
-                                ],
-                                [
-                                    'class' => ActionColumn::className(),
-                                    'header' => 'actions',
-                                    'template' => '{update}{delete}',
-                                    'controller' => 'pass',
-                                ],
-                            ],
+                    <?= ListForm::widget([
+                        'itemView' => function (Pass $model, $key, $index, ListForm $widget) {
+                            return Html::a(Html::encode(Html::getAttributeValue($model, 'description')), $widget->getOpenUrl($key));
+                        },
+                        'formView' => '/pass/_form',
+                        'formViewParams' => [
+                            'prices' => $prices,
                         ],
-                    ]); ?>
-
-                    <?= $this->render('/pass/_form', [
-                        'model' => $newPass,
-                        'prices' => $prices,
-                        'form' => $form,
+                        'dataProvider' => new ActiveDataProvider([
+                            'query' => $model->getPasses(),
+                        ]),
                     ]) ?>
-
-                    <?php GridForm::end() ?>
 
                 </div>
             </div>
