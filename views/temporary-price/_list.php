@@ -14,7 +14,7 @@ use yii\bootstrap\Html;
     <div  class="panel panel-default">
         <div class="panel-body">
             <?php foreach ($prices as $i => $price): ?>
-                <div class="well">
+                <div class="well<?php if ($price->isNewRecord) echo ' new-price'; ?>">
                     <?= $form->field($price, "[$i]price")->textInput(['maxlength' => true]) ?>
                     <?= DateRangePicker::widget([
                         'form' => $form,
