@@ -76,24 +76,19 @@ class PassController extends Controller
     public function actionCreate()
     {
         $model = new Pass();
-        $passSaved = $model->load(Yii::$app->request->post()) && $model->save();
+        $model->load(Yii::$app->request->post()) && $model->save();
         
         $prices = $model->generatePriceList();
-        $pricesSaved = true;
         if (Model::loadMultiple($prices, Yii::$app->request->post()) && !$model->hasErrors()) {
             foreach ($prices as $price) {
-               $pricesSaved = $price->save() && $pricesSaved; // Only true if all save() calls return true
-           }
+                $price->save(); // Only true if all save() calls return true
+            }
         }
 
-        if ($passSaved && $pricesSaved) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-                'prices' => $prices,
-            ]);
-        }
+        return $this->render('update', [
+            'model' => $model,
+            'prices' => $prices,
+        ]);
     }
 
     /**
