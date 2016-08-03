@@ -83,6 +83,7 @@ class PassController extends Controller
             foreach ($prices as $price) {
                 $price->save(); // Only true if all save() calls return true
             }
+            $this->redirect(['update', 'id' => $model->getPrimaryKey()]);
         }
 
         return $this->render('update', [
