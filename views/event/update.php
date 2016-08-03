@@ -3,6 +3,7 @@
 /* @var $this yii\web\View */
 use app\models\Pass;
 use app\widgets\ListForm;
+use yii\bootstrap\ActiveForm;
 use yii\data\ActiveDataProvider;
 use yii\helpers\Html;
 use yii\widgets\Pjax;
@@ -22,7 +23,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 <div class="event-update">
     
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="panel panel-default">
                 <div class="panel-body">
                     <?= $this->render('_form', [
@@ -33,13 +34,16 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
             </div>
         </div>
 
-        <div class="col-md-8">
+        <div class="col-md-3">
             <div class="panel panel-default">
                 <div class="panel-body">
 
                     <?php Pjax::begin() ?>
                     <ul>
                         <?php
+                            $form = ActiveForm::begin([
+                                'enableClientValidation' => true,
+                            ]);
                             $list = ListForm::begin([
                                 'itemView' => function (Pass $model, $key, $index, ListForm $widget) {
                                     $link = Html::a(Html::encode(Html::getAttributeValue($model, 'description')), $widget->getOpenUrl($key));
@@ -48,12 +52,14 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
                                 'formView' => '/pass/_form',
                                 'formViewParams' => [
                                     'prices' => $prices,
+                                    'form' => $form,
                                 ],
                                 'dataProvider' => new ActiveDataProvider([
                                     'query' => $model->getPasses(),
                                 ]),
                             ]);
                             ListForm::end();
+                            ActiveForm::end();
                         ?>
 
                         <?php if ($list->hasOpenModel()):?>
@@ -63,10 +69,17 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
                         <?php else: ?>
                             <li>
                                 <?= Yii::t('app', "New pass") ?>
+
+                                <?php $form = ActiveForm::begin([
+                                    'enableClientValidation' => true,
+                                ]); ?>
+
                                 <?= $this->render('/pass/_form', [
                                     'model' => $newPass,
-                                    'prices' => $prices,
+                                    'form' => $form,
                                 ]) ?>
+
+                                <?php ActiveForm::end(); ?>
                             </li>
                         <?php endif; ?>
                     </ul>
@@ -75,6 +88,19 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 
                 </div>
             </div>
+        </div>
+
+        <div class="col-md-3">
+            <?php $form = ActiveForm::begin([
+                'enableClientValidation' => true,
+            ]); ?>
+
+            <?php $this->render('/temporary-price/_list', [
+                'prices' => $prices,
+                'form' => $form,
+            ]) ?>
+
+            <?php ActiveForm::end(); ?>
         </div>
 
     </div>
