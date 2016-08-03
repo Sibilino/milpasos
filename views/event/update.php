@@ -6,18 +6,17 @@ use app\widgets\ListForm;
 use yii\bootstrap\ActiveForm;
 use yii\data\ActiveDataProvider;
 use yii\helpers\Html;
-use yii\widgets\Pjax;
 
-/* @var $model app\models\Event */
+/* @var $event app\models\Event */
 /* @var $newLink app\models\Link */
-/* @var $newPass app\models\Pass */
+/* @var $pass app\models\Pass */
 /* @var $prices app\models\TemporaryPrice[] */
 
 $this->title = Yii::t('app', 'Update {modelClass}: ', [
     'modelClass' => 'Event',
-]) . ' ' . $model->name;
+]) . ' ' . $event->name;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Events'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = ['label' => $event->name, 'url' => ['view', 'id' => $event->id]];
 $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 ?>
 <div class="event-update">
@@ -27,7 +26,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
             <div class="panel panel-default">
                 <div class="panel-body">
                     <?= $this->render('_form', [
-                        'model' => $model,
+                        'model' => $event,
                         'newLink' => $newLink,
                     ]) ?>
                 </div>
@@ -38,7 +37,6 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
             <div class="panel panel-default">
                 <div class="panel-body">
 
-                    <?php Pjax::begin() ?>
                     <ul>
                         <?php
                             $form = ActiveForm::begin([
@@ -49,13 +47,14 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
                                     $link = Html::a(Html::encode(Html::getAttributeValue($model, 'description')), $widget->getOpenUrl($key));
                                     return Html::tag('li', $link);
                                 },
+                                'openParam' => 'selectedPassId',
                                 'formView' => '/pass/_form',
                                 'formViewParams' => [
                                     'prices' => $prices,
                                     'form' => $form,
                                 ],
                                 'dataProvider' => new ActiveDataProvider([
-                                    'query' => $model->getPasses(),
+                                    'query' => $event->getPasses(),
                                 ]),
                             ]);
                             ListForm::end();
@@ -75,7 +74,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
                                 ]); ?>
 
                                 <?= $this->render('/pass/_form', [
-                                    'model' => $newPass,
+                                    'model' => $pass,
                                     'form' => $form,
                                 ]) ?>
 
@@ -83,8 +82,6 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
                             </li>
                         <?php endif; ?>
                     </ul>
-
-                    <?php Pjax::end() ?>
 
                 </div>
             </div>

@@ -99,44 +99,38 @@ class EventController extends Controller
      * @param string $id
      * @return mixed
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id, $selectedPassId = 0)
     {
-        $model = $this->findModel($id);
+        $event = $this->findModel($id);
+        if ($event->load(Yii::$app->request->post())) {
+            $event->save();
+        }
+
         $newLink = new Link(['event_id' => $id]);
-        $newPass = new Pass(['event_id' => $id]);
+        if ($newLink->load(Yii::$app->request->post()) && $newLink->save()) {
+            $newLink = new Link(['event_id' => $id]); // Clear inputs after saving
+        }
 
-        if ($newLink->load(Yii::$app->request->post())) {
-            if ($newLink->save()) {
-                // Clear new Link inputs so the user can add another new link
-                $newLink = new Link(['event_id' => $id]);
+        $pass = Pass::findOne($selectedPassId);
+        if (!$pass) {
+            $pass = new Pass(['event_id' => $id]);
+        }
+        if ($pass->load(Yii::$app->request->post()) && $pass->save()) {
+            $pass = new Pass(['event_id' => $id]); // Clear inputs after saving
+        }
+
+        $prices = $pass->generatePriceList();
+        if (Model::loadMultiple($prices, Yii::$app->request->post()) && !$pass->hasErrors()) {
+            if ($pass->updatePriceList($prices)) {
+                $prices = $pass->generatePriceList();
             }
-        }
-        if ($newPass->load(Yii::$app->request->post())) {
-            $newPass->save();
-        }
-
-        $prices = $newPass->generatePriceList();
-        if (!$newPass->isNewRecord && !$newPass->hasErrors()) {
-            if (Model::loadMultiple($prices, Yii::$app->request->post())) {
-                if ($newPass->updatePriceList($prices)) {
-                    $newPass = new Pass(['event_id' => $id]); // Clear new Pass inputs so the user can add another new Pass
-                    $prices = $newPass->generatePriceList();
-                }
-            } else {
-                $newPass = new Pass(['event_id' => $id]); // Clear new Pass inputs so the user can add another new Pass
-            }
-        }
-
-        
-        if ($model->load(Yii::$app->request->post())) {
-            $model->save();
         }
 
         $this->layout = 'fluid';
         return $this->render('update', [
-            'model' => $model,
+            'event' => $event,
             'newLink' => $newLink,
-            'newPass' => $newPass,
+            'pass' => $pass,
             'prices' => $prices,
         ]);
     }
