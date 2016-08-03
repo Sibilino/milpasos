@@ -9,8 +9,7 @@ use yii\bootstrap\Html;
 ?>
 
 <div id="temporary-prices">
-    <h2><?= Yii::t('app', "Temporary Prices") ?></h2>
-
+    
     <div  class="panel panel-default">
         <div class="panel-body">
             <?php foreach ($prices as $i => $price): ?>

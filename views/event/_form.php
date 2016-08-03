@@ -4,14 +4,12 @@ use app\models\Dance;
 use app\models\Group;
 use app\widgets\DateRangePicker;
 use app\widgets\GeoSearch;
-use app\widgets\GridForm;
 use yii\data\ActiveDataProvider;
 use yii\grid\ActionColumn;
+use yii\grid\GridView;
 use yii\grid\SerialColumn;
 use yii\helpers\ArrayHelper;
 use yii\bootstrap\Html;
-use yii\bootstrap\ActiveField;
-use yii\bootstrap\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Event */
@@ -20,10 +18,6 @@ use yii\bootstrap\ActiveForm;
 ?>
 
 <div class="event-form">
-
-    <?php $form = ActiveForm::begin(['options' => [
-        'enctype' => 'multipart/form-data',
-    ]]); ?>
 
     <div class="row">
         <div class="col-sm-6">
@@ -82,34 +76,29 @@ use yii\bootstrap\ActiveForm;
         ]) ?>
     </div>
 
-    <?php ActiveForm::end(); ?>
-    
     <?php if (!$model->isNewRecord && isset($newLink)):?>
         <div id="links">
             <h2><?= Yii::t('app', "Other links") ?></h2>
 
-            <?php $form = GridForm::begin([
-                'template' => '{grid}{form}',
-                'gridOptions' => [
-                    'emptyText' => Yii::t('app', "No other links for this event."),
-                    'dataProvider' => new ActiveDataProvider([
-                        'query' => $model->getLinks(),
-                    ]),
-                    "columns" => [
-                        [
-                            'class' => SerialColumn::className(),
-                        ],
-                        'title',
-                        [
-                            'attribute' => 'url',
-                            "format" => 'url',
-                        ],
-                        [
-                            'class' => ActionColumn::className(),
-                            'header' => 'actions',
-                            'template' => '{update}{delete}',
-                            'controller' => 'link',
-                        ],
+            <?= GridView::widget([
+                'emptyText' => Yii::t('app', "No other links for this event."),
+                'dataProvider' => new ActiveDataProvider([
+                    'query' => $model->getLinks(),
+                ]),
+                "columns" => [
+                    [
+                        'class' => SerialColumn::className(),
+                    ],
+                    'title',
+                    [
+                        'attribute' => 'url',
+                        "format" => 'url',
+                    ],
+                    [
+                        'class' => ActionColumn::className(),
+                        'header' => 'actions',
+                        'template' => '{update}{delete}',
+                        'controller' => 'link',
                     ],
                 ],
             ]); ?>
@@ -132,8 +121,6 @@ use yii\bootstrap\ActiveForm;
                     <?= Html::submitButton("Add link", ['class' => 'btn btn-danger form-control']) ?>
                 </div>
             </div>
-
-            <?php GridForm::end() ?>
 
         </div>
     <?php endif; ?>

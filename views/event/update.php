@@ -20,6 +20,9 @@ $this->params['breadcrumbs'][] = ['label' => $event->name, 'url' => ['view', 'id
 $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 ?>
 <div class="event-update">
+    <?php $form = ActiveForm::begin([
+        'enableClientValidation' => false, // So that "new pass" or "new price" empty fields do not show errors
+    ]); ?>
     
     <div class="row">
         <div class="col-md-6">
@@ -28,20 +31,18 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
                     <?= $this->render('_form', [
                         'model' => $event,
                         'newLink' => $newLink,
+                        'form' => $form,
                     ]) ?>
                 </div>
             </div>
         </div>
 
         <div class="col-md-3">
+            <h2><?= Yii::t('app', "Passes") ?></h2>
             <div class="panel panel-default">
                 <div class="panel-body">
-
                     <ul>
                         <?php
-                            $form = ActiveForm::begin([
-                                'enableClientValidation' => true,
-                            ]);
                             $list = ListForm::begin([
                                 'itemView' => function (Pass $model, $key, $index, ListForm $widget) {
                                     $link = Html::a(Html::encode(Html::getAttributeValue($model, 'description')), $widget->getOpenUrl($key));
@@ -58,7 +59,6 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
                                 ]),
                             ]);
                             ListForm::end();
-                            ActiveForm::end();
                         ?>
 
                         <?php if ($list->hasOpenModel()):?>
@@ -69,37 +69,35 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
                             <li>
                                 <?= Yii::t('app', "New pass") ?>
 
-                                <?php $form = ActiveForm::begin([
-                                    'enableClientValidation' => true,
-                                ]); ?>
+
 
                                 <?= $this->render('/pass/_form', [
                                     'model' => $pass,
                                     'form' => $form,
                                 ]) ?>
 
-                                <?php ActiveForm::end(); ?>
+
                             </li>
                         <?php endif; ?>
                     </ul>
-
                 </div>
             </div>
         </div>
 
         <div class="col-md-3">
-            <?php $form = ActiveForm::begin([
-                'enableClientValidation' => true,
-            ]); ?>
 
-            <?php $this->render('/temporary-price/_list', [
+
+            <h2><?= Yii::t('app', "Temporary Prices") ?></h2>
+
+            <?= $this->render('/temporary-price/_list', [
                 'prices' => $prices,
                 'form' => $form,
             ]) ?>
 
-            <?php ActiveForm::end(); ?>
+
         </div>
 
     </div>
 
+    <?php ActiveForm::end(); ?>
 </div>
