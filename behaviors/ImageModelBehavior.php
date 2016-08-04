@@ -166,7 +166,7 @@ class ImageModelBehavior extends Behavior
             $error = '';
             if (!$validator->validate($this->_image, $error)) {
                 $this->owner->addError($this->imageAttr, $error);
-            } elseif ($this->saveImageOnValidation) {
+            } elseif ($this->saveImageOnValidation && !$this->owner->isNewRecord) { // Cannot save image for new record
                 $this->saveImage();
             }
         }
