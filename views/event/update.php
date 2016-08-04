@@ -43,17 +43,22 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
                 <div class="panel-body">
                     <ul>
                         <?php
+                            $controller = $this;
                             $list = ListForm::begin([
                                 'itemView' => function (Pass $model, $key, $index, ListForm $widget) {
                                     $link = Html::a(Html::encode(Html::getAttributeValue($model, 'description')), $widget->getOpenUrl($key));
                                     return Html::tag('li', $link);
                                 },
                                 'openParam' => 'selectedPassId',
-                                'formView' => '/pass/_form',
-                                'formViewParams' => [
-                                    'prices' => $prices,
-                                    'form' => $form,
-                                ],
+                                'formView' => function (Pass $model) use ($controller, $form, $prices) {
+                                    $formHtml = $controller->render('/pass/_form', [
+                                        'model' => $model,
+                                        'prices' => $prices,
+                                        'form' => $form,
+                                    ]);
+                                    $headerHtml = $model->description.'<br />';
+                                    return Html::tag('li', $headerHtml.$formHtml);
+                                },
                                 'dataProvider' => new ActiveDataProvider([
                                     'query' => $event->getPasses(),
                                 ]),
@@ -68,8 +73,6 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
                         <?php else: ?>
                             <li>
                                 <?= Yii::t('app', "New pass") ?>
-
-
 
                                 <?= $this->render('/pass/_form', [
                                     'model' => $pass,
