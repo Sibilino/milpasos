@@ -8,26 +8,17 @@ use yii\bootstrap\Html;
 /* @var $form yii\bootstrap\ActiveForm The active form widget within which to render these fields */
 ?>
 
-<div id="temporary-prices">
-    
-    <div  class="panel panel-default">
-        <div class="panel-body">
-            <?php foreach ($prices as $i => $price): ?>
-                <div class="well<?php if ($price->isNewRecord) echo ' new-price'; ?>">
-                    <?= $form->field($price, "[$i]price")->textInput(['maxlength' => true]) ?>
-                    <?= DateRangePicker::widget([
-                        'form' => $form,
-                        'model' => $price,
-                        'fromAttr' => "[$i]available_from",
-                        'toAttr' => "[$i]available_to",
-                    ]) ?>
-                </div>
-
-            <?php endforeach; ?>
-        </div>
-        <div class="panel-footer">
-            <?= Html::submitButton(Yii::t('app', "Add"), ['class' => 'btn btn-success']) ?>
-        </div>
+<?php foreach ($prices as $i => $price): ?>
+    <div class="well<?php if ($price->isNewRecord) echo ' new-price'; ?>">
+        <?= $form->field($price, "[$i]price")->textInput(['maxlength' => true]) ?>
+        <?= DateRangePicker::widget([
+            'form' => $form,
+            'model' => $price,
+            'fromAttr' => "[$i]available_from",
+            'toAttr' => "[$i]available_to",
+        ]) ?>
     </div>
-    
-</div>
+
+<?php endforeach; ?>
+<?= Html::submitButton(Yii::t('app', "Add"), ['class' => 'btn btn-success']) ?>
+
