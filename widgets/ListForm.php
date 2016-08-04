@@ -3,6 +3,8 @@
 namespace app\widgets;
 
 use Yii;
+use yii\base\Exception;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 use yii\widgets\ListView;
 
@@ -104,5 +106,20 @@ class ListForm extends ListView
      */
     public function hasOpenModel() {
         return $this->_openModelKey !== null;
+    }
+
+    /**
+     * Returns the current open model.
+     * @return mixed
+     * @throws Exception If there is no open model.
+     */
+    public function getOpenModel() {
+        $models = $this->dataProvider->getModels();
+        $keys = $this->dataProvider->getKeys();
+        $models = array_combine($keys, $models);
+        if (!$this->hasOpenModel() || !isset($models[$this->_openModelKey])) {
+            throw new Exception("Cannot retrieve open model: no open model found.");
+        }
+        return $models[$this->_openModelKey];
     }
 }
