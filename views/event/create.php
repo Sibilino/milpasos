@@ -1,5 +1,6 @@
 <?php
 
+use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 
 
@@ -12,10 +13,17 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="event-create">
 
+    <?php $form = ActiveForm::begin([
+        'enableClientValidation' => true,
+    ]); ?>
+
     <h1><?= Html::encode($this->title) ?></h1>
 
     <?= $this->render('_form', [
         'model' => $model,
+        'form' => $form,
     ]) ?>
+
+    <?php ActiveForm::end() ?>
 
 </div>
