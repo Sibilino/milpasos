@@ -84,7 +84,7 @@ class Pass extends ActiveRecord
         $errors = 0;
         foreach ($prices as $p) {
             $p->pass_id = $this->id; // Better not to trust pass_id from user form
-            if (!$p->save()) {
+            if (!($p->isNewRecord && empty($p->price)) && !$p->save()) {
                 $errors++;
             }
         };
