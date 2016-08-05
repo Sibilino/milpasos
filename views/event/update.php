@@ -86,7 +86,8 @@ $this->title = Yii::t('app', 'Update {modelClass}: ', [
                                     $list = ListForm::begin([
                                         'summary' => '',
                                         'itemView' => function (Pass $model, $key, $index, ListForm $widget) {
-                                            $link = Html::a(Html::encode(Html::getAttributeValue($model, 'description')), $widget->getOpenUrl($key));
+                                            $price = Yii::$app->formatter->asCurrency($model->price, $model->currency);
+                                            $link = Html::a(Html::encode(Html::getAttributeValue($model, 'description'). " ($price)"), $widget->getOpenUrl($key));
                                             return Html::tag('li', $link);
                                         },
                                         'openParam' => 'selectedPassId',
@@ -97,7 +98,8 @@ $this->title = Yii::t('app', 'Update {modelClass}: ', [
                                                 'form' => $form,
                                             ]);
                                             $formHtml = Html::tag('div', $formHtml, ['class' => 'well']);
-                                            $headerHtml = "<h4>$model->description</h4>";
+                                            $price = Yii::$app->formatter->asCurrency($model->price, $model->currency);
+                                            $headerHtml = "<h4>".Html::encode(Html::getAttributeValue($model, 'description'))." ($price)</h4>";
                                             return Html::tag('li', $headerHtml.$formHtml);
                                         },
                                         'dataProvider' => new ActiveDataProvider([
