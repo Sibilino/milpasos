@@ -80,9 +80,6 @@ use yii\bootstrap\Html;
                     'query' => $model->getLinks(),
                 ]),
                 "columns" => [
-                    [
-                        'class' => SerialColumn::className(),
-                    ],
                     'title',
                     [
                         'attribute' => 'url',
@@ -98,6 +95,9 @@ use yii\bootstrap\Html;
             ]); ?>
 
             <div class="row">
+                <div class="col-md-2">
+                    <?= Yii::t('app', "Add a new Link:") ?>
+                </div>
                 <div class="col-md-4">
                     <?= Html::activeHiddenInput($newLink, 'event_id') ?>
                     <?= $form->field($newLink, 'title')->label(false)->textInput([
@@ -105,14 +105,11 @@ use yii\bootstrap\Html;
                         'class' => 'form-control',
                     ]) ?>
                 </div>
-                <div class="col-md-5">
+                <div class="col-md-6">
                     <?= $form->field($newLink, 'url')->label(false)->textInput([
                         'placeholder' => Html::encode($newLink->getAttributeLabel('url')),
                         'class' => 'form-control',
                     ]) ?>
-                </div>
-                <div class="col-md-3">
-                    <?= Html::submitButton("Add link", ['class' => 'btn btn-danger form-control']) ?>
                 </div>
             </div>
 
