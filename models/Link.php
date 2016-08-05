@@ -33,7 +33,10 @@ class Link extends \yii\db\ActiveRecord
             [['title', 'url', 'event_id'], 'required'],
             [['event_id'], 'exist', 'targetClass' => Event::className(), 'targetAttribute' => 'id'],
             [['title', 'url'], 'string', 'max' => 250],
-            [['url'], 'unique', 'targetAttribute' => ['url', 'event_id']],
+            [['url'], 'unique',
+                'targetAttribute' => ['url', 'event_id'],
+                'comboNotUnique' => Yii::t('app', "This url already exists."),
+            ],
         ];
     }
 
