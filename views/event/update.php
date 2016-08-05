@@ -6,6 +6,7 @@ use app\widgets\ListForm;
 use yii\bootstrap\ActiveForm;
 use yii\data\ActiveDataProvider;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\Pjax;
 
 /* @var $event app\models\Event */
@@ -97,7 +98,13 @@ $this->title = Yii::t('app', 'Update {modelClass}: ', [
                                                 'prices' => $prices,
                                                 'form' => $form,
                                             ]);
-                                            $formHtml = Html::tag('div', $formHtml, ['class' => 'well']);
+                                            $deleteBtn = Html::a(Yii::t('app', "Delete"), ['/pass/delete', 'id' => $model->id], [
+                                                'class' => 'btn btn-danger btn-sm',
+                                                'data-confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
+                                                'data-method' => 'post',
+                                                'data-pjax' => 0,
+                                            ]);
+                                            $formHtml = Html::tag('div', $formHtml.$deleteBtn, ['class' => 'well']);
                                             $price = Yii::$app->formatter->asCurrency($model->price, $model->currency);
                                             $headerHtml = "<h4>".Html::encode(Html::getAttributeValue($model, 'description'))." ($price)</h4>";
                                             return Html::tag('li', $headerHtml.$formHtml);
