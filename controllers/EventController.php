@@ -124,7 +124,9 @@ class EventController extends Controller
         }
 
         if ($pass->load(Yii::$app->request->post()) && $pass->save()) {
-            $pass = new Pass(['event_id' => $id]); // Clear inputs after saving
+            if (!$selectedPassId) {
+                $this->redirect(['update', 'id' => $id,'selectedPassId' => $pass->id]);
+            }
         }
 
         $this->layout = 'fluid';
