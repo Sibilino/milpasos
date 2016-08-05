@@ -107,7 +107,7 @@ class EventController extends Controller
         }
 
         $newLink = new Link(['event_id' => $id]);
-        if ($newLink->load(Yii::$app->request->post()) && $newLink->save()) {
+        if ($newLink->load(Yii::$app->request->post()) && !$newLink->isEmpty() && $newLink->save()) {
             $newLink = new Link(['event_id' => $id]); // Clear inputs after saving
         }
 

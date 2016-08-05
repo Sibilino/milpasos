@@ -61,4 +61,12 @@ class Link extends \yii\db\ActiveRecord
         return $this->hasOne(Event::className(), ['id' => 'event_id'])
             ->inverseOf("links");
     }
+
+    /**
+     * @return bool Whether this model has been filled with any meaningful data.
+     */
+    public function isEmpty()
+    {
+        return empty($this->title) && empty($this->url);
+    }
 }
