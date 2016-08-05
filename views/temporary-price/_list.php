@@ -10,6 +10,14 @@ use yii\bootstrap\Html;
 
 <?php foreach ($prices as $i => $price): ?>
     <div class="well">
+        <?php if (!$price->isNewRecord): ?>
+            <?= Html::a(Yii::t('app', "Delete"), ['/temporary-price/delete', 'id' => $price->id], [
+                'class' => 'pull-right btn btn-danger btn-xs',
+                'data-confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
+                'data-method' => 'post',
+                'data-pjax' => 0,
+            ]) ?>
+        <?php endif; ?>
         <?= $form->field($price, "[$i]price")->textInput(['maxlength' => true]) ?>
         <?= DateRangePicker::widget([
             'form' => $form,
@@ -17,14 +25,6 @@ use yii\bootstrap\Html;
             'fromAttr' => "[$i]available_from",
             'toAttr' => "[$i]available_to",
         ]) ?>
-        <?php if (!$price->isNewRecord): ?>
-            <?= Html::a(Yii::t('app', "Delete"), ['/temporary-price/delete', 'id' => $price->id], [
-                'class' => 'btn btn-danger btn-sm',
-                'data-confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
-                'data-method' => 'post',
-                'data-pjax' => 0,
-            ]) ?>
-        <?php endif; ?>
     </div>
 
 <?php endforeach; ?>
