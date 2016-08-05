@@ -70,12 +70,6 @@ use yii\bootstrap\Html;
         </div>
     </div>
     
-    <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), [
-            'class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
-        ]) ?>
-    </div>
-
     <?php if (!$model->isNewRecord && isset($newLink)):?>
         <div id="links">
             <h2><?= Yii::t('app', "Other links") ?></h2>

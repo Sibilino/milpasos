@@ -19,9 +19,13 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <?= $this->render('_form', [
+    <?= $this->render('_fields', [
         'model' => $model,
         'form' => $form,
+    ]) ?>
+
+    <?= Html::submitButton(Yii::t('app', "Create"), [
+        'class' => 'btn btn-success',
     ]) ?>
 
     <?php ActiveForm::end() ?>

@@ -6,6 +6,7 @@ use app\widgets\ListForm;
 use yii\bootstrap\ActiveForm;
 use yii\data\ActiveDataProvider;
 use yii\helpers\Html;
+use yii\widgets\Pjax;
 
 /* @var $event app\models\Event */
 /* @var $newLink app\models\Link */
@@ -15,29 +16,58 @@ use yii\helpers\Html;
 $this->title = Yii::t('app', 'Update {modelClass}: ', [
     'modelClass' => 'Event',
 ]) . ' ' . $event->name;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Events'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $event->name, 'url' => ['view', 'id' => $event->id]];
-$this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 ?>
 <div class="event-update">
-    <?php $form = ActiveForm::begin([
-        'enableClientValidation' => false, // So that "new pass" or "new price" empty fields do not show errors
-    ]); ?>
-    
     <div class="row">
         <div class="col-md-6">
+
+            <?php
+            Pjax::begin();
+            $form = ActiveForm::begin([
+                'enableClientValidation' => false,
+            ]);
+            ?>
+
             <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="pull-right btn-group btn-group-xs">
+                        <?= Html::submitButton(Yii::t('app', "Save"), [
+                            'class' => 'btn btn-success',
+                        ]) ?>
+                    </div>
+                    <h2 class="panel-title"><?= $event->name ?></h2>
+                </div>
                 <div class="panel-body">
-                    <?= $this->render('_form', [
+                    <?= $this->render('_fields', [
                         'model' => $event,
                         'newLink' => $newLink,
                         'form' => $form,
                     ]) ?>
                 </div>
+                <div class="panel-footer">
+                    <div class="btn-group btn-group-xs">
+                        <?= Html::submitButton(Yii::t('app', "Save"), [
+                            'class' => 'btn btn-success',
+                        ]) ?>
+                    </div>
+                </div>
             </div>
+
+            <?php
+            ActiveForm::end();
+            Pjax::end();
+            ?>
         </div>
 
         <div class="col-md-6">
+
+            <?php
+            Pjax::begin();
+            $form = ActiveForm::begin([
+                'enableClientValidation' => false,
+            ]);
+            ?>
+
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h2 class="panel-title"><?= Yii::t('app', "Passes") ?></h2>
@@ -107,9 +137,14 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
                     </div>
                 </div>
             </div>
+
+            <?php
+            ActiveForm::end();
+            Pjax::end();
+            ?>
+
         </div>
 
     </div>
 
-    <?php ActiveForm::end(); ?>
 </div>
