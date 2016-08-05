@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
         'enableClientValidation' => false,
     ]); ?>
 
-    <?= $this->render('_form', [
+    <?= $this->render('_fields', [
         'model' => $model,
         'form' => $form,
     ]) ?>
@@ -37,6 +37,10 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
         'prices' => $prices,
         'form' => $form,
     ]) ?>
+
+    <div class="form-group">
+        <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
+    </div>
 
     <?= GridView::widget([
         'dataProvider' => new ActiveDataProvider([
@@ -62,6 +66,8 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
             ],
         ],
     ]) ?>
+
+
 
     <?php ActiveForm::end() ?>
 

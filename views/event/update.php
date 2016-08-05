@@ -70,6 +70,11 @@ $this->title = Yii::t('app', 'Update {modelClass}: ', [
 
             <div class="panel panel-default">
                 <div class="panel-heading">
+                    <div class="pull-right btn-group btn-group-xs">
+                        <?= Html::submitButton(Yii::t('app', "Save"), [
+                            'class' => 'btn btn-success',
+                        ]) ?>
+                    </div>
                     <h2 class="panel-title"><?= Yii::t('app', "Passes") ?></h2>
                 </div>
                 <div class="panel-body">
@@ -86,7 +91,7 @@ $this->title = Yii::t('app', 'Update {modelClass}: ', [
                                         },
                                         'openParam' => 'selectedPassId',
                                         'formView' => function (Pass $model) use ($controller, $form, $prices) {
-                                            $formHtml = $controller->render('/pass/_form', [
+                                            $formHtml = $controller->render('/pass/_fields', [
                                                 'model' => $model,
                                                 'prices' => $prices,
                                                 'form' => $form,
@@ -110,7 +115,7 @@ $this->title = Yii::t('app', 'Update {modelClass}: ', [
                                     <li>
                                         <?= Yii::t('app', "New pass") ?>
 
-                                        <?= $this->render('/pass/_form', [
+                                        <?= $this->render('/pass/_fields', [
                                             'model' => $pass,
                                             'form' => $form,
                                         ]) ?>
@@ -134,6 +139,13 @@ $this->title = Yii::t('app', 'Update {modelClass}: ', [
                             <?php endif; ?>
 
                         </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="btn-group btn-group-xs">
+                        <?= Html::submitButton(Yii::t('app', "Save"), [
+                            'class' => 'btn btn-success',
+                        ]) ?>
                     </div>
                 </div>
             </div>

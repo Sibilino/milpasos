@@ -20,5 +20,3 @@ use yii\bootstrap\Html;
     </div>
 
 <?php endforeach; ?>
-<?= Html::submitButton(Yii::t('app', "Add"), ['class' => 'btn btn-success']) ?>
-
