@@ -111,16 +111,20 @@ $this->title = Yii::t('app', 'Update {modelClass}: ', [
 
                                 <?php if ($list->hasOpenModel()):?>
                                     <li>
-                                        <?= Html::a(Yii::t('app', "Add a new pass"), $list->getCloseUrl()) ?>
+                                        <?= Html::a(Yii::t('app', "Add a new pass"), $list->getCloseUrl(), [
+                                            'class' => 'text-danger',
+                                        ]) ?>
                                     </li>
                                 <?php else: ?>
                                     <li>
-                                        <?= Yii::t('app', "New pass") ?>
+                                        <span class="text-danger"><?= Yii::t('app', "New pass") ?></span>
 
+                                        <div class="well">
                                         <?= $this->render('/pass/_fields', [
                                             'model' => $pass,
                                             'form' => $form,
                                         ]) ?>
+                                        </div>
 
 
                                     </li>
