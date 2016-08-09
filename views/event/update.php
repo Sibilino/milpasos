@@ -2,10 +2,12 @@
 
 /* @var $this yii\web\View */
 use app\models\Pass;
+use app\widgets\AjaxReloadButton;
 use app\widgets\ListForm;
 use yii\bootstrap\ActiveForm;
 use yii\data\ActiveDataProvider;
 use yii\helpers\Html;
+use yii\helpers\Json;
 use yii\helpers\Url;
 use yii\widgets\Pjax;
 
@@ -66,6 +68,7 @@ $this->title = Yii::t('app', 'Update {modelClass}: ', [
             Pjax::begin();
             $form = ActiveForm::begin([
                 'enableClientValidation' => false,
+                'validateOnSubmit' => false,
             ]);
             ?>
 
@@ -83,7 +86,7 @@ $this->title = Yii::t('app', 'Update {modelClass}: ', [
                         <div class="col-md-6">
                             <ul>
                                 <?php
-                                    $controller = $this;
+                                    $view = $this;
                                     $list = ListForm::begin([
                                         'summary' => '',
                                         'itemView' => function (Pass $model, $key, $index, ListForm $widget) {
@@ -92,14 +95,14 @@ $this->title = Yii::t('app', 'Update {modelClass}: ', [
                                             return Html::tag('li', $link);
                                         },
                                         'openParam' => 'selectedPassId',
-                                        'formView' => function (Pass $model) use ($controller, $form, $prices) {
-                                            $formHtml = $controller->render('/pass/_fields', [
+                                        'formView' => function (Pass $model) use ($view, $form, $prices) {
+                                            $formHtml = $view->render('/pass/_fields', [
                                                 'model' => $model,
                                                 'prices' => $prices,
                                                 'form' => $form,
                                             ]);
                                             $deleteBtn = Html::a(Yii::t('app', "Delete"), ['/pass/delete', 'id' => $model->id], [
-                                                'class' => 'btn btn-danger btn-sm',
+                                                'class' => 'btn btn-danger btn-xs',
                                                 'data-confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
                                                 'data-method' => 'post',
                                                 'data-pjax' => 0,
