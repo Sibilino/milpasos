@@ -28,6 +28,9 @@ class PriceInput extends InputWidget
      */
     public function init()
     {
+        if (!isset($this->options['step'])) {
+            $this->options['step'] = 0.01;
+        }
         if (!key_exists($this->currencyAttr, $this->model->attributes)) {
             throw new InvalidConfigException("The model does not have a '$this->currencyAttr' attribute.");
         }
