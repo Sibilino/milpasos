@@ -154,6 +154,7 @@ $features = array_map(function (Event $e) {
                 ],
             ]),
             'columns' => [
+                'imageUrl:image',
                 [
                     'attribute' => 'name',
                     'value' => function (Event $e) {
@@ -165,7 +166,13 @@ $features = array_map(function (Event $e) {
                 'end_date:date',
                 'address',
                 [
-                    'label' => 'Price',
+                    'label' => Yii::t('app', "Dance styles"),
+                    'value' => function (Event $e) {
+                        return implode(', ', ArrayHelper::getColumn($e->dances, 'name'));
+                    }
+                ],
+                [
+                    'label' => Yii::t('app', "Price"),
                     'value' => function (Event $e) {
                         $price = $e->bestAvailablePrice();
                         if ($price !== null) {
@@ -173,7 +180,7 @@ $features = array_map(function (Event $e) {
                         }
                         return null;
                     },
-                ]
+                ],
             ],
         ],
     ]) ?>
