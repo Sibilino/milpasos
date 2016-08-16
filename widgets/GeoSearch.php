@@ -197,7 +197,7 @@ if (navigator.geolocation) {
                 lonInput.value = '';
                 latInput.value = '';
             });
-            lonInput.value = position.coords.latitude;
+            lonInput.value = position.coords.longitude;
             latInput.value = position.coords.latitude;
         }); 
     });
