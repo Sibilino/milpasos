@@ -45,6 +45,9 @@ class ListForm extends ListView
             $this->openParam = $this->getId();
         }
         $this->_openModelKey = Yii::$app->request->getQueryParam($this->openParam);
+        if (!in_array($this->_openModelKey, $this->dataProvider->getKeys())) {
+            $this->_openModelKey = null;
+        }
     }
 
     /**
@@ -118,7 +121,7 @@ class ListForm extends ListView
         $keys = $this->dataProvider->getKeys();
         $models = array_combine($keys, $models);
         if (!$this->hasOpenModel() || !isset($models[$this->_openModelKey])) {
-            throw new Exception("Cannot retrieve open model: no open model found.");
+            throw new Exception("Cannot retrieve open model: open model not found in data provider.");
         }
         return $models[$this->_openModelKey];
     }
