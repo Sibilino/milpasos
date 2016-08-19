@@ -12,7 +12,7 @@ use yii\bootstrap\Html;
 
 <div class="well">
     
-    <?= $view->render('/pass/_fields', [
+    <?= $this->render('/pass/_fields', [
         'model' => $model,
         'prices' => $prices,
         'form' => $form,
