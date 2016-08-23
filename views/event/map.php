@@ -31,25 +31,26 @@ $features = array_map(function (Event $e) {
 
 ?>
 
-<?= OpenLayers::widget([
-    'id' => 'main-map',
-    'options' => [
-        'class' => 'event-map',
-    ],
-    'mapOptionScript' => Url::to('@web/js/mapOptions.js'),
-    'mapOptions' => [
-        'layers' => [
-            'Tile' => [
-                'source' => new OL('source.OSM'),
-            ],
-            'Vector' => [
-                'source' => new OL('source.Cluster', [
-                    'distance' => 30,
-                    'source' => new OL('source.Vector', [
-                        'features' => $features,
+<div class="row">
+    <?= OpenLayers::widget([
+        'id' => 'main-map',
+        'options' => [
+            'class' => 'event-map',
+        ],
+        'mapOptionScript' => Url::to('@web/js/mapOptions.js'),
+        'mapOptions' => [
+            'layers' => [
+                'Tile' => [
+                    'source' => new OL('source.OSM'),
+                ],
+                'Vector' => [
+                    'source' => new OL('source.Cluster', [
+                        'distance' => 30,
+                        'source' => new OL('source.Vector', [
+                            'features' => $features,
+                        ]),
                     ]),
-                ]),
-                'style' => new JsExpression("function(feature, resolution) {
+                    'style' => new JsExpression("function(feature, resolution) {
                     return [
                         ".new OL('style.Style', [
                             'image' => new OL('style.Circle', [
@@ -70,18 +71,20 @@ $features = array_map(function (Event $e) {
                         ])."
                     ];
                 }"),
+                ],
+            ],
+            'view' => [
+                'center' => new OL('proj.fromLonLat', [6.62232,46.5235]),
+                'zoom' => 5,
             ],
         ],
-        'view' => [
-            'center' => new OL('proj.fromLonLat', [6.62232,46.5235]),
-            'zoom' => 2,
-        ],
-    ],
-]) ?>
+    ]) ?>
+</div>
 
-<div class="map-filters">
+
+<div class="map-filters well">
     <div class="row">
-        <div class="col-sm-4">
+        <div class="col-sm-3">
             <?php $form = ActiveForm::begin([
                 'layout' => 'horizontal',
                 'fieldConfig' => [
@@ -132,7 +135,7 @@ $features = array_map(function (Event $e) {
             <?php ActiveForm::end(); ?>
         </div>
     
-        <div class="col-sm-8">
+        <div class="col-sm-9">
             <?php $form = GridForm::begin([
                 'method' => 'get',
                 'options' => [
@@ -147,7 +150,7 @@ $features = array_map(function (Event $e) {
                             'defaultOrder' => ['start_date'=>SORT_ASC],
                         ],
                         'pagination' => [
-                            'pageSize' => 5,
+                            'pageSize' => 3,
                         ],
                     ]),
                     'columns' => [

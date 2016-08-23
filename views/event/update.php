@@ -20,7 +20,7 @@ $this->title = Yii::t('app', 'Update {modelClass}: ', [
     'modelClass' => 'Event',
 ]) . ' ' . $event->name;
 ?>
-<div class="event-update">
+<div class="event-update padded">
     <div class="row">
 
         <div class="col-md-6 col-md-push-6">

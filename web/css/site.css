@@ -95,8 +95,7 @@ a.desc:after {
 }
 
 .event-map {
-    height: 397px;
-    margin-bottom: 8px;
+    height: 100%;
 }
 
 .padded.container-fluid {
@@ -105,7 +104,7 @@ a.desc:after {
 
 .map-filters {
     position: absolute;
-    top: 75px;
-    left: 45px;
-    width: 750px;
+    top: 85px;
+    left: 65px;
+    width: 980px;
 }
