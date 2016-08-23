@@ -22,47 +22,8 @@ $this->title = Yii::t('app', 'Update {modelClass}: ', [
 ?>
 <div class="event-update">
     <div class="row">
-        <div class="col-md-6">
 
-            <?php
-            Pjax::begin();
-            $form = ActiveForm::begin([
-                'enableClientValidation' => false,
-            ]);
-            ?>
-
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <div class="pull-right btn-group btn-group-xs">
-                        <?= Html::submitButton(Yii::t('app', "Save"), [
-                            'class' => 'btn btn-success',
-                        ]) ?>
-                    </div>
-                    <h2 class="panel-title"><?= $event->name ?></h2>
-                </div>
-                <div class="panel-body">
-                    <?= $this->render('_fields', [
-                        'model' => $event,
-                        'newLink' => $newLink,
-                        'form' => $form,
-                    ]) ?>
-                </div>
-                <div class="panel-footer">
-                    <div class="btn-group btn-group-xs">
-                        <?= Html::submitButton(Yii::t('app', "Save"), [
-                            'class' => 'btn btn-success',
-                        ]) ?>
-                    </div>
-                </div>
-            </div>
-
-            <?php
-            ActiveForm::end();
-            Pjax::end();
-            ?>
-        </div>
-
-        <div class="col-md-6">
+        <div class="col-md-6 col-md-push-6">
 
             <?php
             Pjax::begin();
@@ -162,6 +123,46 @@ $this->title = Yii::t('app', 'Update {modelClass}: ', [
             Pjax::end();
             ?>
 
+        </div>
+        
+        <div class="col-md-6 col-md-pull-6">
+
+            <?php
+            Pjax::begin();
+            $form = ActiveForm::begin([
+                'enableClientValidation' => false,
+            ]);
+            ?>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="pull-right btn-group btn-group-xs">
+                        <?= Html::submitButton(Yii::t('app', "Save"), [
+                            'class' => 'btn btn-success',
+                        ]) ?>
+                    </div>
+                    <h2 class="panel-title"><?= $event->name ?></h2>
+                </div>
+                <div class="panel-body">
+                    <?= $this->render('_fields', [
+                        'model' => $event,
+                        'newLink' => $newLink,
+                        'form' => $form,
+                    ]) ?>
+                </div>
+                <div class="panel-footer">
+                    <div class="btn-group btn-group-xs">
+                        <?= Html::submitButton(Yii::t('app', "Save"), [
+                            'class' => 'btn btn-success',
+                        ]) ?>
+                    </div>
+                </div>
+            </div>
+
+            <?php
+            ActiveForm::end();
+            Pjax::end();
+            ?>
         </div>
 
     </div>
