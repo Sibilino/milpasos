@@ -171,6 +171,7 @@ class EventController extends Controller
         }
         $listForm->validate();
         
+        $this->layout = 'fluid';
         return $this->render('map', [
             'mapForm' => $mapForm,
             'listForm' => $listForm,
