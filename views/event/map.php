@@ -142,6 +142,9 @@ $features = array_map(function (Event $e) {
                     'style' => ['display' => 'none'],
                 ],
                 'gridOptions' => [
+                    'tableOptions' => [
+                        'class' => 'table table-condensed'
+                    ],
                     'emptyText' => Yii::t('app', 'Select an event on the map.'),
                     'dataProvider' => new ActiveDataProvider([
                         'query' => Event::find()->where(['id'=>$listForm->eventIds]),
