@@ -41,7 +41,10 @@ $features = array_map(function (Event $e) {
         'mapOptions' => [
             'layers' => [
                 'Tile' => [
-                    'source' => new OL('source.OSM'),
+                    'source' => new OL('source.BingMaps', [
+                        'key' => 'AvSsU4URc0cvcuOyUBlyDQqDH3J5juR3rd_STWeUzrArbQOW6ThjgSKSScO8mc3O',
+                        'imagerySet' => 'Road',
+                    ]),
                 ],
                 'Vector' => [
                     'source' => new OL('source.Cluster', [
