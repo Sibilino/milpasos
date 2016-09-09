@@ -71,6 +71,8 @@ class Event extends \yii\db\ActiveRecord
                 'class' => ImageModelBehavior::className(),
                 'folder' => 'img/event',
                 'imageAttr' => 'imageUrl',
+                'height' => 150,
+                'width' => 150,
             ],
         ];
     }
