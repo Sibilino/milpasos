@@ -60,6 +60,11 @@ $config = yii\helpers\ArrayHelper::merge([
                     'app\widgets\assets\GMapsLibrary' => [
                         'key' => 'AIzaSyBEr0tOImJExGdG9hriZazaa1zgZbLhu7Y',
                     ],
+                    'yii\bootstrap\BootstrapAsset' => [
+                        'sourcePath' => null,
+                        'baseUrl' => '@web/css',
+                        'css' => ['bootstrap.css'],
+                    ],
                 ]
             ],
             'currencyConverter' => [
