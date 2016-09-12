@@ -4,7 +4,7 @@ Yii::setAlias('@tests', dirname(__DIR__) . '/tests');
 
 $params = require(__DIR__ . '/params.php');
 
-return yii\helpers\ArrayHelper::merge([
+$config = yii\helpers\ArrayHelper::merge([
         'id' => 'basic-console',
         'basePath' => dirname(__DIR__),
         'bootstrap' => ['log', 'gii'],
@@ -33,3 +33,8 @@ return yii\helpers\ArrayHelper::merge([
     ],
     require(__DIR__.'/sensitive.php')
 );
+
+// Unfortunately console app Request is different than web app Request, cannot use same config
+$config['components']['request'] = [];
+
+return $config;
