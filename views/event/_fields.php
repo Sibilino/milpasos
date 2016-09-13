@@ -29,6 +29,7 @@ use yii\bootstrap\Html;
         <div class="col-sm-6">
             <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
             <?= $form->field($model, 'website')->textInput(['maxlength' => true])?>
+            <?= $form->field($model, 'summary')->textarea(['maxlength' => true])?>
         </div>
 
     </div>

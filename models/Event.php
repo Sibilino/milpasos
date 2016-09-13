@@ -19,6 +19,7 @@ use yii\db\ActiveQuery;
  * @property double $lon
  * @property double $lat
  * @property string $website
+ * @property string $summary
  * @property array $danceIds
  *
  * @property Artist[] $artists
@@ -91,6 +92,7 @@ class Event extends \yii\db\ActiveRecord
             ['website', 'url', 'defaultScheme' => 'http'],
             [['address'], 'string', 'max' => 500],
             [['address'], 'required', 'message' => Yii::t('app', "Please select an address from the list of suggestions.")],
+            [['summary'], 'string', 'max' => 2000],
             [['danceIds'], 'default', 'value' => []],
             [['groupIds'], 'default', 'value' => []],
         ];
@@ -122,6 +124,7 @@ class Event extends \yii\db\ActiveRecord
             'lon' => Yii::t('app', 'Lon'),
             'lat' => Yii::t('app', 'Lat'),
             'website' => Yii::t('app', 'Main Website'),
+            'summary' => Yii::t('app', 'Summary'),
             'danceIds' => Yii::t('app', 'Dance Styles'),
             'groupIds' => Yii::t('app', 'Performers'),
             'imageUrl' => Yii::t('app', 'Image'),
