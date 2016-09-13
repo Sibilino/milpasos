@@ -61,9 +61,7 @@ $config = yii\helpers\ArrayHelper::merge([
                         'key' => 'AIzaSyBEr0tOImJExGdG9hriZazaa1zgZbLhu7Y',
                     ],
                     'yii\bootstrap\BootstrapAsset' => [
-                        'sourcePath' => null,
-                        'baseUrl' => '@web/css',
-                        'css' => ['bootstrap.css'],
+                        'sourcePath' => '@app/assets/bootstrap',
                     ],
                 ]
             ],
