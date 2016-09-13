@@ -89,6 +89,7 @@ $config = yii\helpers\ArrayHelper::merge([
 );
 if (YII_ENV_DEV) {
     // configuration adjustments for 'dev' environment
+    $config['components']['assetManager']['forceCopy'] = true;
     $config['bootstrap'][] = 'debug';
     $config['modules']['debug'] = [
         'class' => 'yii\debug\Module',
