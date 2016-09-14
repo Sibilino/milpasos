@@ -52,9 +52,6 @@ class MultiAutoComplete extends InputWidget
      */
     public function run()
     {
-        MultiAutoCompleteBundle::register($this->view);
-        $this->view->registerJs($this->getJs());
-
         $selection = [];
         foreach ($this->data as $value => $label) {
             if (in_array($value, $this->_modelValue)) {
@@ -66,6 +63,9 @@ class MultiAutoComplete extends InputWidget
         $html .= Html::ul($selection, $this->listOptions);
         $html .= AutoComplete::widget($this->autoCompleteOptions);
         $html .= '</div>';
+
+        MultiAutoCompleteBundle::register($this->view);
+        $this->view->registerJs($this->getJs());
 
         return $html;
     }
