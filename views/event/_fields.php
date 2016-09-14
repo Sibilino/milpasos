@@ -4,10 +4,10 @@ use app\models\Dance;
 use app\models\Group;
 use app\widgets\DateRangePicker;
 use app\widgets\GeoSearch;
+use app\widgets\MultiAutoComplete;
 use yii\data\ActiveDataProvider;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
-use yii\grid\SerialColumn;
 use yii\helpers\ArrayHelper;
 use yii\bootstrap\Html;
 
@@ -36,10 +36,14 @@ use yii\bootstrap\Html;
 
     <div class="row">
         <div class="col-sm-6">
-            <?= $form->field($model, 'danceIds')->checkboxList(ArrayHelper::map(Dance::find()->all(), 'id', 'name')) ?>
+            <?= $form->field($model, 'danceIds')->widget(MultiAutoComplete::className(), [
+                'data' => ArrayHelper::map(Dance::find()->orderBy('name')->all(), 'id', 'name'),
+            ]) ?>
         </div>
         <div class="col-sm-6">
-            <?= $form->field($model, 'groupIds')->checkboxList(ArrayHelper::map(Group::find()->all(), 'id', 'name')) ?>
+            <?= $form->field($model, 'groupIds')->widget(MultiAutoComplete::className(), [
+                'data' => ArrayHelper::map(Group::find()->orderBy('name')->all(), 'id', 'name'),
+            ]) ?>
         </div>
     </div>
 
