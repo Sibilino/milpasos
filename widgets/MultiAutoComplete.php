@@ -54,6 +54,7 @@ class MultiAutoComplete extends InputWidget
     public function run()
     {
         $html = '<div>';
+        $html .= Html::hiddenInput($this->getInputName()); // To allow saving empty selection
         $html .= Html::ul([], $this->listOptions);
         $html .= AutoComplete::widget($this->options);
         $html .= '</div>';
@@ -84,7 +85,8 @@ class MultiAutoComplete extends InputWidget
     {
         $autoCompleteId = Json::encode($this->options['id']);
         $inputName = Json::encode($this->getInputName().'[]');
-        return "milpasos.multiAutoComplete.construct($autoCompleteId, $inputName);";
+        $selection = Json::encode($this->_modelValue);
+        return "milpasos.multiAutoComplete.construct($autoCompleteId, $inputName, $selection);";
     }
 
 

@@ -1,6 +1,6 @@
 milpasos.multiAutoComplete = (function ($) {
     return {
-        construct: function (id, inputName) {
+        construct: function (id, inputName, initialValues) {
 
             var autoComplete = $('#'+id);
             var ul = autoComplete.siblings('ul');
@@ -20,7 +20,19 @@ milpasos.multiAutoComplete = (function ($) {
                 });
                 autoComplete.autocomplete('option', 'source', newSource);
             };
-            var addLi = function (label, value) {
+            var getLabel = function (value) {
+                var source = autoComplete.autocomplete('option', 'source');
+                for (var i=0; i<source.length; i++) {
+                    if (source[i].value == value) {
+                        return source[i].label;
+                    }
+                }
+                return 'Undefined';
+            };
+            var selectItem = function (value, label) {
+                if (typeof label === "undefined") {
+                    label = getLabel(value);
+                }
                 var input = $('<input type="hidden" />')
                     .attr('name', inputName)
                     .val(value);
@@ -33,12 +45,16 @@ milpasos.multiAutoComplete = (function ($) {
                     })
                     .append(input);
                 ul.append(li);
+                removeFromSource(value);
             };
+
+            for (var i=0; i<initialValues.length; i++) {
+                selectItem(initialValues[i]);
+            }
             
             autoComplete
                 .on('autocompleteselect', function (event, ui) {
-                    addLi(ui.item.label, ui.item.value);
-                    removeFromSource(ui.item.value);
+                    selectItem(ui.item.value, ui.item.label);
 
                 }).on('click', function (event) {
                     autoComplete.autocomplete('search'); // open menu
