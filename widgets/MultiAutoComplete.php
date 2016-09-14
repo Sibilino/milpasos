@@ -5,6 +5,7 @@ namespace app\widgets;
 
 use app\widgets\assets\MultiAutoCompleteBundle;
 use yii\base\InvalidValueException;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\jui\AutoComplete;
@@ -12,10 +13,9 @@ use yii\widgets\InputWidget;
 
 class MultiAutoComplete extends InputWidget
 {
-    public $data = [];
+    public $data = []; // id => label
 
     public $listOptions = [];
-    public $autoCompleteOptions = [];
 
     private $_modelValue;
 
@@ -30,15 +30,16 @@ class MultiAutoComplete extends InputWidget
         if (!isset($this->listOptions['id'])) {
             $this->listOptions['id'] = $this->getId().'-select-list';
         }
-        if (!isset($this->autoCompleteOptions['id'])) {
-            $this->autoCompleteOptions['id'] = "$this->id-auto-complete";
-        }
-        if (!isset($this->autoCompleteOptions['name'])) {
-            $this->autoCompleteOptions['name'] = "$this->id-auto-complete";
-        }
-        if (!isset($this->autoCompleteOptions['value'])) {
-            $this->autoCompleteOptions['value'] = '';
-        }
+
+        $defaults = [
+            'name' => "$this->id-auto-complete",
+            'clientOptions' => [
+                'minLength' => 0,
+                'source' => $this->toLabelValues($this->data),
+            ],
+        ];
+        $this->options = ArrayHelper::merge($defaults, $this->options);
+
 
         $this->_modelValue = $this->hasModel() ? Html::getAttributeValue($this->model, $this->attribute) : $this->value;
         if (!is_array($this->_modelValue)) {
@@ -52,16 +53,9 @@ class MultiAutoComplete extends InputWidget
      */
     public function run()
     {
-        $selection = [];
-        foreach ($this->data as $value => $label) {
-            if (in_array($value, $this->_modelValue)) {
-                $selection []= $label;
-            }
-        }
-
         $html = '<div>';
-        $html .= Html::ul($selection, $this->listOptions);
-        $html .= AutoComplete::widget($this->autoCompleteOptions);
+        $html .= Html::ul([], $this->listOptions);
+        $html .= AutoComplete::widget($this->options);
         $html .= '</div>';
 
         MultiAutoCompleteBundle::register($this->view);
@@ -70,14 +64,28 @@ class MultiAutoComplete extends InputWidget
         return $html;
     }
 
+    private function toLabelValues(array $data)
+    {
+        $result = [];
+        foreach ($data as $value => $label) {
+            $result []= [
+                'label' => $label,
+                'value' => $value,
+            ];
+        }
+        return $result;
+    }
+
     private function getInputName() {
         return $this->hasModel() ? Html::getInputName($this->model, $this->attribute) : $this->name;
     }
 
     private function getJs()
     {
-        $autoCompleteId = Json::encode($this->autoCompleteOptions['id']);
+        $autoCompleteId = Json::encode($this->options['id']);
         $inputName = Json::encode($this->getInputName().'[]');
         return "milpasos.multiAutoComplete.construct($autoCompleteId, $inputName);";
     }
+
+
 }
