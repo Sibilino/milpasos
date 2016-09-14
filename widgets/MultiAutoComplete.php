@@ -11,12 +11,28 @@ use yii\helpers\Json;
 use yii\jui\AutoComplete;
 use yii\widgets\InputWidget;
 
+/**
+ * This widgets shows an input consisting in a searchable dropdown with selectable items,
+ * and a list of the current selection. Clicking on items adds or removes them to the list.
+ * @property array $options Options passed to the underlying autocomplete input. Source will be overwritten by $data.
+ * @package app\widgets
+ */
 class MultiAutoComplete extends InputWidget
 {
-    public $data = []; // id => label
+    /**
+     * @var array value => label array of all possible items for selection. Values must be unique.
+     */
+    public $data = [];
 
+    /**
+     * @var array Options to be applied to the html list.
+     * @see yii\helpers\Html::ul()
+     */
     public $listOptions = [];
 
+    /**
+     * @var array The values stored in the given model's attribute.
+     */
     private $_modelValue;
 
     /**
@@ -35,10 +51,10 @@ class MultiAutoComplete extends InputWidget
             'name' => "$this->id-auto-complete",
             'clientOptions' => [
                 'minLength' => 0,
-                'source' => $this->toLabelValues($this->data),
             ],
         ];
         $this->options = ArrayHelper::merge($defaults, $this->options);
+        $this->options['clientOptions']['source'] = $this->toLabelValues($this->data);
 
 
         $this->_modelValue = $this->hasModel() ? Html::getAttributeValue($this->model, $this->attribute) : $this->value;
@@ -65,6 +81,11 @@ class MultiAutoComplete extends InputWidget
         return $html;
     }
 
+    /**
+     * Gets an array of label => value and turns it into array of arrays with 'label' => label and 'value' => value.
+     * @param array $data
+     * @return array
+     */
     private function toLabelValues(array $data)
     {
         $result = [];
@@ -77,16 +98,22 @@ class MultiAutoComplete extends InputWidget
         return $result;
     }
 
+    /**
+     * @return string Returns the name to be used for inputs.
+     */
     private function getInputName() {
         return $this->hasModel() ? Html::getInputName($this->model, $this->attribute) : $this->name;
     }
 
+    /**
+     * @return string The JavaScript needed to activate this widget.
+     */
     private function getJs()
     {
         $autoCompleteId = Json::encode($this->options['id']);
         $inputName = Json::encode($this->getInputName().'[]');
         $selection = Json::encode($this->_modelValue);
-        return "milpasos.multiAutoComplete.construct($autoCompleteId, $inputName, $selection);";
+        return "milpasos.multiAutoComplete.activate($autoCompleteId, $inputName, $selection);";
     }
 
 
