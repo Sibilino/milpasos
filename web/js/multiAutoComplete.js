@@ -1,4 +1,10 @@
 milpasos.multiAutoComplete = (function ($) {
+    var sortByLabel = function (a, b) {
+        var aLabel = a.label.toLowerCase();
+        var bLabel = b.label.toLowerCase();
+        return ((aLabel < bLabel) ? -1 : ((aLabel > bLabel) ? 1 : 0));
+    }
+
     return {
         construct: function (id, inputName, initialValues) {
 
@@ -6,18 +12,20 @@ milpasos.multiAutoComplete = (function ($) {
             var ul = autoComplete.siblings('ul');
 
             var addToSource = function (label, value) {
-                var source = autoComplete.autocomplete('option', 'source');
-                source.push({
+                var newSource = autoComplete.autocomplete('option', 'source');
+                newSource.push({
                     label: label,
                     value: value
                 });
-                autoComplete.autocomplete('option', 'source', source);
+                newSource.sort(sortByLabel);
+                autoComplete.autocomplete('option', 'source', newSource);
             };
             var removeFromSource = function (value) {
                 var newSource = autoComplete.autocomplete('option', 'source');
                 newSource = $.grep(newSource, function (e) {
                     return e.value != value;
                 });
+                newSource.sort(sortByLabel);
                 autoComplete.autocomplete('option', 'source', newSource);
             };
             var getLabel = function (value) {
