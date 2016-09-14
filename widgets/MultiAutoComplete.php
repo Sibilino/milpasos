@@ -3,16 +3,21 @@
 namespace app\widgets;
 
 
+use app\widgets\assets\MultiAutoCompleteBundle;
+use yii\base\InvalidValueException;
 use yii\helpers\Html;
+use yii\helpers\Json;
 use yii\jui\AutoComplete;
 use yii\widgets\InputWidget;
 
 class MultiAutoComplete extends InputWidget
 {
-    public $initialSelection = [];
+    public $data = [];
 
     public $listOptions = [];
     public $autoCompleteOptions = [];
+
+    private $_modelValue;
 
     /**
      * Initializes the widget.
@@ -34,8 +39,12 @@ class MultiAutoComplete extends InputWidget
         if (!isset($this->autoCompleteOptions['value'])) {
             $this->autoCompleteOptions['value'] = '';
         }
-    }
 
+        $this->_modelValue = $this->hasModel() ? Html::getAttributeValue($this->model, $this->attribute) : $this->value;
+        if (!is_array($this->_modelValue)) {
+            throw new InvalidValueException('The selection value must be an array.');
+        }
+    }
 
     /**
      * Executes the widget.
@@ -43,9 +52,20 @@ class MultiAutoComplete extends InputWidget
      */
     public function run()
     {
+        MultiAutoCompleteBundle::register($this->view);
         $this->view->registerJs($this->getJs());
-        $html = Html::ul($this->initialSelection, $this->listOptions);
+
+        $selection = [];
+        foreach ($this->data as $value => $label) {
+            if (in_array($value, $this->_modelValue)) {
+                $selection []= $label;
+            }
+        }
+
+        $html = '<div>';
+        $html .= Html::ul($selection, $this->listOptions);
         $html .= AutoComplete::widget($this->autoCompleteOptions);
+        $html .= '</div>';
 
         return $html;
     }
@@ -56,44 +76,8 @@ class MultiAutoComplete extends InputWidget
 
     private function getJs()
     {
-        $autoCompleteId = $this->autoCompleteOptions['id'];
-        $listId = $this->listOptions['id'];
-        $inputName = $this->getInputName().'[]';
-        return "
-            $('#$autoCompleteId').on('autocompleteselect', function (event, ui) {
-                
-                var li = $('<li>').attr('id', ui.item.value).text(ui.item.label);
-                var input = $('<input type=\'hidden\' name=\'$inputName\' />').val(ui.item.value);
-            
-                li.append(input);
-                li.on('click', function () {
-                    var source = $('#$autoCompleteId').autocomplete('option', 'source');
-                    source.push({
-                        value: $(this).attr('id'),
-                        label: $(this).text()
-                    });
-                    $('#$autoCompleteId').autocomplete('option', 'source', source);
-                    $(this).remove();
-                });
-                
-                $('#$listId').append(li);
-                var newSource = $(this).autocomplete('option', 'source');
-                var newSource = $.grep(newSource, function (e) {
-                    return e.value != ui.item.value;
-                });
-                $(this).autocomplete('option', 'source', newSource);
-            });
-            $('#$autoCompleteId').on('click', function (event) {
-                $(this).autocomplete('search'); // open menu
-            });
-            $('#$autoCompleteId').on('focusout', function (event) {
-                $(this).autocomplete('close');
-            });
-            $('#$autoCompleteId').on('autocompleteclose', function (event, ui) {
-                $(this).val('');
-            });
-        ";
+        $autoCompleteId = Json::encode($this->autoCompleteOptions['id']);
+        $inputName = Json::encode($this->getInputName().'[]');
+        return "milpasos.multiAutoComplete.construct($autoCompleteId, $inputName);";
     }
-
-
 }
