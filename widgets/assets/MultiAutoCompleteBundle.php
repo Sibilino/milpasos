@@ -15,6 +15,9 @@ class MultiAutoCompleteBundle extends AssetBundle
     public $js = [
         'js/multiAutoComplete.js',
     ];
+    public $css = [
+        'css/MultiAutoComplete.css',
+    ];
     public $depends = [
         'app\assets\MilpasosAsset',
     ];

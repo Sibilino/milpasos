@@ -1,0 +1,5 @@
+/* Styles for the MultiAutoComplete widget */
+
+.multi-auto-complete li {
+    cursor: pointer;
+}
