@@ -39,6 +39,7 @@ use yii\bootstrap\ActiveForm;
         'autoCompleteConfig' => [
             'options' => [
                 'placeholder' => Yii::t('app', "Add more..."),
+                'class' => 'form-control',
             ],
         ],
     ]) ?>
