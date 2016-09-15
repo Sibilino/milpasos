@@ -99,7 +99,7 @@ a.desc:after {
     height: 100%;
 }
 
-.padded.container-fluid {
+.padded {
     padding: 60px 25px 0;
 }
 
