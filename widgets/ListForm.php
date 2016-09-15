@@ -5,6 +5,7 @@ namespace app\widgets;
 use Yii;
 use yii\base\Exception;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ListView;
 
@@ -73,14 +74,20 @@ class ListForm extends ListView
      */
     public function renderForm($model, $key, $index) {
         if (is_string($this->formView)) {
-            return $this->getView()->render($this->formView, array_merge([
+            $html = $this->getView()->render($this->formView, array_merge([
                 'model' => $model,
                 'key' => $key,
                 'index' => $index,
                 'widget' => $this,
             ], $this->formViewParams));
+        } else {
+            $html = call_user_func($this->formView, $model, $key, $index, $this);
         }
-        return call_user_func($this->formView, $model, $key, $index, $this);
+        return Html::tag('div', $html, [
+            'data' => [
+                'key' => $key,
+            ]
+        ]);
     }
 
     /**
