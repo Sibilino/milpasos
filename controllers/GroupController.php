@@ -100,7 +100,9 @@ class GroupController extends Controller
 
         $artist = Artist::findOne($selectedArtistId);
         if (!$artist) {
-            $artist = new Artist();
+            $artist = new Artist([
+                'groupIds' => [$id],
+            ]);
         }
         if ($artist->load(Yii::$app->request->post()) && $artist->save()) {
             if (!$selectedArtistId) {
