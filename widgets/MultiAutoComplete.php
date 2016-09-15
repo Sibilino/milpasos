@@ -14,7 +14,7 @@ use yii\widgets\InputWidget;
 /**
  * This widgets shows an input consisting in a searchable dropdown with selectable items,
  * and a list of the current selection. Clicking on items adds or removes them to the list.
- * @property array $options Options passed to the underlying autocomplete input. Source will be overwritten by $data.
+ * @property array $options Options to be applied to the html list.
  * @package app\widgets
  */
 class MultiAutoComplete extends InputWidget
@@ -25,10 +25,9 @@ class MultiAutoComplete extends InputWidget
     public $data = [];
 
     /**
-     * @var array Options to be applied to the html list.
-     * @see yii\helpers\Html::ul()
+     * @var array Passed to the underlying autocomplete input. [clientOptions][source] will be overwritten by $data.
      */
-    public $listOptions = [];
+    public $autoCompleteConfig = [];
 
     /**
      * @var array The values stored in the given model's attribute.
@@ -43,18 +42,15 @@ class MultiAutoComplete extends InputWidget
     {
         parent::init();
 
-        if (!isset($this->listOptions['id'])) {
-            $this->listOptions['id'] = $this->getId().'-select-list';
-        }
-
         $defaults = [
+            'id' => $this->getId().'-autocomplete-input',
             'name' => "$this->id-auto-complete",
             'clientOptions' => [
                 'minLength' => 0,
             ],
         ];
-        $this->options = ArrayHelper::merge($defaults, $this->options);
-        $this->options['clientOptions']['source'] = $this->toLabelValues($this->data);
+        $this->autoCompleteConfig = ArrayHelper::merge($defaults, $this->autoCompleteConfig);
+        $this->autoCompleteConfig['clientOptions']['source'] = $this->toLabelValues($this->data);
 
 
         $this->_modelValue = $this->hasModel() ? Html::getAttributeValue($this->model, $this->attribute) : $this->value;
@@ -71,8 +67,8 @@ class MultiAutoComplete extends InputWidget
     {
         $html = '<div>';
         $html .= Html::hiddenInput($this->getInputName()); // To allow saving empty selection
-        $html .= Html::ul([], $this->listOptions);
-        $html .= AutoComplete::widget($this->options);
+        $html .= Html::ul([], $this->options);
+        $html .= AutoComplete::widget($this->autoCompleteConfig);
         $html .= '</div>';
 
         MultiAutoCompleteBundle::register($this->view);
@@ -110,7 +106,7 @@ class MultiAutoComplete extends InputWidget
      */
     private function getJs()
     {
-        $autoCompleteId = Json::encode($this->options['id']);
+        $autoCompleteId = Json::encode($this->autoCompleteConfig['id']);
         $inputName = Json::encode($this->getInputName().'[]');
         $selection = Json::encode($this->_modelValue);
         return "milpasos.multiAutoComplete.activate($autoCompleteId, $inputName, $selection);";
