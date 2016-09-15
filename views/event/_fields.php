@@ -38,11 +38,21 @@ use yii\bootstrap\Html;
         <div class="col-sm-6">
             <?= $form->field($model, 'danceIds')->widget(MultiAutoComplete::className(), [
                 'data' => ArrayHelper::map(Dance::find()->orderBy('name')->all(), 'id', 'name'),
+                'autoCompleteConfig' => [
+                    'options' => [
+                        'placeholder' => Yii::t('app', "Add more..."),
+                    ],
+                ],
             ]) ?>
         </div>
         <div class="col-sm-6">
             <?= $form->field($model, 'groupIds')->widget(MultiAutoComplete::className(), [
                 'data' => ArrayHelper::map(Group::find()->orderBy('name')->all(), 'id', 'name'),
+                'autoCompleteConfig' => [
+                    'options' => [
+                        'placeholder' => Yii::t('app', "Add more..."),
+                    ],
+                ],
             ]) ?>
         </div>
     </div>

@@ -14,6 +14,11 @@ use yii\helpers\ArrayHelper;
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
     <?= $form->field($model, 'artistIds')->widget(MultiAutoComplete::className(), [
         'data' => ArrayHelper::map(Artist::find()->orderBy('name')->all(), 'id', 'name'),
+        'autoCompleteConfig' => [
+            'options' => [
+                'placeholder' => Yii::t('app', "Add more..."),
+            ],
+        ],
     ]) ?>
     <?php if ($model->imageUrl): ?>
         <img src="<?= $model->imageUrl ?>">

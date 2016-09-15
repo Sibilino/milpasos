@@ -26,10 +26,20 @@ use yii\bootstrap\ActiveForm;
 
     <?= $form->field($model, 'danceIds')->widget(MultiAutoComplete::className(), [
         'data' => ArrayHelper::map(Dance::find()->orderBy('name')->all(), 'id', 'name'),
+        'autoCompleteConfig' => [
+            'options' => [
+                'placeholder' => Yii::t('app', "Add more..."),
+            ],
+        ],
     ]) ?>
 
     <?= $form->field($model, 'groupIds')->widget(MultiAutoComplete::className(), [
         'data' => ArrayHelper::map(Group::find()->orderBy('name')->all(), 'id', 'name'),
+        'autoCompleteConfig' => [
+            'options' => [
+                'placeholder' => Yii::t('app', "Add more..."),
+            ],
+        ],
     ]) ?>
 
     <?php if ($model->imageUrl): ?>
