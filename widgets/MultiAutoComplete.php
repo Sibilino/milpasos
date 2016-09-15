@@ -43,6 +43,11 @@ class MultiAutoComplete extends InputWidget
         parent::init();
 
         $defaults = [
+            'class' => 'multi-auto-complete',
+        ];
+        $this->options = ArrayHelper::merge($defaults, $this->options);
+
+        $defaults = [
             'id' => $this->getId().'-autocomplete-input',
             'name' => "$this->id-auto-complete",
             'clientOptions' => [
