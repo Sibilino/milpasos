@@ -109,3 +109,7 @@ a.desc:after {
     left: 65px;
     width: 980px;
 }
+
+.top-left-button {
+    margin-right: 8px;
+}
