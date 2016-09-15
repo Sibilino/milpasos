@@ -44,54 +44,44 @@ $this->title = Yii::t('app', 'Update {modelClass}: ', [
                 </div>
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-md-6">
-                            <ul>
-                                <?php
-                                    $view = $this;
-                                    $list = ListForm::begin([
-                                        'summary' => '',
-                                        'itemView' => function (Pass $model, $key, $index, ListForm $widget) {
-                                            $price = Yii::$app->formatter->asCurrency($model->price, $model->currency);
-                                            $link = Html::a(Html::encode(Html::getAttributeValue($model, 'description'). " ($price)"), $widget->getOpenUrl($key));
-                                            return Html::tag('li', $link);
-                                        },
-                                        'openParam' => 'selectedPassId',
-                                        'formView' => function (Pass $model) use ($view, $form, $prices) {
-                                            $formHtml = $view->render('/pass/_listForm', [
-                                                'model' => $model,
-                                                'prices' => $prices,
-                                                'form' => $form,
-                                            ]);
-                                            return Html::tag('li', $formHtml);
-                                        },
-                                        'dataProvider' => new ActiveDataProvider([
-                                            'query' => $event->getPasses(),
-                                        ]),
-                                    ]);
-                                    ListForm::end();
-                                ?>
-
+                        <div class="col-md-6 listform">
+                            <?php
+                                $view = $this;
+                                $list = ListForm::begin([
+                                    'summary' => '',
+                                    'itemView' => function (Pass $model, $key, $index, ListForm $widget) {
+                                        $price = Yii::$app->formatter->asCurrency($model->price, $model->currency);
+                                        return Html::a(Html::encode(Html::getAttributeValue($model, 'description'). " ($price)"), $widget->getOpenUrl($key));
+                                    },
+                                    'openParam' => 'selectedPassId',
+                                    'formView' => function (Pass $model) use ($view, $form, $prices) {
+                                        return $view->render('/pass/_listForm', [
+                                            'model' => $model,
+                                            'prices' => $prices,
+                                            'form' => $form,
+                                        ]);
+                                    },
+                                    'dataProvider' => new ActiveDataProvider([
+                                        'query' => $event->getPasses(),
+                                    ]),
+                                ]);
+                                ListForm::end();
+                            ?>
+                            <div data-key="0">
                                 <?php if ($list->hasOpenModel()):?>
-                                    <li>
                                         <?= Html::a(Yii::t('app', "Add a new pass"), $list->getCloseUrl(), [
                                             'class' => 'text-danger',
                                         ]) ?>
-                                    </li>
                                 <?php else: ?>
-                                    <li>
                                         <span class="text-danger"><?= Yii::t('app', "New pass") ?></span>
 
-                                        <div class="well">
                                         <?= $this->render('/pass/_fields', [
                                             'model' => $pass,
                                             'form' => $form,
                                         ]) ?>
-                                        </div>
 
-
-                                    </li>
                                 <?php endif; ?>
-                            </ul>
+                            </div>
                         </div>
                         <div class="col-md-6">
 
