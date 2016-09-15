@@ -17,6 +17,7 @@ use yii\helpers\ArrayHelper;
         'autoCompleteConfig' => [
             'options' => [
                 'placeholder' => Yii::t('app', "Add more..."),
+                'class' => 'form-control',
             ],
         ],
     ]) ?>

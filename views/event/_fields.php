@@ -41,6 +41,7 @@ use yii\bootstrap\Html;
                 'autoCompleteConfig' => [
                     'options' => [
                         'placeholder' => Yii::t('app', "Add more..."),
+                        'class' => 'form-control',
                     ],
                 ],
             ]) ?>
@@ -51,6 +52,7 @@ use yii\bootstrap\Html;
                 'autoCompleteConfig' => [
                     'options' => [
                         'placeholder' => Yii::t('app', "Add more..."),
+                        'class' => 'form-control',
                     ],
                 ],
             ]) ?>
