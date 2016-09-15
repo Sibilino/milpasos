@@ -97,7 +97,9 @@ class EventController extends Controller
      * Updates an existing Event model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param string $id
+     * @param int $selectedPassId Optional. Id of a Pass to be displayed for modification alongside the Event.
      * @return mixed
+     * @throws NotFoundHttpException
      */
     public function actionUpdate($id, $selectedPassId = 0)
     {
