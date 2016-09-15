@@ -2,6 +2,7 @@
 
 use app\models\Dance;
 use app\models\Group;
+use app\widgets\MultiAutoComplete;
 use yii\helpers\ArrayHelper;
 use yii\bootstrap\Html;
 use yii\bootstrap\ActiveForm;
@@ -23,9 +24,13 @@ use yii\bootstrap\ActiveForm;
 
     <?= $form->field($model, 'website')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'danceIds')->checkboxList(ArrayHelper::map(Dance::find()->orderBy('name')->all(), 'id', 'name')) ?>
+    <?= $form->field($model, 'danceIds')->widget(MultiAutoComplete::className(), [
+        'data' => ArrayHelper::map(Dance::find()->orderBy('name')->all(), 'id', 'name'),
+    ]) ?>
 
-    <?= $form->field($model, 'groupIds')->checkboxList(ArrayHelper::map(Group::find()->orderBy('name')->all(), 'id', 'name')) ?>
+    <?= $form->field($model, 'groupIds')->widget(MultiAutoComplete::className(), [
+        'data' => ArrayHelper::map(Group::find()->orderBy('name')->all(), 'id', 'name'),
+    ]) ?>
 
     <?php if ($model->imageUrl): ?>
         <img src="<?= $model->imageUrl ?>">
