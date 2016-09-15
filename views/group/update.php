@@ -29,8 +29,7 @@ $this->title = Yii::t('app', 'Update {modelClass}: ', [
                 <div class="panel-heading">
                     <h2 class="panel-title"><?= Yii::t('app', "Artists in Group") ?></h2>
                 </div>
-                <div class="panel-body">
-                    <ul>
+                <div class="panel-body listform">
                         <?php
                         $view = $this;
                         $list = ListForm::begin([
@@ -54,26 +53,21 @@ $this->title = Yii::t('app', 'Update {modelClass}: ', [
                         ListForm::end();
                         ?>
 
-                        <?php if ($list->hasOpenModel()):?>
-                            <li>
+                        <div data-key="0">
+                            <?php if ($list->hasOpenModel()):?>
                                 <?= Html::a(Yii::t('app', "Add a new Artist"), $list->getCloseUrl(), [
                                     'class' => 'text-danger',
                                 ]) ?>
-                            </li>
-                        <?php else: ?>
-                            <li>
+                            <?php else: ?>
                                 <span class="text-danger"><?= Yii::t('app', "New Artist") ?></span>
 
-                                <div class="well">
-                                    <?= $this->render('/artist/_fields', [
-                                        'model' => $artist,
-                                        'form' => $form,
-                                    ]) ?>
-                                </div>
-                            </li>
-                        <?php endif; ?>
+                                <?= $this->render('/artist/_fields', [
+                                    'model' => $artist,
+                                    'form' => $form,
+                                ]) ?>
+                            <?php endif; ?>
+                        </div>
 
-                    </ul>
                 </div>
             </div>
 
