@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Artist;
 use Yii;
 use app\models\Group;
 use app\models\GroupSearch;
@@ -85,19 +86,33 @@ class GroupController extends Controller
      * Updates an existing Group model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param string $id
+     * @param int $selectedArtistId
      * @return mixed
+     * @throws NotFoundHttpException
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id, $selectedArtistId = 0)
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+        if ($model->load(Yii::$app->request->post())) {
+            $model->save();
         }
+
+        $artist = Artist::findOne($selectedArtistId);
+        if (!$artist) {
+            $artist = new Artist();
+        }
+        if ($artist->load(Yii::$app->request->post()) && $artist->save()) {
+            if (!$selectedArtistId) {
+                $this->redirect(['update', 'id' => $id,'selectedArtistId' => $artist->id]);
+            }
+        }
+
+        $this->layout = 'fluid';
+        return $this->render('update', [
+            'model' => $model,
+            'artist' => $artist,
+        ]);
     }
 
     /**

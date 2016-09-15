@@ -11,38 +11,47 @@ use yii\helpers\ArrayHelper;
 ?>
 
 <div class="artist-form">
-
-    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'real_name')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'real_surname')->textInput(['maxlength' => true]) ?>
-
+    <div class="row">
+        <div class="col-md-4">
+            <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+        </div>
+        <div class="col-md-4">
+            <?= $form->field($model, 'real_name')->textInput(['maxlength' => true]) ?>
+        </div>
+        <div class="col-md-4">
+            <?= $form->field($model, 'real_surname')->textInput(['maxlength' => true]) ?>
+        </div>
+    </div>
     <?= $form->field($model, 'website')->textInput(['maxlength' => true]) ?>
+    <div class="row">
+        <div class="col-md-4">
+            <?php if ($model->imageUrl): ?>
+                <img src="<?= $model->imageUrl ?>">
+            <?php endif; ?>
+            <?= $form->field($model, 'imageUrl')->fileInput() ?>
 
-    <?= $form->field($model, 'danceIds')->widget(MultiAutoComplete::className(), [
-        'data' => ArrayHelper::map(Dance::find()->orderBy('name')->all(), 'id', 'name'),
-        'autoCompleteConfig' => [
-            'options' => [
-                'placeholder' => Yii::t('app', "Add more..."),
-                'class' => 'form-control',
-            ],
-        ],
-    ]) ?>
-
-    <?= $form->field($model, 'groupIds')->widget(MultiAutoComplete::className(), [
-        'data' => ArrayHelper::map(Group::find()->orderBy('name')->all(), 'id', 'name'),
-        'autoCompleteConfig' => [
-            'options' => [
-                'placeholder' => Yii::t('app', "Add more..."),
-                'class' => 'form-control',
-            ],
-        ],
-    ]) ?>
-
-    <?php if ($model->imageUrl): ?>
-        <img src="<?= $model->imageUrl ?>">
-    <?php endif; ?>
-    <?= $form->field($model, 'imageUrl')->fileInput() ?>
-
+        </div>
+        <div class="col-md-4">
+            <?= $form->field($model, 'danceIds')->widget(MultiAutoComplete::className(), [
+                'data' => ArrayHelper::map(Dance::find()->orderBy('name')->all(), 'id', 'name'),
+                'autoCompleteConfig' => [
+                    'options' => [
+                        'placeholder' => Yii::t('app', "Add more..."),
+                        'class' => 'form-control',
+                    ],
+                ],
+            ]) ?>
+        </div>
+        <div class="col-md-4">
+            <?= $form->field($model, 'groupIds')->widget(MultiAutoComplete::className(), [
+                'data' => ArrayHelper::map(Group::find()->orderBy('name')->all(), 'id', 'name'),
+                'autoCompleteConfig' => [
+                    'options' => [
+                        'placeholder' => Yii::t('app', "Add more..."),
+                        'class' => 'form-control',
+                    ],
+                ],
+            ]) ?>
+        </div>
+    </div>
 </div>
