@@ -1,5 +1,15 @@
 /* Styles for the MultiAutoComplete widget */
+.multi-auto-complete {
+    padding: 0;
+}
 
 .multi-auto-complete li {
     cursor: pointer;
+    list-style-type: square;
+    background: #e6e6e6;
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 6px;
+    border: 1px solid darkgray;
+    margin-left: 3px;
 }
