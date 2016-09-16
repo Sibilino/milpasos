@@ -31,13 +31,13 @@ class GeoSearch extends LocationWidget
      */
     public $mapOptions = [];
     /**
-     * @var string The attribute that will receive the city name of the selected location.
+     * @var string Optional. The attribute that will receive the city name of the selected location.
      */
-    public $cityAttribute = 'city';
+    public $cityAttribute;
     /**
-     * @var string The attribute that will receive the country name of the selected location.
+     * @var string Optional. The attribute that will receive the country name of the selected location.
      */
-    public $countryAttribute = 'country';
+    public $countryAttribute;
     
     /**
      * Whether to also show a button that set the user's current location in the lon lat fields.
@@ -93,9 +93,6 @@ class GeoSearch extends LocationWidget
         if (!$this->hasModel())
             throw new InvalidConfigException(self::className()." requires a Model and an Attribute.");
 
-        if (!in_array($this->cityAttribute, $this->model->attributes()) || !in_array($this->countryAttribute, $this->model->attributes()))
-            throw new InvalidConfigException("The Model must have '$this->cityAttribute' and '$this->countryAttribute' attributes.");
-
         if (!isset($this->options['class'])) {
             $this->options['class'] = 'form-control';
         }
@@ -106,8 +103,13 @@ class GeoSearch extends LocationWidget
         $this->_inputId = Json::encode(Html::getInputId($this->model, $this->attribute));
         $this->_lonId = Json::encode(Html::getInputId($this->model, $this->lonAttribute));
         $this->_latId = Json::encode(Html::getInputId($this->model, $this->latAttribute));
-        $this->_cityId = Json::encode(Html::getInputId($this->model, $this->cityAttribute));
-        $this->_countryId = Json::encode(Html::getInputId($this->model, $this->countryAttribute));
+
+        if ($this->cityAttribute) {
+            $this->_cityId = Json::encode(Html::getInputId($this->model, $this->cityAttribute));
+        }
+        if ($this->countryAttribute) {
+            $this->_countryId = Json::encode(Html::getInputId($this->model, $this->countryAttribute));
+        }
         $this->_mapId = Json::encode($this->mapOptions['id']);
     }
 
@@ -119,13 +121,15 @@ class GeoSearch extends LocationWidget
     protected function renderWidget()
     {
         GMapsLibrary::register($this->view);
-        
-        
-        
+
         $html = Html::activeHiddenInput($this->model, $this->lonAttribute);
         $html .= Html::activeHiddenInput($this->model, $this->latAttribute);
-        $html .= Html::activeHiddenInput($this->model, $this->cityAttribute);
-        $html .= Html::activeHiddenInput($this->model, $this->countryAttribute);
+        if ($this->cityAttribute) {
+            $html .= Html::activeHiddenInput($this->model, $this->cityAttribute);
+        }
+        if ($this->countryAttribute) {
+            $html .= Html::activeHiddenInput($this->model, $this->countryAttribute);
+        }
         $html .= Html::beginTag('div', $this->currentLocationButton ? ['class'=>'input-group'] : []);
         $html .= Html::activeTextInput($this->model, $this->attribute, $this->options);
         
@@ -183,8 +187,14 @@ class GeoSearch extends LocationWidget
             var place = autocomplete.getPlace();
             lonInput.value = place.geometry.location.lng();
             latInput.value = place.geometry.location.lat();
-            document.getElementById($this->_cityId).value = getAddressComponent(place, 'locality');
-            document.getElementById($this->_countryId).value = getAddressComponent(place, 'country');
+            var cityInput = document.getElementById($this->_cityId);
+            if (cityInput !== null) {
+                cityInput.value = getAddressComponent(place, 'locality');
+            }
+            var countryInput = document.getElementById($this->_countryId);
+            if (countryInput !== null) {
+                countryInput.value = getAddressComponent(place, 'country');
+            }            
             var map = milpasos.gmaps.getMap($this->_mapId);
             if (map !== null) {
                 milpasos.gmaps.clearMarkers($this->_mapId);
