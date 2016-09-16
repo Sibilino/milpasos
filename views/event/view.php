@@ -51,6 +51,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'start_date',
             'end_date',
             'address',
+            'city',
+            'country',
             [
                 'attribute' => 'address',
                 'value' => GoogleMap::widget([

@@ -61,6 +61,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'html',
             ],
             'address',
+            'city',
+            'country',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
