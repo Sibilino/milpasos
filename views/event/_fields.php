@@ -64,6 +64,8 @@ use yii\bootstrap\Html;
     <div class="row">
         <div class="col-md-6">
             <?= $form->field($model, 'address')->widget(GeoSearch::className(), [
+                'cityAttribute' => 'city',
+                'countryAttribute' => 'country',
                 'mapOptions' => [
                     'style' => [
                         'width' => '200px',
