@@ -31,6 +31,15 @@ class GeoSearch extends LocationWidget
      */
     public $mapOptions = [];
     /**
+     * @var string The attribute that will receive the city name of the selected location.
+     */
+    public $cityAttribute = 'city';
+    /**
+     * @var string The attribute that will receive the country name of the selected location.
+     */
+    public $countryAttribute = 'country';
+    
+    /**
      * Whether to also show a button that set the user's current location in the lon lat fields.
      * Optional, default false.
      * @var boolean
@@ -62,6 +71,14 @@ class GeoSearch extends LocationWidget
      */
     protected $_latId;
     /**
+     * @var string Json representation of the string holding the city input's id.
+     */
+    protected $_cityId;
+    /**
+     * @var string Json representation of the string holding the country input's id.
+     */
+    protected $_countryId;
+    /**
      * @var string Json representation of the string holding the map div's id.
      */
     protected $_mapId;
@@ -75,15 +92,22 @@ class GeoSearch extends LocationWidget
         parent::init();
         if (!$this->hasModel())
             throw new InvalidConfigException(self::className()." requires a Model and an Attribute.");
+
+        if (!in_array($this->cityAttribute, $this->model->attributes()) || !in_array($this->countryAttribute, $this->model->attributes()))
+            throw new InvalidConfigException("The Model must have '$this->cityAttribute' and '$this->countryAttribute' attributes.");
+
         if (!isset($this->options['class'])) {
             $this->options['class'] = 'form-control';
         }
         if (!isset($this->mapOptions['id'])) {
             $this->mapOptions['id'] = $this->options['id'].'-gmapwgt';
         }
+
         $this->_inputId = Json::encode(Html::getInputId($this->model, $this->attribute));
         $this->_lonId = Json::encode(Html::getInputId($this->model, $this->lonAttribute));
         $this->_latId = Json::encode(Html::getInputId($this->model, $this->latAttribute));
+        $this->_cityId = Json::encode(Html::getInputId($this->model, $this->cityAttribute));
+        $this->_countryId = Json::encode(Html::getInputId($this->model, $this->countryAttribute));
         $this->_mapId = Json::encode($this->mapOptions['id']);
     }
 
@@ -96,8 +120,12 @@ class GeoSearch extends LocationWidget
     {
         GMapsLibrary::register($this->view);
         
+        
+        
         $html = Html::activeHiddenInput($this->model, $this->lonAttribute);
         $html .= Html::activeHiddenInput($this->model, $this->latAttribute);
+        $html .= Html::activeHiddenInput($this->model, $this->cityAttribute);
+        $html .= Html::activeHiddenInput($this->model, $this->countryAttribute);
         $html .= Html::beginTag('div', $this->currentLocationButton ? ['class'=>'input-group'] : []);
         $html .= Html::activeTextInput($this->model, $this->attribute, $this->options);
         
@@ -132,33 +160,49 @@ class GeoSearch extends LocationWidget
     protected function registerAutocompleteScript() {
         $customListener = $this->onPlaceChanged ? "autocomplete.addListener('place_changed', $this->onPlaceChanged);" : '';
         $script=<<<JS
-var input = document.getElementById($this->_inputId);
-var lonInput = document.getElementById($this->_lonId);
-var latInput = document.getElementById($this->_latId);
+(function () {
+    var input = document.getElementById($this->_inputId);
+    var lonInput = document.getElementById($this->_lonId);
+    var latInput = document.getElementById($this->_latId);
 
-milpasos.gmaps.whenReady(function () {
-    var autocomplete = new google.maps.places.Autocomplete(input);
-    autocomplete.addListener('place_changed', function() {
-        var place = autocomplete.getPlace();
-        lonInput.value = place.geometry.location.lng();
-        latInput.value = place.geometry.location.lat();
-        var map = milpasos.gmaps.getMap($this->_mapId);
-        if (map !== null) {
-            milpasos.gmaps.clearMarkers($this->_mapId);
-            milpasos.gmaps.addMarker($this->_mapId, {position: place.geometry.location});
-            map.setOptions({
-                center: place.geometry.location,
-                zoom: 18
-            });
+    function getAddressComponent(place, type) {
+        var components = place.address_components;
+        for (var i=0;i<components.length;i++) {
+            for (var j=0;j<components[i].types.length;j++) {
+                if (components[i].types[j] == type) {
+                    return components[i].long_name || components[i].short_name;
+                }
+            }
         }
+        return '';
+    }
+    
+    milpasos.gmaps.whenReady(function () {
+        var autocomplete = new google.maps.places.Autocomplete(input);
+        autocomplete.addListener('place_changed', function() {
+            var place = autocomplete.getPlace();
+            lonInput.value = place.geometry.location.lng();
+            latInput.value = place.geometry.location.lat();
+            document.getElementById($this->_cityId).value = getAddressComponent(place, 'locality');
+            document.getElementById($this->_countryId).value = getAddressComponent(place, 'country');
+            var map = milpasos.gmaps.getMap($this->_mapId);
+            if (map !== null) {
+                milpasos.gmaps.clearMarkers($this->_mapId);
+                milpasos.gmaps.addMarker($this->_mapId, {position: place.geometry.location});
+                map.setOptions({
+                    center: place.geometry.location,
+                    zoom: 18
+                });
+            }
+        });
+        $customListener
     });
-    $customListener
-});
-
-input.addEventListener('input', function () {
-    lonInput.value = '';
-    latInput.value = '';
-});
+    
+    input.addEventListener('input', function () {
+        lonInput.value = '';
+        latInput.value = '';
+    });
+})();
 JS;
 
         $this->view->registerJs($script);
