@@ -21,6 +21,8 @@ use yii\db\ActiveQuery;
  * @property string $website
  * @property string $summary
  * @property array $danceIds
+ * @property array $city
+ * @property array $country
  *
  * @property Artist[] $artists
  * @property Dance[] $dances
@@ -88,10 +90,10 @@ class Event extends \yii\db\ActiveRecord
             [['start_date', 'end_date'], 'date', 'format' => 'yyyy-MM-dd'],
             [['lon'], 'number', 'min' => -180, 'max' => 180],
             [['lat'], 'number', 'min' => -90, 'max' => 90],
-            [['name', 'website'], 'string', 'max' => 250],
+            [['name', 'website', 'city', 'country'], 'string', 'max' => 250],
             ['website', 'url', 'defaultScheme' => 'http'],
             [['address'], 'string', 'max' => 500],
-            [['address'], 'required', 'message' => Yii::t('app', "Please select an address from the list of suggestions.")],
+            [['address', 'lon', 'lat', 'city', 'country'], 'required', 'message' => Yii::t('app', "Please select an address from the list of suggestions.")],
             [['summary'], 'string', 'max' => 2000],
             [['summary'], 'trim'],
             [['danceIds'], 'default', 'value' => []],
