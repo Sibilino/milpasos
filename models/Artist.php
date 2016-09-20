@@ -75,7 +75,6 @@ class Artist extends \yii\db\ActiveRecord
     {
         return [
             [['name'], 'required'],
-            [['name'], 'unique'],
             [['name', 'real_name', 'real_surname', 'website'], 'string', 'max' => 250],
             ['website', 'url', 'defaultScheme' => 'http'],
             [['danceIds'], 'default', 'value' => []],
