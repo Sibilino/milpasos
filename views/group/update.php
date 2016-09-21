@@ -16,7 +16,13 @@ $this->title = Yii::t('app', 'Update {modelClass}: ', [
 ?>
 <div class="group-update padded">
 
-    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
+    <?php $form = ActiveForm::begin([
+        'enableClientValidation' => false,
+        'validateOnSubmit' => false,
+        'options' => [
+            'enctype' => 'multipart/form-data',
+        ],
+    ]); ?>
 
     <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-danger pull-left top-left-button']) ?>
     <h1><?= Html::encode($this->title) ?></h1>
