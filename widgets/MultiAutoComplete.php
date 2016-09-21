@@ -59,6 +59,9 @@ class MultiAutoComplete extends InputWidget
 
 
         $this->_modelValue = $this->hasModel() ? Html::getAttributeValue($this->model, $this->attribute) : $this->value;
+        if (empty($this->_modelValue)) {
+            $this->_modelValue = []; // Accept any "empty" values as equivalent to empty selection array
+        }
         if (!is_array($this->_modelValue)) {
             throw new InvalidValueException('The selection value must be an array.');
         }
