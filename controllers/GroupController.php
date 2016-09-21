@@ -104,7 +104,7 @@ class GroupController extends Controller
                 'groupIds' => [$id],
             ]);
         }
-        if ($artist->load(Yii::$app->request->post()) && $artist->save()) {
+        if ($artist->load(Yii::$app->request->post()) && !$artist->isEmpty() && $artist->save()) {
             if (!$selectedArtistId) {
                 $this->redirect(['update', 'id' => $id,'selectedArtistId' => $artist->id]);
             }

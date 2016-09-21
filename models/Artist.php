@@ -112,6 +112,14 @@ class Artist extends \yii\db\ActiveRecord
     }
 
     /**
+     * @return bool Whether there is no relevant data loaded into this Artist model yet (i. e. it's a "new" template).
+     */
+    public function isEmpty()
+    {
+        return empty(array_filter($this->getAttributes(null, ['groupIds']))); // Check all attrs except groupIds
+    }
+
+    /**
      * @inheritdoc
      */
     public function load($data, $formName = null)
