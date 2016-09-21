@@ -3,6 +3,7 @@
 namespace app\widgets;
 
 use app\widgets\assets\GMapsLibrary;
+use Yii;
 use yii\base\InvalidConfigException;
 use yii\helpers\Html;
 use yii\helpers\Json;

@@ -20,7 +20,14 @@ use \yii\web\AssetBundle;
  */
 class GMapsLibrary extends AssetBundle
 {
+    /**
+     * @var string GMaps API key, required.
+     */
     public $key;
+    /**
+     * @var string Language to request the library in. Optional.
+     */
+    public $language;
 
     public $jsOptions = [
         'async' => true,
@@ -35,7 +42,11 @@ class GMapsLibrary extends AssetBundle
         if (!$this->key)
             throw new InvalidConfigException;
 
-        $this->js []= "https://maps.googleapis.com/maps/api/js?key=$this->key&libraries=places&callback=milpasos.gmaps.ready";
+        $url = "https://maps.googleapis.com/maps/api/js?key=$this->key&libraries=places&callback=milpasos.gmaps.ready";
+        if ($this->language) {
+            $url .= "&language=$this->language";
+        }
+        $this->js []= $url;
         parent::init();
     }
 }

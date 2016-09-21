@@ -66,6 +66,7 @@ use yii\bootstrap\Html;
             <?= $form->field($model, 'address')->widget(GeoSearch::className(), [
                 'cityAttribute' => 'city',
                 'countryAttribute' => 'country',
+                'forceLanguage' => 'en',
                 'mapOptions' => [
                     'style' => [
                         'width' => '200px',

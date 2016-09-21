@@ -4,6 +4,7 @@ namespace app\widgets;
 
 use app\assets\MilpasosAsset;
 use app\widgets\assets\GMapsLibrary;
+use Yii;
 use yii\base\InvalidConfigException;
 use yii\helpers\Html;
 use yii\widgets\InputWidget;
@@ -22,6 +23,10 @@ abstract class LocationWidget extends InputWidget
      * @var string The model attribute that will receive the latitude coordinate.
      */
     public $latAttribute = 'lat';
+    /**
+     * @var string If given, the GMaps places library language will be set to this value.
+     */
+    public $forceLanguage;
 
     /**
      * Initializes the widget.
@@ -35,6 +40,11 @@ abstract class LocationWidget extends InputWidget
         if (!in_array($this->lonAttribute, $this->model->attributes()) || !in_array($this->latAttribute, $this->model->attributes()))
             throw new InvalidConfigException("The Model must have '$this->lonAttribute' and '$this->latAttribute' attributes.");
         MilpasosAsset::register($this->view);
+
+        if ($this->forceLanguage) {
+            Yii::$app->assetManager->bundles[GMapsLibrary::className()]['language'] = $this->forceLanguage;
+        }
+        
         parent::init();
     }
 
