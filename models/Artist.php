@@ -116,7 +116,8 @@ class Artist extends \yii\db\ActiveRecord
      */
     public function isEmpty()
     {
-        return empty(array_filter($this->getAttributes(null, ['groupIds']))); // Check all attrs except groupIds
+        $filled = array_filter($this->getAttributes(null, ['groupIds'])); // Check all attrs except groupIds
+        return empty($filled);
     }
 
     /**
