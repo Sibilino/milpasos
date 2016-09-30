@@ -38,7 +38,7 @@ $features = array_map(function (Event $e) {
             'summary' => '',
         ]) ?>
     </div>
-
+<br>
     <div class="col-lg-7">
         <?= OpenLayers::widget([
             'id' => 'main-map',
