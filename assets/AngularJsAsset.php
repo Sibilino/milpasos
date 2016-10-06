@@ -3,6 +3,7 @@
 namespace app\assets;
 
 use yii\web\AssetBundle;
+use yii\web\View;
 
 class AngularJsAsset extends AssetBundle
 {
@@ -10,6 +11,10 @@ class AngularJsAsset extends AssetBundle
 
     public $depends = [
         'yii\web\JqueryAsset',
+    ];
+    
+    public $jsOptions = [
+        'position' => View::POS_HEAD,
     ];
 
     /**
