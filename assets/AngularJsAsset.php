@@ -12,10 +12,6 @@ class AngularJsAsset extends AssetBundle
     public $depends = [
         'yii\web\JqueryAsset',
     ];
-    
-    public $jsOptions = [
-        'position' => View::POS_HEAD,
-    ];
 
     /**
      * Initializes the bundle.
