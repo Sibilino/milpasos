@@ -3,6 +3,7 @@
 namespace app\assets;
 
 use yii\web\AssetBundle;
+use yii\web\View;
 
 /**
  * Registers AngularJS. Will use minimize version if YII_DEBUG is disabled.
