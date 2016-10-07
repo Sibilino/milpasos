@@ -4,7 +4,7 @@
 /* @var $mapForm app\models\forms\MapForm */
 /* @var $listForm app\models\forms\EventListForm */
 
-use app\assets\AngularJsAsset;
+use app\angular\AngularJsAsset;
 use app\models\Event;
 use sibilino\yii2\openlayers\OL;
 use sibilino\yii2\openlayers\OpenLayers;
