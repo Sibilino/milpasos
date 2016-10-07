@@ -13,8 +13,6 @@ use yii\helpers\Url;
 use yii\web\JsExpression;
 use yii\widgets\ListView;
 
-AngularJsAsset::register($this);
-
 $this->title = 'Milpasos';
 
 $features = array_map(function (Event $e) {
