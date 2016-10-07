@@ -20,7 +20,8 @@
         "yiisoft/yii2-swiftmailer": "*",
         "yiisoft/yii2-jui": "~2.0.0",
         "sibilino/yii2-openlayers": "*",
-        "yiisoft/yii2-imagine": "*"
+        "yiisoft/yii2-imagine": "*",
+        "bower-asset/angular": ">=1.5 <2"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",
