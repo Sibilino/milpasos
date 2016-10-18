@@ -9,9 +9,9 @@ use app\models\Event;
 use sibilino\yii2\openlayers\OL;
 use sibilino\yii2\openlayers\OpenLayers;
 use yii\data\ActiveDataProvider;
+use yii\helpers\Json;
 use yii\helpers\Url;
 use yii\web\JsExpression;
-use yii\widgets\ListView;
 
 MapAsset::register($this);
 
@@ -28,18 +28,12 @@ $features = array_map(function (Event $e) {
 
 <div class="row content">
 
-    <div class="col-lg-5 map-list">
-        <?= ListView::widget([
-            'dataProvider' => new ActiveDataProvider([
-                'query' => Event::find()->where(['id'=>$listForm->eventIds]),
-                'sort' => [
-                    'attributes' => ['start_date', 'end_date'],
-                    'defaultOrder' => ['start_date'=>SORT_ASC],
-                ],
-            ]),
-            'itemView' => '_listRow',
-            'summary' => '',
-        ]) ?>
+    <div class="col-lg-5 map-list" ng-app="mapEventViewer">
+        <div ng-controller="EventInfo as info" ng-init="info.loadEvents(<?= Json::encode($mapForm->events) ?>)">
+            <ul>
+                <li ng-repeat="event in info.selectedEvents">{{event.name}}</li>
+            </ul>
+        </div>
     </div>
 
     <div class="col-lg-7">
@@ -92,6 +86,4 @@ $features = array_map(function (Event $e) {
         ]) ?>
 
     </div>
-
-
 </div>
