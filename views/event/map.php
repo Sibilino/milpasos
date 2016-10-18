@@ -8,7 +8,6 @@ use app\angular\event\MapAsset;
 use app\models\Event;
 use sibilino\yii2\openlayers\OL;
 use sibilino\yii2\openlayers\OpenLayers;
-use yii\data\ActiveDataProvider;
 use yii\helpers\Json;
 use yii\helpers\Url;
 use yii\web\JsExpression;
@@ -29,7 +28,7 @@ $features = array_map(function (Event $e) {
 <div class="row content">
 
     <div class="col-lg-5 map-list" ng-app="mapEventViewer">
-        <div ng-controller="EventInfo as info" ng-init="info.loadEvents(<?= Json::encode($mapForm->events) ?>)">
+        <div ng-controller="EventViewer as info" ng-init='info.loadEvents(<?= str_replace("'", "\\'", Json::encode($mapForm->events)) ?>)'>
             <ul>
                 <li ng-repeat="event in info.selectedEvents">{{event.name}}</li>
             </ul>

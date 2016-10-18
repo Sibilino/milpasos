@@ -23,13 +23,10 @@ sibilino.olwidget.mapOptions["main-map"] = (function ($) {
         }
     });
     select.on("select", function (e) {
-        var idLists = [];
         e.target.getFeatures().forEach(function (cluster) {
             // Get all features' eventIds in a hyphen-separated string
-            idLists.push(cluster.get("features").map(function ($f) {return $f.get("eventId");}).join('-'));
+            milpasos.EventViewer.selectEvents(cluster.get("features").map(function ($f) {return $f.get("eventId");}));
         });
-        $('#selection-input').val(idLists.join('-'));
-        $('#selection-input').closest('form').submit();
     });
     return {
         interactions: ol.interaction.defaults().extend([select])

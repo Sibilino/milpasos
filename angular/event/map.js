@@ -1,7 +1,7 @@
 (function () {
-    milpasos.mapEventViewer = angular.module('mapEventViewer', []);
-    
-    milpasos.mapEventViewer.controller('EventInfo', function () {
+    var app = angular.module('mapEventViewer', []);
+
+    milpasos.EventViewer = app.controller('EventViewer', function () {
         this.availableEvents = [];
         this.selectedEvents = [];
         this.detailedEvent = null;
