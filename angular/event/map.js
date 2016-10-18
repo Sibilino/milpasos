@@ -1,16 +1,16 @@
 (function () {
     var app = angular.module('mapEventViewer', []);
 
-    milpasos.EventViewer = app.controller('EventViewer', function () {
+    milpasos.EventViewer = app.controller('EventViewer', ['EventSelector', function (selector) {
         this.availableEvents = [];
         this.selectedEvents = [];
         this.detailedEvent = null;
-        
+
         this.loadEvents = function (events) {
             this.availableEvents = events;
             this.selectAll();
         };
-        
+
         this.selectEvents = function (eventIds) {
             var selection = [];
             var found = 0;
@@ -25,17 +25,17 @@
             this.selectedEvents = selection;
             return found;
         };
-        
+
         this.selectAll = function () {
             this.selectedEvents = this.availableEvents;
         };
-        
+
         this.openDetails = function (event) {
             this.detailedEvent = event;
         };
-        
+
         this.closeDetails = function () {
             this.detailedEvent = null;
         };
-    });
+    }]);
 })();
