@@ -4,7 +4,7 @@
 /* @var $mapForm app\models\forms\MapForm */
 /* @var $listForm app\models\forms\EventListForm */
 
-use app\angular\AngularJsAsset;
+use app\angular\event\MapAsset;
 use app\models\Event;
 use sibilino\yii2\openlayers\OL;
 use sibilino\yii2\openlayers\OpenLayers;
@@ -13,7 +13,7 @@ use yii\helpers\Url;
 use yii\web\JsExpression;
 use yii\widgets\ListView;
 
-AngularJsAsset::register($this);
+MapAsset::register($this);
 
 $this->title = 'Milpasos';
 
