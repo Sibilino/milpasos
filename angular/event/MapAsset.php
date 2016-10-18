@@ -14,6 +14,7 @@ class MapAsset extends AssetBundle
     public $sourcePath = '@app/angular/event';
     public $depends = [
         'app\angular\AngularJsAsset',
+        'app\assets\MilpasosAsset',
     ];
     public $js = [
         'map.js',
