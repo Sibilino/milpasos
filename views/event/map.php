@@ -27,8 +27,10 @@ $features = array_map(function (Event $e) {
 ?>
 
 <div class="row content">
-
-    <div class="col-lg-5 map-list">
+    <div class="col-lg-4 col-sm-6 map-list">
+    <div class="results-title">
+    	Showing 34 dance events
+    </div>
         <?= ListView::widget([
             'dataProvider' => new ActiveDataProvider([
                 'query' => Event::find()->where(['id'=>$listForm->eventIds]),
@@ -42,7 +44,7 @@ $features = array_map(function (Event $e) {
         ]) ?>
     </div>
 <br>
-    <div class="col-lg-7">
+    <div class="col-lg-8 col-sm-6 hidden-xs map">
         <?= OpenLayers::widget([
             'id' => 'main-map',
             'options' => [
@@ -65,12 +67,12 @@ $features = array_map(function (Event $e) {
                     return [
                         ".new OL('style.Style', [
                                 'image' => new OL('style.Circle', [
-                                    'radius' => 10,
+                                    'radius' => 8,
                                     'stroke' => new OL('style.Stroke', [
                                         'color' => '#FFFFFF',
                                     ]),
                                     'fill' => new OL('style.Fill', [
-                                        'color' => '#3399CC',
+                                        'color' => '#5d3082',
                                     ]),
                                 ]),
                                 'text' => new OL('style.Text', [
@@ -86,7 +88,7 @@ $features = array_map(function (Event $e) {
                 ],
                 'view' => [
                     'center' => new OL('proj.fromLonLat', [6.62232,46.5235]),
-                    'zoom' => 5,
+                    'zoom' => 4,
                 ],
             ],
         ]) ?>
