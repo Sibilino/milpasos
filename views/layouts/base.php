@@ -21,6 +21,7 @@ MilpasosAsset::register($this);
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
+    <link rel="icon" href="../img/common/fav.ico" type="image/x-icon"/>
 </head>
 <body>
 <?php $this->beginBody() ?>
@@ -28,11 +29,15 @@ MilpasosAsset::register($this);
 <div class="wrap">
     <?php
     NavBar::begin([
-        'brandLabel' => 'Milpasos.com',
+    	'brandLabel' => Html::img('@web/img/common/milpasos.png', ['alt'=>'Milpasos.com']),
         'brandUrl' => Yii::$app->homeUrl,
+    	'innerContainerOptions' => [
+    				'class'=>'container-fluid'
+    	],
         'options' => [
-            'class' => 'navbar-inverse navbar-fixed-top',
+            'class' => 'navbar-inverse col-xs-12 main-navbar',
         ],
+
     ]);
     $items = [
         ['label' => Yii::t('app', "Home"), 'url' => ['/event/map']],
