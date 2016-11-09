@@ -1,8 +1,227 @@
+@import url('https://fonts.googleapis.com/css?family=PT+Sans');
+
+/*descartable*/
+#yii-debug-toolbar{
+	right:40px;
+	opacity:0.7;
+}
+#yii-debug-toolbar:hover{
+	opacity:1;
+}
+
+/*----*/
+
+
 html,
 body {
     height: 100%;
+	font-family: 'PT Sans', sans-serif;
+}
+.wrap {
+    min-height: 100%;
+    height: 100%;
+}
+.container-fluid.main-container{
+	padding-top:60px/*ref alto_nav*/; 
+	min-height: 100%;
+    height: 100%;
+}
+.main-navbar.navbar {
+	position:fixed;
+	top:0px;
+	z-index:100;
+	padding-left:0px;
+	padding-bottom:0px;
+    border-radius:0px;
+    border:0px;
+    box-shadow:0 0 8px rgba(0,0,0,0.8);
+}
+.main-navbar.navbar .navbar-collapse{
+    border: none;
+    outline: none;
+    box-shadow: none;
+}
+.main-navbar .navbar-header{
+	padding-left:15px;
+    background: #2c2e2e /*ref bgcolor-header-brand*/;
+}
+.main-navbar .container-fluid{
+	padding-left: 0px;
+    border-left: 15px solid #2c2e2e /*ref bgcolor-header-brand*/;
+}
+.main-navbar .navbar-brand{
+    height: 60px/*ref alto_nav*/; 
+    padding: 11px 15px;
+
+}
+.main-navbar .navbar-right{
+	margin: 5px 0;
+}
+.main-navbar .navbar-brand img{
+	max-height:100%;
+}
+.main-navbar{
+    background: #2c2e2e;
+    padding-bottom: 12px;
+}
+.map-list{
+	box-shadow:0px -10px 10px rgba(0,0,0,0.5);
+	z-index:5;
+    padding: 92px 30px 0px;
+}
+.map-list .results-title{
+    position: fixed;
+    top: 60px/*ref alto_nav*/; 
+    font-size: 1.1em;
+    border-bottom: 1px solid #ccc;
+    margin: 0px -30px 30px;
+    padding: 20px 30px;
+    background: #fff;
+    z-index: 100;
+}
+.map-list .list-img img{
+	width:100%;
+
+}
+.map-list .list-img .img-price-block{
+	background-color:#000;
+	box-shadow:2px 2px 10px rgba(0,0,0,0.5);
+	color:#fff;
+	padding:5px;
+}
+.map-list .list-img .img-price-block small{
+    display: block;
+    font-size: 0.8em;
+    line-height: 0.8em;
+    color: #999;
+    margin-top: 6px;
+} 
+.map-list .list-info h3{
+    margin: 0px;
+    font-weight: bold;
+    font-size: 1.2em;
+    font-family: 'PT Sans', sans-serif;
 }
 
+.map-list .list-info p{
+    margin: 0px
+}
+.map-list .event{
+	margin-bottom:30px;
+	cursor:pointer;
+}
+.map-list .event:hover{
+    background: #f7f7f7/*ref higlighted*/;
+    outline: 13px solid #f7f7f7/*ref higlighted*/;
+}
+.map-list .event .more-info{
+	padding-left:12px;
+	-webkit-transition:all 0.3s;
+	transition:all 0.3s;
+}
+.map-list .event:hover .more-info{
+	color:#5d3082;
+	padding-left:15px;
+
+}
+.map-list .event .more-info:before{
+    font-weight: bold;
+   	font-size:15px;
+    position: absolute;
+    display: block;
+    height: 10px;
+    content: "+";
+    width: 10px;
+    line-height: 0px;
+    margin: 10px 0 0 -12px;
+	-webkit-transition:all 0.3s;
+	transition:all 0.3s;
+}
+.map-list .event:hover .more-info:before{
+	font-weight:bold;
+	color:#5d3082;
+    margin: 10px 0 0 -14px;
+}
+.map .ol-zoom {
+    top:100%;
+    margin-top:-60px;
+    left: inherit !important;
+    right: .5em;
+}
+.map .ol-attribution {
+	display:none;
+}
+.row.content {
+	height: 100%;
+}
+.row.content .map{
+	padding:0px;
+	height:100%;
+	position:fixed;
+	right:0px;
+	top:0px;
+}
+.row.content .map .event-map{
+	height:100%;
+}
+.row.content .date{
+	margin-bottom:6px;
+}
+.ico-bachata, .ico-salsa, .ico-kizomba{
+    background-image: url(../img/common/atlas.png);
+    margin: 0px 2px 0px 0px;
+    text-indent: -120px;
+    overflow: hidden;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background-size: 150px 125px;
+}
+.ico-salsa{
+	background-position: 0px 0px;
+}
+.ico-bachata{
+	background-position: -19px 0px;
+}
+.ico-kizomba{
+	background-position: -40px 0px;
+}
+.map-list .results-title {
+    	width: 100%;
+}
+/* Small devices (tablets, 768px and up) */
+@media (min-width: 768px) { 
+	.main-navbar.navbar {
+   		background: #2c2e2e;
+    }
+    .map-list .results-title {
+    	width: 50%;
+	}
+
+}
+
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: 992px) { 
+	.main-navbar.navbar {
+   		background: #2c2e2e;
+    }
+
+}
+
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) { 
+	.main-navbar .navbar-header {
+	    width: 33.333%;
+	}
+	.map-list .results-title {
+    	width: 33.333%;
+	}
+	.main-navbar.navbar {
+   		background: #080808;
+    }
+}
+
+/* ANTIGUO 
 .wrap {
     min-height: 100%;
     height: auto;
@@ -36,7 +255,7 @@ body {
     font-style: italic;
 }
 
-/* add sorting icons to gridview sort links */
+ add sorting icons to gridview sort links 
 a.asc:after, a.desc:after {
     position: relative;
     top: 1px;
@@ -49,11 +268,11 @@ a.asc:after, a.desc:after {
 }
 
 a.asc:after {
-    content: /*"\e113"*/ "\e151";
+    content:  "\e151";
 }
 
 a.desc:after {
-    content: /*"\e114"*/ "\e152";
+    content:  "\e152";
 }
 
 .sort-numerical a.asc:after {
@@ -123,4 +342,4 @@ a.desc:after {
     margin-bottom: 4px;
     border-radius: 8px;
     background: #f5f5f5;
-}
+}*/
