@@ -4,16 +4,15 @@
 /* @var $mapForm app\models\forms\MapForm */
 /* @var $listForm app\models\forms\EventListForm */
 
-use app\assets\AngularJsAsset;
+use app\angular\event\MapAsset;
 use app\models\Event;
 use sibilino\yii2\openlayers\OL;
 use sibilino\yii2\openlayers\OpenLayers;
-use yii\data\ActiveDataProvider;
+use yii\helpers\Json;
 use yii\helpers\Url;
 use yii\web\JsExpression;
-use yii\widgets\ListView;
 
-AngularJsAsset::register($this);
+MapAsset::register($this);
 
 $this->title = 'Milpasos';
 
@@ -27,23 +26,16 @@ $features = array_map(function (Event $e) {
 ?>
 
 <div class="row content">
-    <div class="col-lg-4 col-sm-6 map-list">
-    <div class="results-title">
-    	Showing 34 dance events
+    <div class="col-lg-4 col-sm-6 map-list" ng-app="mapEventViewer">
+        <div class="results-title">
+            Showing 34 dance events
+        </div>
+        <div ng-controller="EventViewer as info" ng-init='info.loadEvents(<?= str_replace("'", "\\'", Json::encode($mapForm->events)) ?>)'>
+            <ul>
+                <li ng-repeat="event in info.selectedEvents">{{event.name}}</li>
+            </ul>
+        </div>
     </div>
-        <?= ListView::widget([
-            'dataProvider' => new ActiveDataProvider([
-                'query' => Event::find()->where(['id'=>$listForm->eventIds]),
-                'sort' => [
-                    'attributes' => ['start_date', 'end_date'],
-                    'defaultOrder' => ['start_date'=>SORT_ASC],
-                ],
-            ]),
-            'itemView' => '_listRow',
-            'summary' => '',
-        ]) ?>
-    </div>
-<br>
     <div class="col-lg-8 col-sm-6 hidden-xs map">
         <?= OpenLayers::widget([
             'id' => 'main-map',
@@ -94,6 +86,4 @@ $features = array_map(function (Event $e) {
         ]) ?>
 
     </div>
-
-
 </div>

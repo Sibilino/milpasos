@@ -313,6 +313,9 @@ a.desc:after {
     margin-bottom: 0;
 }
 
+.map-list {
+    padding-top: 51px;
+}
 .event-map {
     padding-top: 51px;
     height: 100%;
