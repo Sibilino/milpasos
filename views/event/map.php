@@ -30,7 +30,7 @@ $features = array_map(function (Event $e) {
             <?= Yii::t('app', 'Showing {0, number} event(s).', count($mapForm->events)) ?>
         </div>
         <?= EventViewer::widget([
-            'controllerInit' => 'Viewer.loadEvents('.str_replace("'", "\\'", Json::encode($mapForm->events)).')',
+            'controllerInit' => 'Viewer.loadEvents('.$mapForm->eventsToJson().')',
         ]) ?>
     </div>
     <div class="col-lg-8 col-sm-6 hidden-xs map">
