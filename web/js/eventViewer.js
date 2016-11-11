@@ -28,7 +28,9 @@
                 }
             }
             this.selectedEvents = selection;
-            if (found) {
+            if (found == 1) {
+                this.openDetails(selection[0]);
+            } else if (found > 1) {
                 this.closeDetails();
             }
             return found;
