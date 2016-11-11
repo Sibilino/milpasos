@@ -1,7 +1,12 @@
 (function () {
-    var app = angular.module('mapEventViewer', []);
+    var app = angular.module('EventViewerApp', []);
 
-    milpasos.EventViewer = app.controller('EventViewer', ['EventSelector', function (selector) {
+    /**
+     * Keeps track of available Events and the subset that has been selected by the user.
+     * One of the Events can also be selected for detailed inspection.
+     */
+    app.controller('EventViewer', function () {
+
         this.availableEvents = [];
         this.selectedEvents = [];
         this.detailedEvent = null;
@@ -16,7 +21,7 @@
             var found = 0;
             for (var i=0; i<eventIds.length; i++) {
                 for (var j=0; j<this.availableEvents.length; j++) {
-                    if (this.availableEvents[j] == eventIds[i]) {
+                    if (this.availableEvents[j].id == eventIds[i]) {
                         selection.push(this.availableEvents[j]);
                         found++;
                     }
@@ -37,5 +42,5 @@
         this.closeDetails = function () {
             this.detailedEvent = null;
         };
-    }]);
+    });
 })();

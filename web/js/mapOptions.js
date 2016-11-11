@@ -25,7 +25,8 @@ sibilino.olwidget.mapOptions["main-map"] = (function ($) {
     select.on("select", function (e) {
         e.target.getFeatures().forEach(function (cluster) {
             // Get all features' eventIds in a hyphen-separated string
-            milpasos.EventViewer.selectEvents(cluster.get("features").map(function ($f) {return $f.get("eventId");}));
+            var eventIds = cluster.get("features").map(function ($f) {return $f.get("eventId");});
+            milpasos.EventViewer.selectEvents(eventIds);
         });
     });
     return {
