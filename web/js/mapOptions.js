@@ -23,13 +23,16 @@ sibilino.olwidget.mapOptions["main-map"] = (function ($) {
         }
     });
     select.on("select", function (e) {
-        var idLists = [];
-        e.target.getFeatures().forEach(function (cluster) {
-            // Get all features' eventIds in a hyphen-separated string
-            idLists.push(cluster.get("features").map(function ($f) {return $f.get("eventId");}).join('-'));
-        });
-        $('#selection-input').val(idLists.join('-'));
-        $('#selection-input').closest('form').submit();
+        var features = e.target.getFeatures();
+        if (features.getLength() == 0) {
+            milpasos.EventViewer.call('selectAll');
+        } else {
+            features.forEach(function (cluster) {
+                // Get all features' eventIds in a hyphen-separated string
+                var eventIds = cluster.get("features").map(function ($f) {return $f.get("eventId");});
+                milpasos.EventViewer.call('selectEvents',eventIds);
+            });
+        }
     });
     return {
         interactions: ol.interaction.defaults().extend([select])
