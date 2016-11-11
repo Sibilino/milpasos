@@ -30,7 +30,7 @@ $emptyEvent = new Event();
             <b>{{event.city}}, <span class="country">{{event.country}}</span></b>
         </p>
         <div class="date">
-            {{event.start_date}} - {{event.start_date}}
+            {{event.start_date}} - {{event.end_date}}
         </div>
         <span ng-repeat="dance in event.dances" ng-class="'ico-'+dance.name.toLowerCase()" title="{{dance.name}}">{{dance.name}}</span>
 
@@ -56,7 +56,7 @@ $emptyEvent = new Event();
             <p>
                 <span class="glyphicon glyphicon-road" aria-hidden="true"></span> {{<?= $controllerVar ?>.detailedEvent.address}}
                 <div class="date">
-                    <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> {{<?= $controllerVar ?>.detailedEvent.start_date}} - {{<?= $controllerVar ?>.detailedEvent.start_date}}
+                    <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> {{<?= $controllerVar ?>.detailedEvent.start_date}} - {{<?= $controllerVar ?>.detailedEvent.end_date}}
                 </div>
                 <span class="glyphicon glyphicon-globe" aria-hidden="true"></span>  <a ng-show="<?= $controllerVar ?>.detailedEvent.website" ng-href="<?= $controllerVar ?>.detailedEvent.website" target="_blank">{{<?= $controllerVar ?>.detailedEvent.website}}</a>
             </p>
