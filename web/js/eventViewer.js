@@ -38,6 +38,7 @@
 
         this.selectAll = function () {
             this.selectedEvents = this.availableEvents;
+            this.closeDetails();
         };
 
         this.openDetails = function (event) {
