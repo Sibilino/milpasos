@@ -107,6 +107,13 @@ class EventViewer extends Widget
                         ew.element.controller().selectEvents(eventIds);
                     });
                 };
+                
+                // Selects all events
+                ew.selectAll = function () {
+                    ew.element.scope().$apply(function () {
+                        ew.element.controller().selectAll();
+                    });
+                };
             })();
         ');
     }
