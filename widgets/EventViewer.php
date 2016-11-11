@@ -66,6 +66,7 @@ class EventViewer extends Widget
         $innerOptions = ArrayHelper::merge([
             'ng' => [
                 'controller' => EventViewerAsset::ANGULAR_CONTROLLER_NAME." as $this->controllerVar",
+                'cloak' => true,
             ],
         ], $this->controllerDivOptions);
         if (isset($this->controllerInit)) {
