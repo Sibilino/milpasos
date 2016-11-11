@@ -26,9 +26,6 @@ $features = array_map(function (Event $e) {
 <div class="row content">
 
     <div class="col-lg-4 col-sm-6 map-list">
-        <div class="results-title">
-            <?= Yii::t('app', 'Showing {0, number} event(s).', count($mapForm->events)) ?>
-        </div>
         <?= EventViewer::widget([
             'controllerInit' => 'Viewer.loadEvents('.$mapForm->eventsToJson().')',
         ]) ?>

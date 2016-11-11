@@ -8,6 +8,9 @@ use app\models\Event;
 $emptyEvent = new Event();
 
 ?>
+<div class="results-title">
+    <?= Yii::t('app', 'Showing {angularExpression} event(s).', ['angularExpression' => "{{ $controllerVar.detailedEvent ? 1 : $controllerVar.selectedEvents.length}}"]) ?>
+</div>
 <div class="row event" ng-repeat="event in <?= $controllerVar ?>.selectedEvents"
       ng-hide="<?= $controllerVar ?>.detailedEvent"
       ng-click="<?= $controllerVar ?>.openDetails(event)"
@@ -38,35 +41,44 @@ $emptyEvent = new Event();
 
 </div>
 
-<div class="row event" ng-show="<?= $controllerVar ?>.detailedEvent" ng-click="<?= $controllerVar ?>.closeDetails()">
+<div class="event" ng-show="<?= $controllerVar ?>.detailedEvent" ng-click="<?= $controllerVar ?>.closeDetails()">
     <h3>{{<?= $controllerVar ?>.detailedEvent.name}}</h3>
-    <div>
-        <img ng-src="{{<?= $controllerVar ?>.detailedEvent.imageUrl}}" ng-show="<?= $controllerVar ?>.detailedEvent.imageUrl">
-        <p>
-            <span ng-show="<?= $controllerVar ?>.detailedEvent.summary">{{<?= $controllerVar ?>.detailedEvent.summary}}</span><br />
-            <b>{{<?= $controllerVar ?>.detailedEvent.address}}</b>
-        </p>
-        <div class="date">
-            {{<?= $controllerVar ?>.detailedEvent.start_date}} - {{<?= $controllerVar ?>.detailedEvent.start_date}}
+    <div class="row">
+        <div class="col-xs-6">
+            <img class="img-responsive center-block img-thumbnail" ng-src="{{<?= $controllerVar ?>.detailedEvent.imageUrl}}" ng-show="<?= $controllerVar ?>.detailedEvent.imageUrl">
         </div>
-        <span ng-repeat="dance in <?= $controllerVar ?>.detailedEvent.dances" ng-class="'ico-'+dance.name.toLowerCase()" title="{{dance.name}}">{{dance.name}}</span>
-    </div>
-    <a ng-show="<?= $controllerVar ?>.detailedEvent.website" ng-href="<?= $controllerVar ?>.detailedEvent.website" target="_blank">{{<?= $controllerVar ?>.detailedEvent.website}}</a>
+        <div class="col-xs-6">
+            <p>
+                <span ng-repeat="dance in <?= $controllerVar ?>.detailedEvent.dances" ng-class="'ico-'+dance.name.toLowerCase()" title="{{dance.name}}">{{dance.name}}</span><br />
+                <span ng-show="<?= $controllerVar ?>.detailedEvent.summary">{{<?= $controllerVar ?>.detailedEvent.summary}}</span>
+            </p>
 
-    <div>
-        <label><?= $emptyEvent->getAttributeLabel('groupIds') ?>:</label>
-        <div ng-repeat="group in <?= $controllerVar ?>.detailedEvent.groups">
-            <img ng-show="group.imageUrl" ng-src="{{group.imageUrl}}">{{group.name}}
+            <p>
+                <span class="glyphicon glyphicon-road" aria-hidden="true"></span> {{<?= $controllerVar ?>.detailedEvent.address}}
+                <div class="date">
+                    <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> {{<?= $controllerVar ?>.detailedEvent.start_date}} - {{<?= $controllerVar ?>.detailedEvent.start_date}}
+                </div>
+                <span class="glyphicon glyphicon-globe" aria-hidden="true"></span>  <a ng-show="<?= $controllerVar ?>.detailedEvent.website" ng-href="<?= $controllerVar ?>.detailedEvent.website" target="_blank">{{<?= $controllerVar ?>.detailedEvent.website}}</a>
+            </p>
         </div>
     </div>
+    <hr />
+    <div class="row">
+        <div class="col-xs-6">
+            <label><?= Yii::t('app', "Featuring") ?>:</label>
+            <div ng-repeat="group in <?= $controllerVar ?>.detailedEvent.groups">
+                {{group.name}}
+            </div>
+        </div>
 
-    <div ng-show="<?= $controllerVar ?>.detailedEvent.links.length">
-        <label><?= $emptyEvent->getAttributeLabel('links') ?>:</label>
-        <a ng-repeat="link in <?= $controllerVar ?>.detailedEvent.links" ng-href="{{link.url}}">{{link.title}}</a>
+        <div class="col-xs-6" ng-show="<?= $controllerVar ?>.detailedEvent.links.length">
+            <label><?= $emptyEvent->getAttributeLabel('links') ?>:</label>
+            <a ng-repeat="link in <?= $controllerVar ?>.detailedEvent.links" ng-href="{{link.url}}">{{link.title}}</a>
+        </div>
     </div>
-
+    <hr />
     <h3>{{<?= $controllerVar ?>.detailedEvent.price}}</h3>
-    <small ng-show="<?= $controllerVar ?>.detailedEvent.price_change_date"><?= Yii::t('app', "Price lasts until ") ?>{{<?= $controllerVar ?>.detailedEvent.price_change_date}}</small>
+    <small ng-show="<?= $controllerVar ?>.detailedEvent.price_change_date"><?= Yii::t('app', "This price is available until ") ?>{{<?= $controllerVar ?>.detailedEvent.price_change_date}}</small>
     <div class="more-info pull-right">
         <?= Yii::t('app', 'Close') ?>
     </div>
