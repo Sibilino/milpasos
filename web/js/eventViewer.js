@@ -28,6 +28,9 @@
                 }
             }
             this.selectedEvents = selection;
+            if (found) {
+                this.closeDetails();
+            }
             return found;
         };
 
