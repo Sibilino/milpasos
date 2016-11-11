@@ -64,15 +64,21 @@ class EventViewer extends Widget
     public function run()
     {
         $innerOptions = ArrayHelper::merge([
-            'ng-controller' => EventViewerAsset::ANGULAR_CONTROLLER_NAME." as $this->controllerVar",
+            'ng' => [
+                'controller' => EventViewerAsset::ANGULAR_CONTROLLER_NAME." as $this->controllerVar",
+            ],
         ], $this->controllerDivOptions);
         if (isset($this->controllerInit)) {
-            $innerOptions['ng-init'] = $this->controllerInit;
+            $innerOptions['ng']['init'] = $this->controllerInit;
         }
         $innerDiv = Html::tag('div', $this->render($this->viewName, [
             'controllerVar' => $this->controllerVar,
         ]), $innerOptions);
-        return Html::tag('div', $innerDiv, ArrayHelper::merge(['ng-app' => EventViewerAsset::ANGULAR_APP_NAME], $this->options));
+        return Html::tag('div', $innerDiv, ArrayHelper::merge([
+            'ng' => [
+                'app' => EventViewerAsset::ANGULAR_APP_NAME,
+            ],
+        ], $this->options));
     }
 
     /**
