@@ -133,6 +133,8 @@ class Event extends \yii\db\ActiveRecord
             'danceIds' => Yii::t('app', 'Dance Styles'),
             'groupIds' => Yii::t('app', 'Performers'),
             'imageUrl' => Yii::t('app', 'Image'),
+            'links' => Yii::t('app', 'Links'),
+            'passes' => Yii::t('app', 'Passes'),
         ];
     }
 
