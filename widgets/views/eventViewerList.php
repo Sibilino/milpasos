@@ -41,7 +41,7 @@ $emptyEvent = new Event();
 
 </div>
 
-<div class="event" ng-show="<?= $controllerVar ?>.detailedEvent" ng-click="<?= $controllerVar ?>.closeDetails()">
+<div class="event" ng-show="<?= $controllerVar ?>.detailedEvent">
     <h3>{{<?= $controllerVar ?>.detailedEvent.name}}</h3>
     <div class="row">
         <div class="col-xs-6">
@@ -58,7 +58,7 @@ $emptyEvent = new Event();
                 <div class="date">
                     <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> {{<?= $controllerVar ?>.detailedEvent.start_date}} - {{<?= $controllerVar ?>.detailedEvent.end_date}}
                 </div>
-                <span class="glyphicon glyphicon-globe" aria-hidden="true"></span>  <a ng-show="<?= $controllerVar ?>.detailedEvent.website" ng-href="<?= $controllerVar ?>.detailedEvent.website" target="_blank">{{<?= $controllerVar ?>.detailedEvent.website}}</a>
+                <span class="glyphicon glyphicon-globe" aria-hidden="true"></span>  <a ng-show="<?= $controllerVar ?>.detailedEvent.website" ng-href="{{<?= $controllerVar ?>.detailedEvent.website}}" target="_blank"><?= $emptyEvent->getAttributeLabel('website') ?></a>
             </p>
         </div>
     </div>
@@ -72,14 +72,17 @@ $emptyEvent = new Event();
         </div>
 
         <div class="col-xs-6" ng-show="<?= $controllerVar ?>.detailedEvent.links.length">
-            <label><?= $emptyEvent->getAttributeLabel('links') ?>:</label>
-            <a ng-repeat="link in <?= $controllerVar ?>.detailedEvent.links" ng-href="{{link.url}}">{{link.title}}</a>
+            <label><?= $emptyEvent->getAttributeLabel('links') ?>:</label><br />
+            <a target="_blank" ng-repeat="link in <?= $controllerVar ?>.detailedEvent.links" ng-href="{{link.url}}">{{link.title}}</a>
         </div>
     </div>
     <hr />
-    <h3>{{<?= $controllerVar ?>.detailedEvent.price}}</h3>
-    <small ng-show="<?= $controllerVar ?>.detailedEvent.price_change_date"><?= Yii::t('app', "This price is available until ") ?>{{<?= $controllerVar ?>.detailedEvent.price_change_date}}</small>
-    <div class="more-info pull-right">
-        <?= Yii::t('app', 'Close') ?>
+    <div ng-click="<?= $controllerVar ?>.closeDetails()">
+        <h3>{{<?= $controllerVar ?>.detailedEvent.price}}</h3>
+        <small ng-show="<?= $controllerVar ?>.detailedEvent.price_change_date"><?= Yii::t('app', "This price is available until ") ?>{{<?= $controllerVar ?>.detailedEvent.price_change_date}}</small>
+        <div class="more-info pull-right">
+            <?= Yii::t('app', 'Close') ?>
+        </div>
     </div>
+
 </div>
