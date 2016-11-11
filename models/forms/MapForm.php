@@ -7,6 +7,7 @@ use app\models\Dance;
 use app\models\Group;
 use Yii;
 use yii\base\Model;
+use yii\helpers\Json;
 
 /**
  * Represents the data in the user filters and other inputs that control the events shown in the main Map.
@@ -111,6 +112,16 @@ class MapForm extends Model
             $this->_events = Event::find()->allFromMapForm($this);
         }
         return $this->_events;
+    }
+
+    /**
+     * @return string Returns the Json representation of $this->events, using Event::extendedAttributes as data for each Event.
+     */
+    public function eventsToJson()
+    {
+        return Json::encode(array_map(function(Event $e) {
+            return $e->getExtendedAttributes();
+        }, $this->events));
     }
 
 }
