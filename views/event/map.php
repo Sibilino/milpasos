@@ -8,7 +8,6 @@ use app\models\Event;
 use app\widgets\EventViewer;
 use sibilino\yii2\openlayers\OL;
 use sibilino\yii2\openlayers\OpenLayers;
-use yii\helpers\Json;
 use yii\helpers\Url;
 use yii\web\JsExpression;
 
