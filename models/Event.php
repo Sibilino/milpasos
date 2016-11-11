@@ -7,6 +7,8 @@ use Yii;
 use app\behaviors\ImageModelBehavior;
 use app\behaviors\ManyToManyBehavior;
 use yii\db\ActiveQuery;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Json;
 
 /**
  * This is the model class for table "event".
@@ -131,6 +133,8 @@ class Event extends \yii\db\ActiveRecord
             'danceIds' => Yii::t('app', 'Dance Styles'),
             'groupIds' => Yii::t('app', 'Performers'),
             'imageUrl' => Yii::t('app', 'Image'),
+            'links' => Yii::t('app', 'Links'),
+            'passes' => Yii::t('app', 'Passes'),
         ];
     }
 
@@ -235,6 +239,24 @@ class Event extends \yii\db\ActiveRecord
             }
             return $price;
         });
+    }
+
+    /**
+     * @return array Returns attribute => value array for all attributes in this model, plus additional attribute-like
+     * data that is not normally available through getAttributes(), such as relations and special method return values.
+     * Values that usually require PHP formatting (such as start_date) will already be formatted.
+     */
+    public function getFormattedAttributes() {
+        $price = $this->bestAvailablePrice();
+        $data = ArrayHelper::merge($this->getAttributes(), [
+            'dances' => $this->dances,
+            'groups' => $this->groups,
+            'links' => $this->links,
+            'price' =>Yii::$app->formatter->asCurrency($price->price, $price->currency),
+            'start_date' => Yii::$app->formatter->asDate($this->start_date, 'medium'),
+            'end_date' => Yii::$app->formatter->asDate($this->end_date, 'medium'),
+        ]);
+        return $data;
     }
 
 }

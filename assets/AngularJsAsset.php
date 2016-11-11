@@ -3,13 +3,22 @@
 namespace app\assets;
 
 use yii\web\AssetBundle;
+use yii\web\View;
 
+/**
+ * Registers AngularJS. Will use minimize version if YII_DEBUG is disabled.
+ * @package app\assets
+ */
 class AngularJsAsset extends AssetBundle
 {
     public $sourcePath = '@bower/angular';
 
     public $depends = [
         'yii\web\JqueryAsset',
+    ];
+
+    public $jsOptions = [
+        'position' => View::POS_HEAD,
     ];
 
     /**
@@ -23,6 +32,4 @@ class AngularJsAsset extends AssetBundle
         ];
         parent::init();
     }
-
-
 }
