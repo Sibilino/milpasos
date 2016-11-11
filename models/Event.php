@@ -253,6 +253,7 @@ class Event extends \yii\db\ActiveRecord
             'groups' => $this->groups,
             'links' => $this->links,
             'price' =>Yii::$app->formatter->asCurrency($price->price, $price->currency),
+            'price_change_date' => Yii::$app->formatter->asDate($price->available_to, 'medium'),
             'start_date' => Yii::$app->formatter->asDate($this->start_date, 'medium'),
             'end_date' => Yii::$app->formatter->asDate($this->end_date, 'medium'),
         ]);
