@@ -101,8 +101,7 @@ class ManyToManyBehavior extends Behavior
      */
     private function getModelsFromIds() {
         $ids = $this->owner->{$this->idListAttr};
-        $relationClass = $this->owner->getRelation($this->relation)->modelClass;
-        // Return RelationClass::findAll($ids);
-        return call_user_func([$relationClass, 'findAll'], ['id' => $ids]);
+        $relation = $this->owner->getRelation($this->relation);
+        return $relation->findAll($ids);
     }
 }
