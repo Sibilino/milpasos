@@ -7,6 +7,8 @@ use Yii;
 use app\behaviors\ImageModelBehavior;
 use app\behaviors\ManyToManyBehavior;
 use yii\db\ActiveQuery;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Json;
 
 /**
  * This is the model class for table "event".
@@ -235,6 +237,20 @@ class Event extends \yii\db\ActiveRecord
             }
             return $price;
         });
+    }
+
+    /**
+     * @return array Returns attribute => value array for all attributes in this model, plus additional attribute-like
+     * data that is not normally available through getAttributes(), such as relations and special method return values.
+     */
+    public function getExtendedAttributes() {
+        $data = ArrayHelper::merge($this->getAttributes(), [
+            'dances' => $this->dances,
+            'groups' => $this->groups,
+            'links' => $this->links,
+            'bestAvailablePrice' => $this->bestAvailablePrice(),
+        ]);
+        return $data;
     }
 
 }
