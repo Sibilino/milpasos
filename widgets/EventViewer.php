@@ -85,36 +85,32 @@ class EventViewer extends Widget
      * Exposes the AngularJs element into the external "milpasos.EventViewer" variable, so that external JavaScript
      * can access it. The variable contains an object with the following properties:
      * <ul>
-     * <li>selectEvents: function (eventIds), selects the given events for display in the list.</li>
      * <li>element: the AngularJs element containing the controller. Has .scope(), .controller(), etc.</li>
+     * <li>call: function (funcName, arg), calls a controller's function with funcName and passes the given arg.</li>
      * </ul>
+     * Example: milpasos.EventViewer.call('selectEvents', [27,14]);
      */
     protected function publishAngularElement()
     {
         $this->view->registerJs('
             // Publish angular controller for external use
-            (function () {
+            (function ($) {
             
                 // Angular element, contains .scope(), .controller(), etc.
                 milpasos.EventViewer = {
                     element: angular.element(document.getElementById("' . $this->controllerDivOptions['id'] . '"))
                 };
+                
+                // Allows calling any function in angular controller, applying the results to its scope
                 var ew = milpasos.EventViewer;
-                
-                // Selects the events with the given ids
-                ew.selectEvents = function (eventIds) {
-                    ew.element.scope().$apply(function () {
-                        ew.element.controller().selectEvents(eventIds);
-                    });
-                };
-                
-                // Selects all events
-                ew.selectAll = function () {
-                    ew.element.scope().$apply(function () {
-                        ew.element.controller().selectAll();
-                    });
-                };
-            })();
+                ew.call = function (funcName, arg) {
+                    if ($.isFunction(ew.element.controller()[funcName])) {
+                        ew.element.scope().$apply(function () {
+                            ew.element.controller()[funcName](arg);
+                        });
+                    }
+                }
+            })(jQuery);
         ');
     }
 
