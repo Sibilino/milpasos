@@ -242,13 +242,17 @@ class Event extends \yii\db\ActiveRecord
     /**
      * @return array Returns attribute => value array for all attributes in this model, plus additional attribute-like
      * data that is not normally available through getAttributes(), such as relations and special method return values.
+     * Values that usually require PHP formatting (such as start_date) will already be formatted.
      */
-    public function getExtendedAttributes() {
+    public function getFormattedAttributes() {
+        $price = $this->bestAvailablePrice();
         $data = ArrayHelper::merge($this->getAttributes(), [
             'dances' => $this->dances,
             'groups' => $this->groups,
             'links' => $this->links,
-            'bestAvailablePrice' => $this->bestAvailablePrice(),
+            'price' =>Yii::$app->formatter->asCurrency($price->price, $price->currency),
+            'start_date' => Yii::$app->formatter->asDate($this->start_date, 'medium'),
+            'end_date' => Yii::$app->formatter->asDate($this->end_date, 'medium'),
         ]);
         return $data;
     }

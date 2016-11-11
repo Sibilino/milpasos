@@ -120,7 +120,7 @@ class MapForm extends Model
     public function eventsToJson()
     {
         return Json::encode(array_map(function(Event $e) {
-            return $e->getExtendedAttributes();
+            return $e->getFormattedAttributes();
         }, $this->events));
     }
 
