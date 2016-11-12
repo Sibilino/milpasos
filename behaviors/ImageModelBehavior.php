@@ -134,6 +134,7 @@ class ImageModelBehavior extends Behavior
             try {
                 $originalFile = Yii::getAlias('@webroot')."/$this->folder/".$this->owner->id.'.'.$this->_image->extension;
                 $this->_image->saveAs($originalFile);
+                Image::$thumbnailBackgroundColor = '000';
                 Image::thumbnail($originalFile, $this->width, $this->height, ImageInterface::THUMBNAIL_INSET)->save($this->getImagePath());
             } catch (Exception $e) {
                 $this->owner->addError($this->imageAttr, "Could not save image: ".$e->getMessage().".");
