@@ -43,7 +43,7 @@ $features = array_map(function (Event $e) {
                     ],
                     'Vector' => [
                         'source' => new OL('source.Cluster', [
-                            'distance' => 30,
+                            'distance' => 35,
                             'source' => new OL('source.Vector', [
                                 'features' => $features,
                             ]),
@@ -52,7 +52,7 @@ $features = array_map(function (Event $e) {
                     return [
                         ".new OL('style.Style', [
                                 'image' => new OL('style.Circle', [
-                                    'radius' => 8,
+                                    'radius' => 12,
                                     'stroke' => new OL('style.Stroke', [
                                         'color' => '#FFFFFF',
                                     ]),
@@ -65,6 +65,7 @@ $features = array_map(function (Event $e) {
                                     'fill' => new OL('style.Fill', [
                                         'color' => '#FFFFFF',
                                     ]),
+                                    'font' => '12px Helvetica',
                                 ]),
                             ])."
                     ];

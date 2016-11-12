@@ -4,7 +4,7 @@ sibilino.olwidget.mapOptions["main-map"] = (function ($) {
             return [
                 new ol.style.Style({
                     image: new ol.style.Circle({
-                        radius: 10,
+                        radius: 15,
                         fill: new ol.style.Fill({
                             color: '#FF0000'
                         }),
@@ -16,7 +16,8 @@ sibilino.olwidget.mapOptions["main-map"] = (function ($) {
                         text: feature.get("features").length.toString(),
                         fill: new ol.style.Fill({
                             color: '#FFFFFF'
-                        })
+                        }),
+                        font: '14px Helvetica'
                     })
                 })
             ];
