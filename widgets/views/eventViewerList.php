@@ -8,9 +8,6 @@ use app\models\Event;
 $emptyEvent = new Event();
 
 ?>
-<div class="results-title">
-    <?= Yii::t('app', 'Showing {angularExpression} event(s).', ['angularExpression' => "{{ $controllerVar.detailedEvent ? 1 : $controllerVar.selectedEvents.length}}"]) ?>
-</div>
 <div class="row event" ng-repeat="event in <?= $controllerVar ?>.selectedEvents"
       ng-hide="<?= $controllerVar ?>.detailedEvent"
       ng-click="<?= $controllerVar ?>.openDetails(event)"
