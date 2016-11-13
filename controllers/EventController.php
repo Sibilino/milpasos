@@ -116,7 +116,11 @@ class EventController extends Controller
 
         $pass = Pass::findOne($selectedPassId);
         if (!$pass) {
-            $pass = new Pass(['event_id' => $id]);
+            $pass = new Pass([
+                'event_id' => $id,
+                'full' => true,
+                'description' => 'Full Pass',
+            ]);
         }
 
         $prices = $pass->generatePriceList();
