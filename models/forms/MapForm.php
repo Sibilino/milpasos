@@ -109,7 +109,7 @@ class MapForm extends Model
     public function getEvents()
     {
         if (!isset($this->_events)) {
-            $this->_events = Event::find()->allFromMapForm($this);
+            $this->_events = Event::find()->orderBy('start_date')->allFromMapForm($this);
         }
         return $this->_events;
     }
