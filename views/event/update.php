@@ -51,7 +51,8 @@ $this->title = Yii::t('app', 'Update {modelClass}: ', [
                                     'summary' => '',
                                     'itemView' => function (Pass $model, $key, $index, ListForm $widget) {
                                         $price = Yii::$app->formatter->asCurrency($model->price, $model->currency);
-                                        return Html::a(Html::encode(Html::getAttributeValue($model, 'description'). " ($price)"), $widget->getOpenUrl($key));
+                                        $link = Html::a(Html::encode(Html::getAttributeValue($model, 'description'). " ($price)"), $widget->getOpenUrl($key));
+                                        return Html::tag('h4', $link).Html::tag('hr');
                                     },
                                     'openParam' => 'selectedPassId',
                                     'formView' => function (Pass $model) use ($view, $form, $prices) {
@@ -59,7 +60,7 @@ $this->title = Yii::t('app', 'Update {modelClass}: ', [
                                             'model' => $model,
                                             'prices' => $prices,
                                             'form' => $form,
-                                        ]);
+                                        ]).Html::tag('hr');
                                     },
                                     'dataProvider' => new ActiveDataProvider([
                                         'query' => $event->getPasses(),
@@ -70,10 +71,10 @@ $this->title = Yii::t('app', 'Update {modelClass}: ', [
                             <div data-key="0">
                                 <?php if ($list->hasOpenModel()):?>
                                         <?= Html::a(Yii::t('app', "Add a new pass"), $list->getCloseUrl(), [
-                                            'class' => 'text-danger',
+                                            'class' => 'btn btn-warning btn-xs',
                                         ]) ?>
                                 <?php else: ?>
-                                        <span class="text-danger"><?= Yii::t('app', "New pass") ?></span>
+                                        <h4><?= Yii::t('app', "New pass") ?></h4>
 
                                         <?= $this->render('/pass/_fields', [
                                             'model' => $pass,
