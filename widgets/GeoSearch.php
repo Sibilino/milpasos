@@ -190,7 +190,7 @@ class GeoSearch extends LocationWidget
             latInput.value = place.geometry.location.lat();
             var cityInput = document.getElementById($this->_cityId);
             if (cityInput !== null) {
-                cityInput.value = getAddressComponent(place, 'locality');
+                cityInput.value = getAddressComponent(place, 'locality') || getAddressComponent(place, 'administrative_area_level_1');
             }
             var countryInput = document.getElementById($this->_countryId);
             if (countryInput !== null) {
