@@ -167,17 +167,9 @@ class EventController extends Controller
         $mapForm->load(Yii::$app->request->post());
         $mapForm->validate();
         
-        $listForm = new EventListForm();
-        if (!$listForm->load(Yii::$app->request->get())) {
-            // No events requested. By default, show all events from the map selection.
-            $listForm->eventIds = ArrayHelper::getColumn($mapForm->events, 'id');
-        }
-        $listForm->validate();
-        
         $this->layout = 'fluid';
         return $this->render('map', [
             'mapForm' => $mapForm,
-            'listForm' => $listForm,
         ]);
     }
 

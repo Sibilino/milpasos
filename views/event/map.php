@@ -2,7 +2,6 @@
 
 /* @var $this yii\web\View */
 /* @var $mapForm app\models\forms\MapForm */
-/* @var $listForm app\models\forms\EventListForm */
 
 use app\models\Event;
 use app\widgets\EventViewer;
