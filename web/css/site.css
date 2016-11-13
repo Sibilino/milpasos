@@ -161,6 +161,11 @@ body {
 	right:0px;
 	top:0px;
 }
+
+.event-map {
+    background: #b5d0d0;
+}
+
 .row.content .map .event-map{
 	height:100%;
 }
