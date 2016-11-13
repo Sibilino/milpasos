@@ -32,7 +32,7 @@ MilpasosAsset::register($this);
     	'brandLabel' => Html::img('@web/img/common/milpasos.png', ['alt'=>'Milpasos.com']),
         'brandUrl' => Yii::$app->homeUrl,
     	'innerContainerOptions' => [
-    				'class'=>'container-fluid'
+            'class'=>'container-fluid'
     	],
         'options' => [
             'class' => 'navbar-inverse col-xs-12 main-navbar',
@@ -40,16 +40,16 @@ MilpasosAsset::register($this);
 
     ]);
     $items = [
-        ['label' => Yii::t('app', "Home"), 'url' => ['/event/map']],
-        ['label' => Yii::t('app', "Events"), 'url' => ['/event/index']],
-        ['label' => Yii::t('app', "Passes"), 'url' => ['/pass/index']],
-        ['label' => Yii::t('app', "Artists"), 'url' => ['/artist/index']],
-        ['label' => Yii::t('app', "Groups"), 'url' => ['/group/index']],
+        ['label' => Yii::t('app', "Finder"), 'url' => ['/event/map']],
     ];
     if (Yii::$app->user->isGuest) {
         $items []= ['label' => 'Login', 'url' => ['/site/login']];
+        //$items []= ['label' => Yii::t('app', "Sign up"), 'url' => ['/site/signup']];
     } else {
-        $items []= ['label' => Yii::t('app', "Sign up"), 'url' => ['/site/signup']];
+        $items []= ['label' => Yii::t('app', "Events"), 'url' => ['/event/index']];
+        $items []= ['label' => Yii::t('app', "Passes"), 'url' => ['/pass/index']];
+        $items []= ['label' => Yii::t('app', "Artists"), 'url' => ['/artist/index']];
+        $items []= ['label' => Yii::t('app', "Groups"), 'url' => ['/group/index']];
         $items []= [
             'label' => 'Logout (' . Yii::$app->user->identity->username . ')',
             'url' => ['/site/logout'],
