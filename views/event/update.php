@@ -132,7 +132,7 @@ $this->title = Yii::t('app', 'Update {modelClass}: ', [
                             'class' => 'btn btn-success',
                         ]) ?>
                     </div>
-                    <h2 class="panel-title"><?= $event->name ?></h2>
+                    <h2 class="panel-title"><?= $event->name ? $event->name : Yii::t('app', 'Unnamed event') ?></h2>
                 </div>
                 <div class="panel-body">
                     <?= $this->render('_fields', [
