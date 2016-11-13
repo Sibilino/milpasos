@@ -87,7 +87,7 @@ $this->title = Yii::t('app', 'Update {modelClass}: ', [
 
                             <?php if ($list->hasOpenModel()): ?>
 
-                            <h4><?= Yii::t('app', "Price list for \"{passName}\":", ['passName' => $list->getOpenModel()->description]) ?></h4>
+                            <h4><?= Yii::t('app', "Discounts for \"{passName}\":", ['passName' => $list->getOpenModel()->description]) ?></h4>
 
                             <?= $this->render('/temporary-price/_list', [
                                 'prices' => $prices,
