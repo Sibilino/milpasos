@@ -18,6 +18,9 @@ use yii\bootstrap\Html;
 ?>
 
 <div class="event-form">
+    <div class="text-danger">
+        <?= $form->errorSummary([$model, $newLink]) ?>
+    </div>
 
     <div class="row">
         <div class="col-sm-6">
