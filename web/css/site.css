@@ -67,7 +67,7 @@ body {
 .map-list{
 	box-shadow:0px -10px 10px rgba(0,0,0,0.5);
 	z-index:5;
-    padding: 92px 30px 0px;
+    padding: 30px 30px 0px;
 }
 .map-list .results-title{
     position: fixed;
