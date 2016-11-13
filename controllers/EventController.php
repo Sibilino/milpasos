@@ -31,6 +31,11 @@ class EventController extends Controller
                         'allow' => true,
                         'roles' => ['@'],
                     ],
+                    [
+                        'allow' => true,
+                        'actions' => ['map'],
+                        'roles' => ['?'],
+                    ],
                 ],
             ],
             'verbs' => [
