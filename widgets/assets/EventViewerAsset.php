@@ -22,6 +22,7 @@ class EventViewerAsset extends AssetBundle
     public $baseUrl = '@web/js';
     public $depends = [
         'app\assets\AngularJsAsset',
+        'app\assets\AngularRouteAsset',
         'app\assets\MilpasosAsset',
     ];
     public $js = [
