@@ -1,11 +1,27 @@
 (function () {
-    var app = angular.module('EventViewerApp', []);
+    var app = angular.module('EventViewerApp', ['ngRoute']);
+
+    app.config(function($routeProvider) {
+        $routeProvider
+            .when("/", {
+                template: "<ul><li ng-repeat='event in manager.selectedEvents'>{{event.name}}</li></ul><a href='#/tomato'>Link to route test</a><button onclick='alert(milpasos.events)'>Test</button>",
+                controller: "EventManager as manager"
+            })
+            .when("/tomato", {
+                template : "<h1>Tomato</h1><p>Tomatoes contain around 95% water.</p>",
+                controller: "EventManager as manager"
+            });
+        $routeProvider.otherwise({
+            redirectTo: '/'
+        });
+    });
 
     /**
      * Keeps track of available Events and the subset that has been selected by the user.
      * One of the Events can also be selected for detailed inspection.
      */
-    app.controller('EventViewer', function () {
+    app.controller('EventManager', function () {
+        var initialized = false;
 
         this.availableEvents = [];
         this.selectedEvents = [];
@@ -48,5 +64,10 @@
         this.closeDetails = function () {
             this.detailedEvent = null;
         };
+
+        if (!initialized) {
+            this.loadEvents(milpasos.events);
+            initialized = true;
+        }
     });
 })();
