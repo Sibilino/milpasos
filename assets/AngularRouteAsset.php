@@ -11,7 +11,7 @@ use yii\web\View;
  */
 class AngularRouteAsset extends AssetBundle
 {
-    public $sourcePath = '@bower/angular';
+    public $sourcePath = '@bower/angular-route';
 
     public $depends = [
         'app\assets\AngularJsAsset',

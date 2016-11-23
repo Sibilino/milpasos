@@ -4,11 +4,13 @@
 /* @var $mapForm app\models\forms\MapForm */
 
 use app\models\Event;
+use app\widgets\assets\EventViewerAsset;
 use app\widgets\EventViewer;
 use sibilino\yii2\openlayers\OL;
 use sibilino\yii2\openlayers\OpenLayers;
 use yii\helpers\Url;
 use yii\web\JsExpression;
+use yii\web\View;
 
 $this->title = 'Milpasos';
 
@@ -24,9 +26,14 @@ $features = array_map(function (Event $e) {
 <div class="row content">
 
     <div class="col-lg-4 col-sm-6 map-list">
-        <?= EventViewer::widget([
-            'controllerInit' => 'Viewer.loadEvents('.$mapForm->eventsToJson().')',
-        ]) ?>
+        <div ng-app="EventViewerApp">
+            <div id="angular-view" ng-view>
+                <?php
+                    EventViewerAsset::register($this);
+                    $this->registerJs("milpasos.events = ".$mapForm->eventsToJson().";", View::POS_BEGIN);
+                ?>
+            </div>
+        </div>
     </div>
     <div class="col-lg-8 col-sm-6 hidden-xs map">
         <?= OpenLayers::widget([
