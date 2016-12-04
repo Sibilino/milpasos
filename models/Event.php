@@ -3,12 +3,12 @@
 namespace app\models;
 
 use app\models\forms\MapForm;
+use app\models\interfaces\IFormattedAttributes;
 use Yii;
 use app\behaviors\ImageModelBehavior;
 use app\behaviors\ManyToManyBehavior;
 use yii\db\ActiveQuery;
 use yii\helpers\ArrayHelper;
-use yii\helpers\Json;
 
 /**
  * This is the model class for table "event".
@@ -33,7 +33,7 @@ use yii\helpers\Json;
  * @property Pass[] $passes
  * @property Pass[] $fullPasses
  */
-class Event extends \yii\db\ActiveRecord
+class Event extends \yii\db\ActiveRecord implements IFormattedAttributes
 {
     /**
      * @var array|string To collect input to update this Event's dances. Can be array or string of comma-separated ids.
