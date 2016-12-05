@@ -14,10 +14,6 @@ class EventViewerAsset extends AssetBundle
      * The name given to the AngularJs app in the JavaScript file.
      */
     const ANGULAR_APP_NAME = 'EventViewerApp';
-    /**
-     * he name given to the AngularJs controller in the JavaScript file.
-     */
-    const ANGULAR_CONTROLLER_NAME = 'EventManager';
 
     public $baseUrl = '@web/js';
     public $depends = [
