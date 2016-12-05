@@ -4,7 +4,7 @@
     app.config(function($routeProvider) {
         $routeProvider
             .when("/", {
-                template: "<ul><li ng-repeat='event in manager.selectedEvents'>{{event.name}}</li></ul><a href='#/tomato'>Link to route test</a><button onclick='alert(milpasos.events)'>Test</button>",
+                templateUrl: "angular-view?viewName=viewerList",
                 controller: "EventManager as manager"
             })
             .when("/tomato", {
