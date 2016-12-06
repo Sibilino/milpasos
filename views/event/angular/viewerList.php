@@ -7,7 +7,7 @@ use app\models\Event;
 $emptyEvent = new Event();
 
 ?>
-<div class="row event" ng-repeat="event in manager.selectedEvents">
+<div class="row event" ng-repeat="event in selectedEvents">
 
     <div class="col-sm-3 col-xs-4 list-img">
         <div class="img-price-block">
