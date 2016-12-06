@@ -182,7 +182,7 @@ class EventController extends Controller
      */
     public function actionAngularView($viewName)
     {
-        return $this->render("angular/$viewName");
+        return $this->renderPartial("angular/$viewName");
     }
 
     /**
