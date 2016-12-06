@@ -44,11 +44,11 @@ $emptyEvent = new Event();
     </div>
     <hr />
     <div>
+        <a class="more-info pull-right" href="#/">
+            <?= Yii::t('app', 'Close') ?>
+        </a>
         <h3>{{event.price}}</h3>
         <small ng-show="event.price_change_date"><?= Yii::t('app', "This price is available until ") ?>{{event.price_change_date}}</small>
-        <div class="more-info pull-right">
-            <?= Yii::t('app', 'Close') ?>
-        </div>
     </div>
 
 </div>
