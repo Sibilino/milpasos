@@ -46,7 +46,7 @@ class AngularEventViewer extends Widget
     }
 
     /**
-     * Executes the widget.
+     * Generates an outer div with ng-app and $options, and an inner div with the ng-view and $viewDivOptions.
      * @return string
      */
     public function run()
