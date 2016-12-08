@@ -9,6 +9,7 @@ use app\models\Event;
 use app\models\EventSearch;
 use yii\base\Model;
 use yii\filters\AccessControl;
+use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use app\models\Link;
 use yii\web\NotFoundHttpException;
@@ -179,9 +180,13 @@ class EventController extends Controller
      * Renders the requested viewname. Useful to preprocess Angular views using PHP server functions such as Yii::t().
      * @param $viewName string Must exist within the angular folder under this controller's view folder.
      * @return string
+     * @throws BadRequestHttpException If viewName contains anything other than letters.
      */
     public function actionAngularView($viewName)
     {
+        if (preg_match("/[a-zA-Z]+/", $viewName) !== 1) {
+            throw new BadRequestHttpException("Invalid view name.");
+        }
         return $this->renderPartial("angular/$viewName");
     }
 
