@@ -23,6 +23,11 @@ sibilino.olwidget.mapOptions["main-map"] = (function ($) {
             ];
         }
     });
+
+    /**
+     * Publish "select" event of the map's Select interaction into a public module.
+     * @param listener
+     */
     milpasos.addMapSelectListener = function (listener) {
         select.on("select", listener);
     };
