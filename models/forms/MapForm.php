@@ -113,15 +113,4 @@ class MapForm extends Model
         }
         return $this->_events;
     }
-
-    /**
-     * @return string Returns the Json representation of $this->events, using Event::extendedAttributes as data for each Event.
-     */
-    public function eventsToJson()
-    {
-        return Json::encode(array_map(function(Event $e) {
-            return $e->getFormattedAttributes();
-        }, $this->events));
-    }
-
 }

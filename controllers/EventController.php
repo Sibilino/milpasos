@@ -3,14 +3,13 @@
 namespace app\controllers;
 
 use app\models\forms\MapForm;
-use app\models\forms\EventListForm;
 use app\models\Pass;
 use Yii;
 use app\models\Event;
 use app\models\EventSearch;
 use yii\base\Model;
-use yii\helpers\ArrayHelper;
 use yii\filters\AccessControl;
+use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use app\models\Link;
 use yii\web\NotFoundHttpException;
@@ -33,7 +32,7 @@ class EventController extends Controller
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['map'],
+                        'actions' => ['map', 'angularView'],
                         'roles' => ['?'],
                     ],
                 ],
@@ -175,6 +174,20 @@ class EventController extends Controller
         return $this->render('map', [
             'mapForm' => $mapForm,
         ]);
+    }
+
+    /**
+     * Renders the requested viewname. Useful to preprocess Angular views using PHP server functions such as Yii::t().
+     * @param $viewName string Must exist within the angular folder under this controller's view folder.
+     * @return string
+     * @throws BadRequestHttpException If viewName contains anything other than letters.
+     */
+    public function actionAngularView($viewName)
+    {
+        if (preg_match("/[a-zA-Z]+/", $viewName) !== 1) {
+            throw new BadRequestHttpException("Invalid view name.");
+        }
+        return $this->renderPartial("angular/$viewName");
     }
 
     /**

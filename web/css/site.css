@@ -97,6 +97,7 @@ body {
     margin-top: 6px;
 } 
 .map-list .list-info h3{
+    color: #333;
     margin: 0px;
     font-weight: bold;
     font-size: 1.2em;
@@ -104,7 +105,8 @@ body {
 }
 
 .map-list .list-info p{
-    margin: 0px
+    color: #333;
+    margin: 0px;
 }
 .map-list .event{
 	margin-bottom:30px;

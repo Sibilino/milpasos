@@ -23,18 +23,15 @@ sibilino.olwidget.mapOptions["main-map"] = (function ($) {
             ];
         }
     });
-    select.on("select", function (e) {
-        var features = e.target.getFeatures();
-        if (features.getLength() == 0) {
-            milpasos.EventViewer.call('selectAll');
-        } else {
-            features.forEach(function (cluster) {
-                // Get all features' eventIds in a hyphen-separated string
-                var eventIds = cluster.get("features").map(function ($f) {return $f.get("eventId");});
-                milpasos.EventViewer.call('selectEvents',eventIds);
-            });
-        }
-    });
+
+    /**
+     * Publish "select" event of the map's Select interaction into a public module.
+     * @param listener
+     */
+    milpasos.addMapSelectListener = function (listener) {
+        select.on("select", listener);
+    };
+    
     return {
         interactions: ol.interaction.defaults().extend([select])
     }
