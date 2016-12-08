@@ -40,7 +40,10 @@
             }
         };
     });
-    
+
+    /**
+     * Route configuration.
+     */
     app.config(function($routeProvider) {
         $routeProvider
             .when("/", {
@@ -61,23 +64,36 @@
      * One of the Events can also be selected for detailed inspection.
      */
     app.controller('EventManager', ['EventSource', 'MapSelector', '$scope', function (EventSource, MapSelector, $scope) {
+        /**
+         * The currently selected Events.
+         * @type {*|events|{}|Array}
+         */
         $scope.selectedEvents = EventSource.getEvents() || [];
 
+        /**
+         * Selects a subset of the available Events in the EventSource.
+         * @param eventIds
+         */
         $scope.selectEvents = function (eventIds) {
             $scope.selectedEvents = [];
+            var events = EventSource.getEvents();
             for (var i=0; i<eventIds.length; i++) {
-                for (var j=0; j<EventSource.getEvents().length; j++) {
-                    if (EventSource.getEvents()[j].id == eventIds[i]) {
-                        $scope.selectedEvents.push(EventSource.getEvents()[j]);
+                for (var j=0; j<events.length; j++) {
+                    if (events[j].id == eventIds[i]) {
+                        $scope.selectedEvents.push(events[j]);
                     }
                 }
             }
         };
-
+        /**
+         * Selects all available Events in the EventSource.
+         */
         $scope.selectAll = function () {
             $scope.selectedEvents = EventSource.getEvents();
         };
-
+        /**
+         * Registers a listener in the MapSelector that selects the Events with the returned ids.
+         */
         MapSelector.onSelectEvents(function (eventIds) {
             $scope.$apply(function () {
                 if (eventIds.length === 0) {
@@ -89,11 +105,15 @@
         });
     }]);
 
+    /**
+     * Chooses an Event from the EventSource, based on the id route param, and exposes it to the $scope.
+     */
     app.controller('DetailView', ['EventSource', '$routeParams', '$scope', function (EventSource, $routeParams, $scope) {
         $scope.event = null;
-        for (var i = 0; i<EventSource.getEvents().length; i++) {
-            if (EventSource.getEvents()[i].id == $routeParams.id) {
-                $scope.event = EventSource.getEvents()[i];
+        var events = EventSource.getEvents();
+        for (var i = 0; i<events.length; i++) {
+            if (events[i].id == $routeParams.id) {
+                $scope.event = events[i];
                 break;
             }
         }
