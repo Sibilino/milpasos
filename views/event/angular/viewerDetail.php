@@ -7,7 +7,7 @@ use app\models\Event;
 $emptyEvent = new Event();
 
 ?>
-<div class="event">
+<div class="event" ng-click="eventClick($event)">
     <h3>{{event.name}}</h3>
     <div class="row">
         <div class="col-xs-6">
