@@ -18,6 +18,7 @@
 
     /**
      * Service that allows assigning handlers to the select event of the Milpasos maps, via addMapSelectListener().
+     * Usage: MapSelector.onSelectEvents(your_listener_func);
      */
     app.factory('MapSelector', function () {
         return {
@@ -26,17 +27,7 @@
              * @param listener function(eventIds){} (void return)
              */
             onSelectEvents: function (listener) {
-                milpasos.addMapSelectListener(function (e) {
-                    var eventIds = [];
-                    var features = e.target.getFeatures();
-                    if (features.getLength() > 0) {
-                        features.forEach(function (cluster) {
-                            // Get all features' eventIds
-                            eventIds = cluster.get("features").map(function ($f) {return $f.get("eventId");});
-                        });
-                    }
-                    return listener(eventIds);
-                });
+                milpasos.addEventSelectListener(listener);
             }
         };
     });
