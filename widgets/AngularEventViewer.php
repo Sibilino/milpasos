@@ -29,6 +29,11 @@ class AngularEventViewer extends Widget
      * @var IFormattedAttributes[]
      */
     public $events = [];
+    /**
+     * Listener to be used for an Event selection event.
+     * @var string A Javascript function that receives an array of Event ids.
+     */
+    public $onSelect = '';
 
     /**
      * Initializes ids and registers the necessary JavaScript.
@@ -38,10 +43,13 @@ class AngularEventViewer extends Widget
         if (!isset($this->options['id'])) {
             $this->options['id'] = $this->getId();
         }
-
         EventViewerAsset::register($this->view);
-        $this->view->registerJs("milpasos.events = ".$this->eventsToJson().";", View::POS_BEGIN);
-        
+        $this->view->registerJs("milpasos.eventViewer = {events: ".$this->eventsToJson()."};", View::POS_BEGIN);
+        if ($this->onSelect)
+        {
+            $this->view->registerJs("milpasos.eventViewer.addEventSelectListener = ".$this->onSelect.";", View::POS_BEGIN);
+        }
+                
         parent::init();
     }
 
