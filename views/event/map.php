@@ -26,6 +26,7 @@ $features = array_map(function (Event $e) {
     <div class="col-lg-4 col-sm-6 map-list">
         <?= AngularEventViewer::widget([
             'events' => $mapForm->events,
+            'onSelect' => 'milpasos.eventMap.onSelect',
         ]) ?>
     </div>
     <div class="col-lg-8 col-sm-6 hidden-xs map">
