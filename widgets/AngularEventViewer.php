@@ -47,7 +47,7 @@ class AngularEventViewer extends Widget
         $this->view->registerJs("milpasos.eventViewer = {events: ".$this->eventsToJson()."};", View::POS_BEGIN);
         if ($this->onSelect)
         {
-            $this->view->registerJs("milpasos.eventViewer.onSelectEvents = ".$this->onSelect.";", View::POS_BEGIN);
+            $this->view->registerJs("milpasos.eventViewer.onSelectEvents = ".$this->onSelect.";");
         }
                 
         parent::init();
