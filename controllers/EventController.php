@@ -32,7 +32,7 @@ class EventController extends Controller
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['map', 'angularView'],
+                        'actions' => ['map', 'angular-view'],
                         'roles' => ['?'],
                     ],
                 ],
