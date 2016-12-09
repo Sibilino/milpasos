@@ -27,7 +27,7 @@
              * @param listener function(eventIds){} (void return)
              */
             onSelectEvents: function (listener) {
-                milpasos.eventViewer.addEventSelectListener(listener);
+                milpasos.eventViewer.onSelectEvents(listener);
             }
         };
     });
