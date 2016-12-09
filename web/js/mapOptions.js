@@ -42,12 +42,15 @@ sibilino.olwidget.mapOptions["main-map"] = (function ($) {
     
     /**
      * Publish "select" event of the map's Select interaction into a public module.
+     * Usage: milpasos.eventMap.addEventSelectListener(your_listener_func);
      * @param listener
      */
-    milpasos.addMapSelectListener = function (listener) {
-        select.on("select", function (e) {
-            listener(extractEventIds(e.target));
-        });
+    milpasos.eventMap = {
+        addEventSelectListener: function (listener) {
+            select.on("select", function (e) {
+                listener(extractEventIds(e.target));
+            });
+        }
     };
     
     return {
