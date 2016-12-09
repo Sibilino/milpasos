@@ -1,4 +1,8 @@
 (function () {
+    /**
+     * External dependency may be needed, see EventSource and MapSelector services.
+     * @type {angular.Module}
+     */
     var app = angular.module('EventViewerApp', ['ngRoute']);
 
     /**
@@ -11,7 +15,7 @@
              * @returns {events|{}|*|Array}
              */
             getEvents: function () {
-                return milpasos.events || [];
+                return milpasos.eventViewer.events || []; // Depends on milpasos module, eventViewer widget.
             }
         };
     });
@@ -24,10 +28,13 @@
         return {
             /**
              * The given listener will receive a list of Event ids when the "select" event on the map is fired.
+             * @param $scope The scope for which to apply the changes made by the listener.
              * @param listener function(eventIds){} (void return)
              */
-            onSelectEvents: function (listener) {
-                milpasos.eventViewer.onSelectEvents(listener);
+            onSelectEvents: function ($scope, listener) {
+                milpasos.eventViewer.onSelectEvents(function(eventIds) { // Depends on milpasos module, eventViewer widget.
+                    $scope.$apply(listener(eventIds));
+                });
             }
         };
     });
@@ -85,14 +92,14 @@
         /**
          * Registers a listener in the MapSelector that selects the Events with the returned ids.
          */
-        MapSelector.onSelectEvents(function (eventIds) {
-            $scope.$apply(function () {
-                if (eventIds.length === 0) {
-                    $scope.selectAll();
-                } else {
+        MapSelector.onSelectEvents($scope, function (eventIds) {
+                if (eventIds.length > 0) {
                     $scope.selectEvents(eventIds);
+                } else {
+                    $scope.selectAll();
                 }
-            });
+
+
         });
     }]);
 
