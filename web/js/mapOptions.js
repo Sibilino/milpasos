@@ -46,7 +46,7 @@ sibilino.olwidget.mapOptions["main-map"] = (function ($) {
      * @param listener
      */
     milpasos.eventMap = {
-        addEventSelectListener: function (listener) {
+        onSelect: function (listener) {
             select.on("select", function (e) {
                 listener(extractEventIds(e.target));
             });
