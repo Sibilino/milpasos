@@ -1,4 +1,8 @@
 (function () {
+    /**
+     * External dependency may be needed, see EventSource and MapSelector services.
+     * @type {angular.Module}
+     */
     var app = angular.module('EventViewerApp', ['ngRoute']);
 
     /**
@@ -11,7 +15,7 @@
              * @returns {events|{}|*|Array}
              */
             getEvents: function () {
-                return milpasos.events || [];
+                return milpasos.eventViewer.events || []; // Depends on milpasos module, eventViewer widget.
             }
         };
     });
