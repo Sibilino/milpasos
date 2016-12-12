@@ -24,17 +24,11 @@
      * Service that allows assigning handlers to the select event of the Milpasos maps, via addMapSelectListener().
      * Usage: MapSelector.onSelectEvents(your_listener_func);
      */
-    app.factory('MapSelector', function () {
-        return {
-            /**
-             * The given listener will receive a list of Event ids when the "select" event on the map is fired.
-             * @param listener function(eventIds){} (void return)
-             */
-            onSelectEvents: function (listener) {
-                milpasos.eventViewer.onSelectEvents(listener);
-            }
-        };
-    });
+    app.service('MapSelector', ['$rootScope', function ($rootScope) {
+        milpasos.eventViewer.onSelectEvents(function (eventIds) {
+            $rootScope.$broadcast('MapSelector:selection-changed', { eventIds: eventIds });
+        });
+    }]);
 
     /**
      * Route configuration.
@@ -86,24 +80,37 @@
         $scope.selectAll = function () {
             $scope.selectedEvents = EventSource.getEvents();
         };
-        /**
-         * Registers a listener in the MapSelector that selects the Events with the returned ids.
-         */
-        MapSelector.onSelectEvents(function (eventIds) {
-            $scope.$apply(function () {
-                if (eventIds.length === 0) {
-                    $scope.selectAll();
-                } else {
-                    $scope.selectEvents(eventIds);
-                }
-            });
+        
+        // Listen for event selection from the map and change selected Events accordingly
+        var deregister = $scope.$on('MapSelector:selection-changed', function (e, args) {
+            if (args.eventIds.length === 0) {
+                $scope.selectAll();
+            } else {
+                $scope.selectEvents(eventIds);
+            }
         });
+        $scope.$on('$destroy', deregister); // Deregister event handler when controller is destroyed
     }]);
 
     /**
      * Chooses an Event from the EventSource, based on the id route param, and exposes it to the $scope.
      */
-    app.controller('DetailView', ['EventSource', '$routeParams', '$scope', function (EventSource, $routeParams, $scope) {
+    app.controller('DetailView', ['EventSource', 'MapSelector', '$routeParams', '$scope', '$location',
+        function (EventSource, MapSelector, $routeParams, $scope, $location) {
+        /**
+         * Holds data of the chosen Event.
+         * @type {Event}
+         */
+        $scope.event = null;
+        // Choose the available id that corresponds to id route param
+        var events = EventSource.getEvents();
+        for (var i = 0; i<events.length; i++) {
+            if (events[i].id == $routeParams.id) {
+                $scope.event = events[i];
+                break;
+            }
+        }
+        
         /**
          * If the target of the $event is not a link, go back to root route.
          * @param $event
@@ -114,19 +121,18 @@
                 window.location.href = '#/'; // Go back to root route
             }
         };
-        /**
-         * Holds data of the chosen Event.
-         * @type {Event}
-         */
-        $scope.event = null;
-
-        // Choose the available id that corresponds to id route param
-        var events = EventSource.getEvents();
-        for (var i = 0; i<events.length; i++) {
-            if (events[i].id == $routeParams.id) {
-                $scope.event = events[i];
-                break;
+        
+        // Listen for event selection from the map and close detail view if necessary
+        var deregister = $scope.$on('MapSelector:selection-changed', function (e, args) {
+            if (args.eventIds.length == 1) {
+                var id = args.eventIds.pop();
+                if (id != $routeParams.id) {
+                    $location.path('/'+id);
+                }
+            } else {
+                $location.path('/');
             }
-        }
+        });
+        $scope.$on('$destroy', deregister); // Deregister event handler when controller is destroyed
     }]);
 })();
