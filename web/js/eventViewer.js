@@ -86,7 +86,7 @@
             if (args.eventIds.length === 0) {
                 $scope.selectAll();
             } else {
-                $scope.selectEvents(eventIds);
+                $scope.selectEvents(args.eventIds);
             }
         });
         $scope.$on('$destroy', deregister); // Deregister event handler when controller is destroyed
