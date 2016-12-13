@@ -26,7 +26,9 @@
      */
     app.service('MapSelector', ['$rootScope', function ($rootScope) {
         milpasos.eventViewer.onSelectEvents(function (eventIds) {
-            $rootScope.$broadcast('MapSelector:selection-changed', { eventIds: eventIds });
+            $rootScope.$apply(function () {
+                $rootScope.$broadcast('MapSelector:selection-changed', { eventIds: eventIds });
+            });
         });
     }]);
 
@@ -82,14 +84,13 @@
         };
         
         // Listen for event selection from the map and change selected Events accordingly
-        var deregister = $scope.$on('MapSelector:selection-changed', function (e, args) {
+        $scope.$on('MapSelector:selection-changed', function (e, args) {
             if (args.eventIds.length === 0) {
                 $scope.selectAll();
             } else {
                 $scope.selectEvents(args.eventIds);
             }
         });
-        $scope.$on('$destroy', deregister); // Deregister event handler when controller is destroyed
     }]);
 
     /**
@@ -123,7 +124,7 @@
         };
         
         // Listen for event selection from the map and close detail view if necessary
-        var deregister = $scope.$on('MapSelector:selection-changed', function (e, args) {
+        $scope.$on('MapSelector:selection-changed', function (e, args) {
             if (args.eventIds.length == 1) {
                 var id = args.eventIds.pop();
                 if (id != $routeParams.id) {
@@ -133,6 +134,5 @@
                 $location.path('/');
             }
         });
-        $scope.$on('$destroy', deregister); // Deregister event handler when controller is destroyed
     }]);
 })();
