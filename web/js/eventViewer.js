@@ -25,7 +25,10 @@
      * Usage: MapSelector.onSelectEvents(your_listener_func);
      */
     app.service('MapSelector', ['$rootScope', function ($rootScope) {
+        this.lastSelection = [];
+        var serviceObj = this;
         milpasos.eventViewer.onSelectEvents(function (eventIds) {
+            serviceObj.lastSelection = eventIds;
             $rootScope.$apply(function () {
                 $rootScope.$broadcast('MapSelector:selection-changed', { eventIds: eventIds });
             });
@@ -59,8 +62,7 @@
          * The currently selected Events.
          * @type {*|events|{}|Array}
          */
-        $scope.selectedEvents = EventSource.getEvents() || [];
-
+        $scope.selectedEvents = [];
         /**
          * Selects a subset of the available Events in the EventSource.
          * @param eventIds
@@ -91,6 +93,13 @@
                 $scope.selectEvents(args.eventIds);
             }
         });
+
+        // Load initial Events
+        if (MapSelector.lastSelection.length > 0) {
+            $scope.selectEvents(MapSelector.lastSelection);
+        } else {
+            $scope.selectAll();
+        }
     }]);
 
     /**
