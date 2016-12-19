@@ -24,7 +24,15 @@ $features = array_map(function (Event $e) {
 <div class="row content">
 
     <div class="col-lg-8 col-lg-push-4 col-sm-6 col-sm-push-6 map-filters">
-        Filters go here
+        <button class="btn btn-sm" data-role="show-filters">Toggle filters</button>
+        <?php $this->registerJs("$('[data-role=show-filters]').click(function () {
+                $('[data-role=map-filters]').slideToggle();
+            });")?>
+        <div class="map-filters" data-role="map-filters">
+            <p>Filters</p>
+            <p>Filters</p>
+            <p>Filters</p>
+        </div>
     </div>
 
     <div class="col-lg-4 col-lg-pull-8 col-sm-6 col-sm-pull-6 map-list">

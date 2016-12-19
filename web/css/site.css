@@ -67,7 +67,7 @@ body {
 .map-filters{
     z-index: 200;
     background: #fff;
-    padding: 25px;
+    padding: 5px 25px;
 }
 .map-list{
 	box-shadow:0px -10px 10px rgba(0,0,0,0.5);
