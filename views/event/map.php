@@ -23,16 +23,17 @@ $features = array_map(function (Event $e) {
 
 <div class="row content">
 
-    <div class="col-lg-8 col-lg-push-4 col-sm-6 col-sm-push-6 map-filters">
-        <button class="btn btn-sm" data-role="show-filters">Toggle filters</button>
-        <?php $this->registerJs("$('[data-role=show-filters]').click(function () {
-                $('[data-role=map-filters]').slideToggle();
-            });")?>
-        <div class="map-filters" data-role="map-filters">
+    <div class="col-lg-8 col-lg-push-4 col-sm-6 col-sm-push-6 filter-container">
+        <div class="map-filters map-filters" data-role="map-filters">
             <p>Filters</p>
             <p>Filters</p>
             <p>Filters</p>
         </div>
+        <button class="center-block btn btn-sm btn-default" data-role="show-filters"><i data-role="slide-icon" class="glyphicon glyphicon-chevron-up"></i></button>
+        <?php $this->registerJs("$('[data-role=show-filters]').click(function () {
+                $('[data-role=map-filters]').slideToggle();
+                $('[data-role=slide-icon]').toggleClass('glyphicon-chevron-down').toggleClass('glyphicon-chevron-up');
+            });")?>
     </div>
 
     <div class="col-lg-4 col-lg-pull-8 col-sm-6 col-sm-pull-6 map-list">
