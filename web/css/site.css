@@ -64,6 +64,11 @@ body {
     background: #2c2e2e;
     padding-bottom: 12px;
 }
+.map-filters{
+    z-index: 200;
+    background: #fff;
+    padding: 25px;
+}
 .map-list{
 	box-shadow:0px -10px 10px rgba(0,0,0,0.5);
 	z-index:5;
@@ -158,10 +163,10 @@ body {
 }
 .row.content .map{
 	padding:0px;
-	height:100%;
 	position:fixed;
 	right:0px;
-	top:0px;
+	top:60px;
+    bottom:0;
 }
 
 .event-map {

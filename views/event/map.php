@@ -23,7 +23,11 @@ $features = array_map(function (Event $e) {
 
 <div class="row content">
 
-    <div class="col-lg-4 col-sm-6 map-list">
+    <div class="col-lg-8 col-lg-push-4 col-sm-6 col-sm-push-6 map-filters">
+        Filters go here
+    </div>
+
+    <div class="col-lg-4 col-lg-pull-8 col-sm-6 col-sm-pull-6 map-list">
         <?= AngularEventViewer::widget([
             'events' => $mapForm->events,
             'onSelect' => 'milpasos.eventMap.onSelect',
