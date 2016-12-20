@@ -158,10 +158,10 @@ body {
 }
 .row.content .map{
 	padding:0px;
-	height:100%;
 	position:fixed;
 	right:0px;
-	top:0px;
+	top:60px;
+    bottom:0;
 }
 
 .event-map {
