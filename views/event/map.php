@@ -5,8 +5,10 @@
 
 use app\models\Event;
 use app\widgets\AngularEventViewer;
+use app\widgets\DateRangePicker;
 use sibilino\yii2\openlayers\OL;
 use sibilino\yii2\openlayers\OpenLayers;
+use yii\bootstrap\ActiveForm;
 use yii\helpers\Url;
 use yii\web\JsExpression;
 
@@ -22,8 +24,24 @@ $features = array_map(function (Event $e) {
 ?>
 
 <div class="row content">
-
     <div class="col-lg-4 col-sm-6 map-list">
+        <div class="filters">
+            <?php $form = ActiveForm::begin([
+                'layout' => 'horizontal',
+            ]) ?>
+                <?= DateRangePicker::widget([
+                    'form' => $form,
+                    'model' => $mapForm,
+                    'fromAttr' => 'from_date',
+                    'toAttr' => 'to_date',
+                    'pickerConfig' => [
+                        'options' => [
+                            'class' => 'form-control'
+                        ],
+                    ],
+                ]) ?>
+            <?php ActiveForm::end() ?>
+        </div>
         <?= AngularEventViewer::widget([
             'events' => $mapForm->events,
             'onSelect' => 'milpasos.eventMap.onSelect',
