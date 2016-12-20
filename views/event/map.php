@@ -9,6 +9,7 @@ use app\widgets\DateRangePicker;
 use sibilino\yii2\openlayers\OL;
 use sibilino\yii2\openlayers\OpenLayers;
 use yii\bootstrap\ActiveForm;
+use yii\bootstrap\Html;
 use yii\helpers\Url;
 use yii\web\JsExpression;
 
@@ -25,23 +26,42 @@ $features = array_map(function (Event $e) {
 
 <div class="row content">
     <div class="col-lg-4 col-sm-6 map-list">
+
         <div class="filters">
-            <?php $form = ActiveForm::begin([
-                'layout' => 'horizontal',
-            ]) ?>
-                <?= DateRangePicker::widget([
-                    'form' => $form,
-                    'model' => $mapForm,
-                    'fromAttr' => 'from_date',
-                    'toAttr' => 'to_date',
-                    'pickerConfig' => [
-                        'options' => [
-                            'class' => 'form-control'
-                        ],
-                    ],
+            <div class="row">
+                <?php $form = ActiveForm::begin([
+                    'layout' => 'horizontal',
                 ]) ?>
-            <?php ActiveForm::end() ?>
+
+                <div class="col-md-8">
+
+                    <?= DateRangePicker::widget([
+                        'form' => $form,
+                        'model' => $mapForm,
+                        'fromAttr' => 'from_date',
+                        'toAttr' => 'to_date',
+                        'fieldOptions' => [
+                            'options' => [
+                                'class' => 'form-group form-group-sm',
+                            ],
+                        ],
+                        'pickerConfig' => [
+                            'options' => [
+                                'class' => 'form-control',
+                            ],
+                        ],
+                    ]) ?>
+
+                </div>
+                <div class="col-md-4">
+                    <?= Html::submitButton(Yii::t('app', 'Search'), [
+                        'class' => 'btn btn-sm btn-default'
+                    ]) ?>
+                </div>
+                <?php ActiveForm::end() ?>
+            </div>
         </div>
+
         <?= AngularEventViewer::widget([
             'events' => $mapForm->events,
             'onSelect' => 'milpasos.eventMap.onSelect',
