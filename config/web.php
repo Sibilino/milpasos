@@ -11,6 +11,11 @@ $config = yii\helpers\ArrayHelper::merge([
         'homeUrl' => ['event/map'],
         'bootstrap' => ['log'],
         'components' => [
+            'request' => [
+                'parsers' => [
+                    'application/json' => 'yii\web\JsonParser',
+                ],
+            ],
             'cache' => [
                 'class' => 'yii\caching\FileCache',
             ],
