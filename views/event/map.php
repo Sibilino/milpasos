@@ -11,6 +11,7 @@ use sibilino\yii2\openlayers\OpenLayers;
 use yii\bootstrap\ActiveForm;
 use yii\bootstrap\Html;
 use yii\helpers\Url;
+use yii\jui\AutoComplete;
 use yii\web\JsExpression;
 
 $this->title = 'Milpasos';
@@ -34,6 +35,12 @@ $features = array_map(function (Event $e) {
                 ]) ?>
 
                 <div class="col-md-8">
+                    
+                    <?= $form->field($mapForm, 'groupIds')->widget(AutoComplete::className(), [
+                        'clientOptions' => [
+                            'source' => Url::to(['api/group-search']),
+                        ],
+                    ]) ?>
 
                     <?= DateRangePicker::widget([
                         'form' => $form,
