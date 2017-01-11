@@ -44,7 +44,7 @@ $emptyEvent = new Event();
     </div>
     <hr />
     <div>
-        <a class="more-info pull-right" href="#/">
+        <a class="more-info pull-right" href="#!/">
             <?= Yii::t('app', 'Close') ?>
         </a>
         <h3>{{event.price}}</h3>
