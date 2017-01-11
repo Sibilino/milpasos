@@ -34,6 +34,10 @@ class AngularEventViewer extends Widget
      * @var string A Javascript function that receives an array of Event ids.
      */
     public $onSelect = '';
+    /**
+     * @var bool Whether to add a default ng-app attribute to the widget container div.
+     */
+    public $generateNgApp = false;
 
     /**
      * Initializes ids and registers the necessary JavaScript.
@@ -59,11 +63,14 @@ class AngularEventViewer extends Widget
      */
     public function run()
     {
-        $outerOptions = ArrayHelper::merge([
-            'ng' => [
-                'app' => EventViewerAsset::ANGULAR_APP_NAME,
-            ],
-        ], $this->options);
+        $outerOptions = $this->options;
+        if ($this->generateNgApp) {
+            $outerOptions = ArrayHelper::merge([
+                'ng' => [
+                    'app' => static::GetAngularAppName(),
+                ],
+            ], $this->options);
+        }
 
         $innerOptions = ArrayHelper::merge([
             'ng' => [
@@ -85,5 +92,12 @@ class AngularEventViewer extends Widget
         return Json::encode(array_map(function(IFormattedAttributes $e) {
             return $e->getFormattedAttributes();
         }, $this->events));
+    }
+
+    /**
+     * @return string Returns the angular app name to be used when placing an ng-app to contain this widget.
+     */
+    public static function GetAngularAppName() {
+        return EventViewerAsset::ANGULAR_APP_NAME;
     }
 }
