@@ -38,7 +38,8 @@
     /**
      * Route configuration.
      */
-    app.config(function($routeProvider) {
+    app.config(function($routeProvider, $locationProvider) {
+        $locationProvider.hashPrefix('!'); // For backwards compatibility if server cannot update angular
         $routeProvider
             .when("/", {
                 templateUrl: "angular-view?viewName=viewerList",
@@ -128,7 +129,7 @@
         $scope.eventClick = function ($event) {
             var element = angular.element($event.target);
             if (!element.is('a')) {
-                window.location.href = '#/'; // Go back to root route
+                window.location.href = '#!/'; // Go back to root route
             }
         };
         

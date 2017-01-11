@@ -8,7 +8,7 @@ $emptyEvent = new Event();
 
 ?>
 <div ng-repeat="event in selectedEvents">
-    <a ng-href="#/{{event.id}}">
+    <a ng-href="#!/{{event.id}}">
         <div class="row event">
 
             <div class="col-sm-3 col-xs-4 list-img">
