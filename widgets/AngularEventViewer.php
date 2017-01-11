@@ -37,7 +37,7 @@ class AngularEventViewer extends Widget
     /**
      * @var bool Whether to add a default ng-app attribute to the widget container div.
      */
-    public $generateNgApp = false;
+    public $generateNgApp = true;
 
     /**
      * Initializes ids and registers the necessary JavaScript.
