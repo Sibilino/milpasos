@@ -6,12 +6,12 @@
 use app\models\Event;
 use app\widgets\AngularEventViewer;
 use app\widgets\DateRangePicker;
+use app\widgets\MultiAutoComplete;
 use sibilino\yii2\openlayers\OL;
 use sibilino\yii2\openlayers\OpenLayers;
 use yii\bootstrap\ActiveForm;
 use yii\bootstrap\Html;
 use yii\helpers\Url;
-use yii\jui\AutoComplete;
 use yii\web\JsExpression;
 
 $this->title = 'Milpasos';
@@ -26,22 +26,20 @@ $features = array_map(function (Event $e) {
 ?>
 
 <div class="row content">
-    <div class="col-lg-4 col-sm-6 map-list">
-
-        <div class="filters">
-            <div class="row">
-                <?php $form = ActiveForm::begin([
-                    'layout' => 'horizontal',
-                ]) ?>
-
-                <div class="col-md-8">
-                    
-                    <?= $form->field($mapForm, 'groupIds')->widget(AutoComplete::className(), [
-                        'clientOptions' => [
-                            'source' => Url::to(['api/group-search']),
-                        ],
-                    ]) ?>
-
+    <div class="col-lg-5 col-sm-6">
+        <div class="row list-nav-container">
+            <?php /* TODO: Implement navigation helper */ ?>
+            <div class="list-nav list-nav-back col-xs-4 col-md-3 col-lg-2 text-center"><a> < </a></div>
+            <div class="list-nav list-nav-message col-xs-8 col-md-9 col-lg-10">
+                <?= count($mapForm->events) ?> events found. Click one to see more details.
+            </div>
+        </div>
+        <div class="row filter-container text-center">
+            <?php $form = ActiveForm::begin([
+                'layout' => 'inline',
+                // TODO: Change this form to GET method to avoid browser complaining on reload
+            ]) ?>
+            <div class="col-xs-12">
                     <?= DateRangePicker::widget([
                         'form' => $form,
                         'model' => $mapForm,
@@ -49,7 +47,7 @@ $features = array_map(function (Event $e) {
                         'toAttr' => 'to_date',
                         'fieldOptions' => [
                             'options' => [
-                                'class' => 'form-group form-group-sm',
+                                'class' => 'form-group',
                             ],
                         ],
                         'pickerConfig' => [
@@ -58,23 +56,34 @@ $features = array_map(function (Event $e) {
                             ],
                         ],
                     ]) ?>
-
-                </div>
-                <div class="col-md-4">
-                    <?= Html::submitButton(Yii::t('app', 'Search'), [
-                        'class' => 'btn btn-sm btn-default'
-                    ]) ?>
-                </div>
-                <?php ActiveForm::end() ?>
             </div>
+            <div class="col-xs-12">
+                S B K (All styles selected) <?php /* TODO: Implement dance picker */ ?>
+            </div>
+            <div class="col-xs-12">
+                <div class="more-filters-link pull-right">
+                    <a><small><?= Yii::t('app', 'More options...')?></small></a>
+                </div>
+                <?= Html::submitButton(Yii::t('app', 'Apply filters'), [
+                    'class' => 'btn btn-sm btn-default'
+                ]) ?>
+            </div>
+            <?php ActiveForm::end() ?>
         </div>
 
-        <?= AngularEventViewer::widget([
-            'events' => $mapForm->events,
-            'onSelect' => 'milpasos.eventMap.onSelect',
-        ]) ?>
+        <div class="row map-list">
+            <?= AngularEventViewer::widget([
+                'events' => $mapForm->events,
+                'onSelect' => 'milpasos.eventMap.onSelect',
+            ]) ?>
+        </div>
+
+        <div class="list-footer">
+            &copy; Luis Hernández 2017
+        </div>
+
     </div>
-    <div class="col-lg-8 col-sm-6 hidden-xs map">
+    <div class="col-lg-7 col-sm-6 hidden-xs map">
         <?= OpenLayers::widget([
             'id' => 'main-map',
             'options' => [
