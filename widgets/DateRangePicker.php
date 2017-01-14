@@ -98,7 +98,13 @@ class DateRangePicker extends Widget
         $this->addMask($fromOptions);
 
         echo $this->form->field($this->model, $this->fromAttr, $this->fieldOptions)->widget(DatePicker::className(), ArrayHelper::merge(
-            $this->pickerConfig, ['clientOptions' => $fromOptions, 'options'=>['placeholder' => $this->model->getAttributeLabel($this->fromAttr)]]
+            $this->pickerConfig, [
+                'clientOptions' => $fromOptions,
+                'options' => [
+                    'placeholder' => $this->model->getAttributeLabel($this->fromAttr),
+                    'title' => $this->model->getAttributeLabel($this->fromAttr),
+                ]
+            ]
         ));
 
         $defaults = [
@@ -111,7 +117,13 @@ class DateRangePicker extends Widget
         $this->addMask($toOptions);
 
         echo $this->form->field($this->model, $this->toAttr, $this->fieldOptions)->widget(DatePicker::className(), ArrayHelper::merge(
-            $this->pickerConfig, ['clientOptions' => $toOptions, 'options'=>['placeholder' => $this->model->getAttributeLabel($this->toAttr)]]
+            $this->pickerConfig, [
+                'clientOptions' => $toOptions,
+                'options' => [
+                    'placeholder' => $this->model->getAttributeLabel($this->toAttr),
+                    'title' => $this->model->getAttributeLabel($this->toAttr),
+                ]
+            ]
         ));
     }
 
