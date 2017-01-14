@@ -129,7 +129,7 @@
         $scope.eventClick = function ($event) {
             var element = angular.element($event.target);
             if (!element.is('a')) {
-                window.location.href = '#!/'; // Go back to root route
+                $location.path('/');
             }
         };
         
