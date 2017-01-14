@@ -90,8 +90,8 @@ class MapForm extends Model
     public function attributeLabels()
     {
         return [
-            'from_date' => Yii::t('app', 'From date'),
-            'to_date' => Yii::t('app', 'To date'),
+            'from_date' => Yii::t('app', 'Show events from'),
+            'to_date' => Yii::t('app', 'Show events until'),
             'danceIds' => Yii::t('app', 'Dance Styles'),
             'groupIds' => Yii::t('app', 'Performers'),
             'maxPrice' => Yii::t('app', 'Max price'),
