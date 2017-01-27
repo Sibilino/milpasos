@@ -2,6 +2,8 @@
 
 namespace app\assets;
 
+use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
 use yii\web\AssetBundle;
 use yii\web\View;
 
@@ -11,11 +13,9 @@ use yii\web\View;
  */
 class AngularJsAsset extends AssetBundle
 {
-    public $sourcePath = '@bower/angular';
+    const ANGULAR_APP_NAME = 'AngularMilpasos';
 
-    public $depends = [
-        'yii\web\JqueryAsset',
-    ];
+    public $sourcePath = '@bower';
 
     public $jsOptions = [
         'position' => View::POS_HEAD,
@@ -28,7 +28,9 @@ class AngularJsAsset extends AssetBundle
     public function init()
     {
         $this->js = [
-            YII_DEBUG ? 'angular.js' : 'angular.min.js',
+            YII_DEBUG ? 'angular/angular.js' : 'angular/angular.min.js',
+            YII_DEBUG ? 'angular-route/angular-route.js' : 'angular-route/angular-route.min.js',
+            Url::to('@web/js/angular-app.js'),
         ];
         parent::init();
     }

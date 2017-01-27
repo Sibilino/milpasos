@@ -3,10 +3,10 @@
 /* @var $this yii\web\View */
 /* @var $mapForm app\models\forms\MapForm */
 
+use app\assets\AngularJsAsset;
 use app\models\Event;
 use app\widgets\AngularEventViewer;
 use app\widgets\DateRangePicker;
-use app\widgets\MultiAutoComplete;
 use sibilino\yii2\openlayers\OL;
 use sibilino\yii2\openlayers\OpenLayers;
 use yii\bootstrap\ActiveForm;
@@ -26,7 +26,7 @@ $features = array_map(function (Event $e) {
 ?>
 
 <div class="row content">
-    <div class="col-lg-5 col-sm-6">
+    <div class="col-lg-5 col-sm-6" ng-app="<?= AngularJsAsset::ANGULAR_APP_NAME ?>">
         <div class="row list-nav-container">
             <?php /* TODO: Implement navigation helper */ ?>
             <div class="list-nav list-nav-back col-xs-4 col-md-3 col-lg-2 text-center"><a> < </a></div>

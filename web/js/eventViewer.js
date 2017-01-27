@@ -1,9 +1,7 @@
 (function () {
     /**
      * External dependency may be needed, see EventSource and MapSelector services.
-     * @type {angular.Module}
      */
-    var app = angular.module('EventViewerApp', ['ngRoute']);
 
     /**
      * Service that provides events through the getEvents() method.

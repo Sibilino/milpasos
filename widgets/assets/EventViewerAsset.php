@@ -2,6 +2,7 @@
 
 namespace app\widgets\assets;
 
+use app\assets\AngularJsAsset;
 use yii\web\AssetBundle;
 
 /**
@@ -10,18 +11,16 @@ use yii\web\AssetBundle;
  */
 class EventViewerAsset extends AssetBundle
 {
-    /**
-     * The name given to the AngularJs app in the JavaScript file.
-     */
-    const ANGULAR_APP_NAME = 'EventViewerApp';
-
     public $baseUrl = '@web/js';
     public $depends = [
         'app\assets\AngularJsAsset',
-        'app\assets\AngularRouteAsset',
         'app\assets\MilpasosAsset',
     ];
     public $js = [
         'eventViewer.js',
     ];
+    
+    public static function GetAngularAppName() {
+        return AngularJsAsset::ANGULAR_APP_NAME;
+    }
 }

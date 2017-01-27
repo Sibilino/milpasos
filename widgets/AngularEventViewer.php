@@ -2,6 +2,7 @@
 
 namespace app\widgets;
 
+use app\assets\AngularJsAsset;
 use app\models\interfaces\IFormattedAttributes;
 use app\widgets\assets\EventViewerAsset;
 use yii\base\Widget;
@@ -98,6 +99,6 @@ class AngularEventViewer extends Widget
      * @return string Returns the angular app name to be used when placing an ng-app to contain this widget.
      */
     public static function GetAngularAppName() {
-        return EventViewerAsset::ANGULAR_APP_NAME;
+        return EventViewerAsset::GetAngularAppName();
     }
 }
