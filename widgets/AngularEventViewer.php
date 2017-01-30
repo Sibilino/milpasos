@@ -2,7 +2,6 @@
 
 namespace app\widgets;
 
-use app\assets\AngularJsAsset;
 use app\models\interfaces\IFormattedAttributes;
 use app\widgets\assets\EventViewerBundle;
 use yii\base\Widget;
