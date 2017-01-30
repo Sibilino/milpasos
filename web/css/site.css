@@ -222,7 +222,7 @@ body {
 /* Large devices (large desktops, 1200px and up) */
 @media (min-width: 1200px) { 
 	.main-navbar .navbar-header {
-	    width: 41.86%;
+        width: 33.333%;
 	}
 	.main-navbar.navbar {
    		background: #080808;

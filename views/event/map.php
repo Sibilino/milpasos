@@ -26,7 +26,7 @@ $features = array_map(function (Event $e) {
 ?>
 
 <div class="row content">
-    <div class="col-lg-5 col-sm-6" ng-app="<?= AngularJsAsset::ANGULAR_APP_NAME ?>">
+    <div class="col-lg-4 col-sm-6" ng-app="<?= AngularJsAsset::ANGULAR_APP_NAME ?>">
         <div class="row list-nav-container">
             <?php /* TODO: Implement navigation helper */ ?>
             <div class="list-nav list-nav-back col-xs-4 col-md-3 col-lg-2 text-center"><a> < </a></div>
@@ -83,7 +83,7 @@ $features = array_map(function (Event $e) {
         </div>
 
     </div>
-    <div class="col-lg-7 col-sm-6 hidden-xs map">
+    <div class="col-lg-8 col-sm-6 hidden-xs map">
         <?= OpenLayers::widget([
             'id' => 'main-map',
             'options' => [
