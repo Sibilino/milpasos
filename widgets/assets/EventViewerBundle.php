@@ -9,7 +9,7 @@ use yii\web\AssetBundle;
  * Assets for the EventViewer widget.
  * @package app\widgets\assets
  */
-class EventViewerAsset extends AssetBundle
+class EventViewerBundle extends AssetBundle
 {
     public $baseUrl = '@web/js';
     public $depends = [

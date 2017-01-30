@@ -4,7 +4,7 @@ namespace app\widgets;
 
 use app\assets\AngularJsAsset;
 use app\models\interfaces\IFormattedAttributes;
-use app\widgets\assets\EventViewerAsset;
+use app\widgets\assets\EventViewerBundle;
 use yii\base\Widget;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
@@ -48,7 +48,7 @@ class AngularEventViewer extends Widget
         if (!isset($this->options['id'])) {
             $this->options['id'] = $this->getId();
         }
-        EventViewerAsset::register($this->view);
+        EventViewerBundle::register($this->view);
         $this->view->registerJs("milpasos.eventViewer = {events: ".$this->eventsToJson()."};", View::POS_BEGIN);
         if ($this->onSelect)
         {
@@ -99,6 +99,6 @@ class AngularEventViewer extends Widget
      * @return string Returns the angular app name to be used when placing an ng-app to contain this widget.
      */
     public static function GetAngularAppName() {
-        return EventViewerAsset::GetAngularAppName();
+        return EventViewerBundle::GetAngularAppName();
     }
 }
