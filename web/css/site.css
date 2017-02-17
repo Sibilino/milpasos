@@ -204,6 +204,13 @@ body {
 .ico-kizomba{
 	background-position: -40px 0px;
 }
+.dance-btn {
+    padding: 0 5px;
+    border-radius: 9px;
+}
+.dance-btn.dance-btn-selected {
+    background: #e4d2e2;
+}
 /* Small devices (tablets, 768px and up) */
 @media (min-width: 768px) { 
 	.main-navbar.navbar {

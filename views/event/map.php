@@ -5,6 +5,7 @@
 
 use app\assets\AngularJsAsset;
 use app\models\Event;
+use app\widgets\AngularDancePicker;
 use app\widgets\AngularEventViewer;
 use app\widgets\DateRangePicker;
 use sibilino\yii2\openlayers\OL;
@@ -58,7 +59,13 @@ $features = array_map(function (Event $e) {
                     ]) ?>
             </div>
             <div class="col-xs-12">
-                S B K (All styles selected) <?php /* TODO: Implement dance picker */ ?>
+                <?php AngularDancePicker::begin([
+                    'generateNgApp' => false,
+                ]) ?>
+                    <span ng-repeat="dance in Picker.dances" ng-class="{'dance-btn-selected': dance.selected}" class="dance-btn" ng-click="dance.toggle()">{{dance.getInitial()}}</span>
+                    <span ng-show="Picker.allSelected() || Picker.noneSelected()"><?= Yii::t('app', "All dance styles") ?></span>
+                    <span ng-show="!Picker.allSelected() && !Picker.noneSelected()"><?= Yii::t('app', "Only {{Picker.getSelectedDanceNames().join(', ')}}") ?></span>
+                <?php AngularDancePicker::end() ?>
             </div>
             <div class="col-xs-12">
                 <div class="more-filters-link pull-right">

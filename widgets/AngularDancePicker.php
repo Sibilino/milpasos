@@ -20,16 +20,23 @@ class AngularDancePicker extends Widget
      */
     public function init()
     {
-        if ($this->generateNgApp) {
-            $this->options = ArrayHelper::merge([
-                'ng' => [
-                    'app' => static::GetAngularAppName(),
-                    'controller' => "DancePicker as $this->controllerAs",
-                ],
-            ], $this->options);
-        }
-        DancePickerBundle::register($this->view);
         parent::init();
+
+        $this->options = ArrayHelper::merge([
+            'ng' => [
+                'controller' => "DancePicker as $this->controllerAs",
+                'cloak' => true,
+            ],
+        ], $this->options);
+
+        if ($this->generateNgApp) {
+            $this->options['ng']['app'] = static::GetAngularAppName();
+        }
+
+        DancePickerBundle::register($this->view);
+
+        ob_start();
+        ob_implicit_flush(false);
     }
 
     /**
@@ -38,7 +45,8 @@ class AngularDancePicker extends Widget
      */
     public function run()
     {
-        return Html::tag('div', '', $this->options);
+        $content = ob_get_clean();
+        return Html::tag('div', $content, $this->options);
     }
 
     /**
