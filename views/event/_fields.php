@@ -19,7 +19,7 @@ use yii\bootstrap\Html;
 
 <div class="event-form">
     <div class="text-danger">
-        <?= $form->errorSummary([$model, $newLink]) ?>
+        <?= $form->errorSummary(isset($newLink) ? [$model, $newLink] : $model) ?>
     </div>
 
     <div class="row">
