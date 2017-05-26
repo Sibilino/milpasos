@@ -207,6 +207,12 @@ body {
 .dance-btn {
     padding: 0 5px;
     border-radius: 9px;
+    border: 1px solid lightgray;
+    cursor: pointer;
+    margin-left: 5px;
+}
+.dance-picker {
+    line-height: 35px;
 }
 .dance-btn.dance-btn-selected {
     background: #e4d2e2;
