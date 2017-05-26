@@ -30,10 +30,11 @@ $features = array_map(function (Event $e) {
 <div class="row content">
     <div class="col-lg-4 col-sm-6" ng-app="<?= AngularJsAsset::ANGULAR_APP_NAME ?>">
         <div class="row list-nav-container">
-            <?php /* TODO: Implement navigation helper */ ?>
-            <div class="list-nav list-nav-back col-xs-4 col-md-3 col-lg-2 text-center"><a> < </a></div>
+            <div class="list-nav col-xs-4 col-md-3 col-lg-2 pull-right text-center">
+                <span class="list-nav-clear" onclick="window.location = '<?= Url::to(["map"]) ?>'"><span class="glyphicon glyphicon-remove"></span> <?= Yii::t('app', "Clear") ?></span>
+            </div>
             <div class="list-nav list-nav-message col-xs-8 col-md-9 col-lg-10">
-                <?= count($mapForm->events) ?> events found. Click one to see more details.
+                <?= Yii::t('app', "{n} event(s) found that match your search criteria.", ['n'=>count($mapForm->events)]) ?>
             </div>
         </div>
         <div class="row filter-container text-center">
