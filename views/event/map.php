@@ -4,6 +4,7 @@
 /* @var $mapForm app\models\forms\MapForm */
 
 use app\assets\AngularJsAsset;
+use app\models\Dance;
 use app\models\Event;
 use app\widgets\AngularDancePicker;
 use app\widgets\AngularEventViewer;
@@ -61,10 +62,18 @@ $features = array_map(function (Event $e) {
             <div class="col-xs-12">
                 <?php AngularDancePicker::begin([
                     'generateNgApp' => false,
+                    'dances' => Dance::find()->all(),
+                    'selection' => $mapForm->danceIds,
                 ]) ?>
                     <span ng-repeat="dance in Picker.dances" ng-class="{'dance-btn-selected': dance.selected}" class="dance-btn" ng-click="dance.toggle()">{{dance.getInitial()}}</span>
-                    <span ng-show="Picker.allSelected() || Picker.noneSelected()"><?= Yii::t('app', "All dance styles") ?></span>
-                    <span ng-show="!Picker.allSelected() && !Picker.noneSelected()"><?= Yii::t('app', "Only {{Picker.getSelectedDanceNames().join(', ')}}") ?></span>
+                    <div ng-if="Picker.allSelected() || Picker.noneSelected()">
+                        <?= Yii::t('app', "All dance styles") ?>
+                        <input type="hidden" ng-repeat="dance in Picker.dances" name="MapForm[danceIds][]" ng-value="dance.id" />
+                    </div>
+                    <div ng-if="!Picker.allSelected() && !Picker.noneSelected()">
+                        <?= Yii::t('app', "Only {{Picker.getSelectedDanceNames().join(', ')}}") ?>
+                        <input type="hidden" ng-repeat="dance in Picker.getSelectedDances()" name="MapForm[danceIds][]" ng-value="dance.id" />
+                    </div>
                 <?php AngularDancePicker::end() ?>
             </div>
             <div class="col-xs-12">
