@@ -58,6 +58,15 @@ class MapForm extends Model
      **/
     private $_events;
 
+    public static function createDefault()
+    {
+        return new MapForm([
+            'from_date' => date('Y-m-d'),
+            'danceIds' => [],
+            'groupIds' => [],
+        ]);
+    }
+
     public function rules()
     {
         return [
@@ -100,6 +109,24 @@ class MapForm extends Model
             'lon' => Yii::t('app', 'Lon'),
             'lat' => Yii::t('app', 'Lat'),
         ];
+    }
+
+    /**
+     * Whether any attributes have been changed from their default value.
+     * @return boolean
+     */
+    public function isDirty()
+    {
+        $default = static::createDefault();
+        foreach ($this->attributes as $name => $value) {
+            if ($name != "danceIds" && $default[$name] != $value) {
+                return true;
+            }
+            if ($name == "danceIds" && !empty($value) && count($value) != Dance::find()->count()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

@@ -163,9 +163,7 @@ class EventController extends Controller
      */
     public function actionMap()
     {
-        $mapForm = new MapForm([
-            'from_date' => date('Y-m-d'),
-        ]);
+        $mapForm = MapForm::createDefault();
         
         $mapForm->load(Yii::$app->request->post());
         $mapForm->validate();

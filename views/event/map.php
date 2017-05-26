@@ -29,14 +29,16 @@ $features = array_map(function (Event $e) {
 
 <div class="row content">
     <div class="col-lg-4 col-sm-6" ng-app="<?= AngularJsAsset::ANGULAR_APP_NAME ?>">
-        <div class="row list-nav-container">
-            <div class="list-nav col-xs-4 col-md-3 col-lg-2 pull-right text-center">
-                <span class="list-nav-clear" onclick="window.location = '<?= Url::to(["map"]) ?>'"><span class="glyphicon glyphicon-remove"></span> <?= Yii::t('app', "Clear") ?></span>
+        <?php if ($mapForm->isDirty()): ?>
+            <div class="row list-nav-container">
+                <div class="list-nav col-xs-4 col-md-3 col-lg-2 pull-right text-center">
+                    <span class="list-nav-clear" onclick="window.location = '<?= Url::to(["map"]) ?>'"><span class="glyphicon glyphicon-remove"></span> <?= Yii::t('app', "Clear") ?></span>
+                </div>
+                <div class="list-nav list-nav-message col-xs-8 col-md-9 col-lg-10">
+                    <?= Yii::t('app', "{n} event(s) found that match your search criteria.", ['n'=>count($mapForm->events)]) ?>
+                </div>
             </div>
-            <div class="list-nav list-nav-message col-xs-8 col-md-9 col-lg-10">
-                <?= Yii::t('app', "{n} event(s) found that match your search criteria.", ['n'=>count($mapForm->events)]) ?>
-            </div>
-        </div>
+        <?php endif; ?>
         <div class="row filter-container text-center">
             <?php $form = ActiveForm::begin([
                 'layout' => 'inline',
