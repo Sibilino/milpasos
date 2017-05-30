@@ -4,10 +4,15 @@
 
 use app\models\Dance;
 use app\models\forms\MapForm;
+use app\models\Group;
 use app\widgets\AngularDancePicker;
 use app\widgets\DateRangePicker;
+use app\widgets\GeoSearch;
+use app\widgets\MultiAutoComplete;
+use app\widgets\PriceInput;
 use yii\bootstrap\ActiveForm;
 use yii\bootstrap\Html;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 
 
@@ -65,11 +70,29 @@ use yii\helpers\Url;
                             <input type="hidden" ng-repeat="dance in Picker.getSelectedDances()" name="MapForm[danceIds][]" ng-value="dance.id" />
                         </span>
         </div>
+        <div class="col-xs-12 collapse" id="more-options">
+            <?= $form->field($mapForm, 'maxPrice')->widget(PriceInput::className(), [
+                'options' => ['placeholder' => $mapForm->getAttributeLabel('maxPrice')],
+            ]) ?>
+            <?= $form->field($mapForm, 'address')->widget(GeoSearch::className(), ['currentLocationButton' => true]) ?>
+            <h3><?= Yii::t('app', "Artists") ?></h3>
+            <?= $form->field($mapForm, 'groupIds')->widget(MultiAutoComplete::className(), [
+                'data' => ArrayHelper::map(Group::find()->orderBy('name')->all(), 'id', 'name'),
+                'autoCompleteConfig' => [
+                    'options' => [
+                        'placeholder' => Yii::t('app', "Add more..."),
+                        'class' => 'form-control',
+                    ],
+                ],
+            ]) ?>
+        </div>
         <?php AngularDancePicker::end() ?>
     </div>
     <div class="col-xs-12">
         <div class="more-filters-link pull-right">
-            <a><small><?= Yii::t('app', 'More options...')?></small></a>
+            <a data-toggle="collapse" role="button" href="#more-options">
+                <small><?= Yii::t('app', 'More options...')?></small>
+            </a>
         </div>
         <?= Html::submitButton(Yii::t('app', 'Apply filters'), [
             'class' => 'btn btn-sm btn-default'
