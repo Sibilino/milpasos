@@ -4,15 +4,10 @@
 /* @var $mapForm app\models\forms\MapForm */
 
 use app\assets\AngularJsAsset;
-use app\models\Dance;
 use app\models\Event;
-use app\widgets\AngularDancePicker;
 use app\widgets\AngularEventViewer;
-use app\widgets\DateRangePicker;
 use sibilino\yii2\openlayers\OL;
 use sibilino\yii2\openlayers\OpenLayers;
-use yii\bootstrap\ActiveForm;
-use yii\bootstrap\Html;
 use yii\helpers\Url;
 use yii\web\JsExpression;
 
@@ -29,70 +24,9 @@ $features = array_map(function (Event $e) {
 
 <div class="row content">
     <div class="col-lg-4 col-sm-6" ng-app="<?= AngularJsAsset::ANGULAR_APP_NAME ?>">
-        <?php if ($mapForm->isDirty()): ?>
-            <div class="row list-nav-container">
-                <div class="list-nav col-xs-4 col-md-3 col-lg-2 pull-right text-center">
-                    <span class="list-nav-clear" onclick="window.location = '<?= Url::to(["map"]) ?>'"><span class="glyphicon glyphicon-remove"></span> <?= Yii::t('app', "Clear") ?></span>
-                </div>
-                <div class="list-nav list-nav-message col-xs-8 col-md-9 col-lg-10">
-                    <?= Yii::t('app', "{n} event(s) found that match your search criteria.", ['n'=>count($mapForm->events)]) ?>
-                </div>
-            </div>
-        <?php endif; ?>
-        <div class="row filter-container text-center">
-            <?php $form = ActiveForm::begin([
-                'layout' => 'inline',
-                // TODO: Change this form to GET method to avoid browser complaining on reload
-            ]) ?>
-            <div class="col-xs-12">
-                    <?= DateRangePicker::widget([
-                        'form' => $form,
-                        'model' => $mapForm,
-                        'fromAttr' => 'from_date',
-                        'toAttr' => 'to_date',
-                        'fieldOptions' => [
-                            'options' => [
-                                'class' => 'form-group',
-                            ],
-                        ],
-                        'pickerConfig' => [
-                            'options' => [
-                                'class' => 'form-control',
-                            ],
-                        ],
-                    ]) ?>
-            </div>
-            <div class="col-xs-12">
-                <?php AngularDancePicker::begin([
-                    'generateNgApp' => false,
-                    'dances' => Dance::find()->all(),
-                    'selection' => $mapForm->danceIds,
-                ]) ?>
-                    <div class="col-xs-6 text-right dance-picker">
-                        <span ng-repeat="dance in Picker.dances" ng-class="{'dance-btn-selected': dance.selected}" class="dance-btn" ng-click="dance.toggle()" title="{{dance.name}}">{{dance.getInitial()}}</span>
-                    </div>
-                    <div class="col-xs-6 text-left dance-picker">
-                        <span ng-if="Picker.allSelected() || Picker.noneSelected()">
-                        <?= Yii::t('app', "All dance styles") ?>
-                            <input type="hidden" ng-repeat="dance in Picker.dances" name="MapForm[danceIds][]" ng-value="dance.id" />
-                        </span>
-                        <span ng-if="!Picker.allSelected() && !Picker.noneSelected()">
-                            <?= Yii::t('app', "Only {{Picker.getSelectedDanceNames().join(', ')}}") ?>
-                            <input type="hidden" ng-repeat="dance in Picker.getSelectedDances()" name="MapForm[danceIds][]" ng-value="dance.id" />
-                        </span>
-                    </div>
-                <?php AngularDancePicker::end() ?>
-            </div>
-            <div class="col-xs-12">
-                <div class="more-filters-link pull-right">
-                    <a><small><?= Yii::t('app', 'More options...')?></small></a>
-                </div>
-                <?= Html::submitButton(Yii::t('app', 'Apply filters'), [
-                    'class' => 'btn btn-sm btn-default'
-                ]) ?>
-            </div>
-            <?php ActiveForm::end() ?>
-        </div>
+        <?= $this->render('_eventFilters', array(
+            'mapForm' => $mapForm,
+        )) ?>
 
         <div class="row map-list">
             <?= AngularEventViewer::widget([
