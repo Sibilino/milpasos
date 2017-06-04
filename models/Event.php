@@ -304,16 +304,19 @@ class EventQuery extends ActiveQuery
      */
     public function fromFormAnyPrice(MapForm $form)
     {
-        return $this
+        $query = $this
             ->joinWith(['dances', 'groups'], false) // Do not eager load these potentially heavy relations
             ->joinWith(['passes', 'passes.temporaryPrices'])
             ->andFilterWhere(['<=','start_date', $form->to_date])
             ->andFilterWhere(['>=','end_date', $form->from_date])
-            ->andFilterWhere(['dance.id' => $form->danceIds])
             ->andFilterWhere(['group.id' => $form->groupIds])
             ->near($form->lon, $form->lat)
             ->andWhere(['pass.full' => 1])
         ;
+        if (count($form->danceIds) < Dance::find()->count()) {
+            $query->andFilterWhere(['dance.id' => $form->danceIds]);
+        }
+        return $query;
     }
 
     /**
