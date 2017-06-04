@@ -119,6 +119,9 @@ class MapForm extends Model
     {
         $default = static::createDefault();
         foreach ($this->attributes as $name => $value) {
+            if ($name == 'currency') {
+                continue;
+            }
             if ($name != "danceIds" && $default[$name] != $value) {
                 return true;
             }
