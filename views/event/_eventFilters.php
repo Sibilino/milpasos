@@ -90,8 +90,9 @@ use yii\helpers\Url;
     </div>
     <div class="col-xs-12">
         <div class="more-filters-link pull-right">
-            <a data-toggle="collapse" role="button" href="#more-options">
-                <small><?= Yii::t('app', 'More options...')?></small>
+            <a data-toggle="collapse" role="button" href="#" data-target="#more-options" onclick="$(this).children().toggleClass('hidden')">
+                <small><span class="glyphicon glyphicon-chevron-down"></span><?= Yii::t('app', 'More options')?></small>
+                <small class="hidden"><span class="glyphicon glyphicon-chevron-up"></span><?= Yii::t('app', 'Less options')?></small>
             </a>
         </div>
         <?= Html::submitButton(Yii::t('app', 'Apply filters'), [
