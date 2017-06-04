@@ -78,9 +78,10 @@ milpasos.multiAutoComplete = (function ($) {
                     .val(value);
                 var li = $('<li>')
                     .attr('data-ref', value)
-                    .text(label)
+                    .attr('data-label', label)
+                    .html(label + ' <span class="glyphicon glyphicon-remove"></span>')
                     .on('click', function () {
-                        addToSource($(this).text(), $(this).attr('data-ref'));
+                        addToSource($(this).attr('data-label'), $(this).attr('data-ref'));
                         $(this).remove();
                     })
                     .append(input);
