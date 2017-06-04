@@ -75,12 +75,12 @@ use yii\helpers\Url;
                 'options' => ['placeholder' => $mapForm->getAttributeLabel('maxPrice')],
             ]) ?>
             <?= $form->field($mapForm, 'address')->widget(GeoSearch::className(), ['currentLocationButton' => true]) ?>
-            <h3><?= Yii::t('app', "Artists") ?></h3>
             <?= $form->field($mapForm, 'groupIds')->widget(MultiAutoComplete::className(), [
                 'data' => ArrayHelper::map(Group::find()->orderBy('name')->all(), 'id', 'name'),
+                'listBelow' => true,
                 'autoCompleteConfig' => [
                     'options' => [
-                        'placeholder' => Yii::t('app', "Add more..."),
+                        'placeholder' => Yii::t('app', "With artists..."),
                         'class' => 'form-control',
                     ],
                 ],
@@ -95,7 +95,7 @@ use yii\helpers\Url;
                 <small class="hidden"><span class="glyphicon glyphicon-chevron-up"></span><?= Yii::t('app', 'Less options')?></small>
             </a>
         </div>
-        <?= Html::submitButton(Yii::t('app', 'Apply filters'), [
+        <?= Html::submitButton(Yii::t('app', 'Search'), [
             'class' => 'btn btn-sm btn-default'
         ]) ?>
     </div>
