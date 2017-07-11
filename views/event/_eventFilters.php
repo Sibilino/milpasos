@@ -55,7 +55,7 @@ use yii\helpers\Url;
         <?php AngularDancePicker::begin([
             'generateNgApp' => false,
             'dances' => Dance::find()->all(),
-            'selection' => $mapForm->danceIds,
+            'selection' => count($mapForm->danceIds) ? $mapForm->danceIds : array_keys(Dance::find()->select('id')->indexBy('id')->all()),
         ]) ?>
         <div class="col-xs-6 text-right dance-picker">
             <span ng-repeat="dance in Picker.dances" ng-class="{'dance-btn-selected': dance.selected}" class="dance-btn" ng-click="dance.toggle()" title="{{dance.name}}">{{dance.getInitial()}}</span>
