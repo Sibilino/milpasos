@@ -6,6 +6,7 @@ use app\models\Dance;
 use app\models\forms\MapForm;
 use app\models\Group;
 use app\widgets\AngularDancePicker;
+use app\widgets\AngularToggleMore;
 use app\widgets\DateRangePicker;
 use app\widgets\GeoSearch;
 use app\widgets\MultiAutoComplete;
@@ -61,16 +62,21 @@ use yii\helpers\Url;
             <span ng-repeat="dance in Picker.dances" ng-class="{'dance-btn-selected': dance.selected}" class="dance-btn" ng-click="dance.toggle()" title="{{dance.name}}">{{dance.getInitial()}}</span>
         </div>
         <div class="col-xs-6 text-left dance-picker">
-                        <span ng-if="Picker.allSelected() || Picker.noneSelected()">
-                        <?= Yii::t('app', "All dance styles") ?>
-                            <input type="hidden" ng-repeat="dance in Picker.dances" name="MapForm[danceIds][]" ng-value="dance.id" />
-                        </span>
-                        <span ng-if="!Picker.allSelected() && !Picker.noneSelected()">
-                            <?= Yii::t('app', "Only {{Picker.getSelectedDanceNames().join(', ')}}") ?>
-                            <input type="hidden" ng-repeat="dance in Picker.getSelectedDances()" name="MapForm[danceIds][]" ng-value="dance.id" />
-                        </span>
+                            <span ng-if="Picker.allSelected() || Picker.noneSelected()">
+                            <?= Yii::t('app', "All dance styles") ?>
+                                <input type="hidden" ng-repeat="dance in Picker.dances" name="MapForm[danceIds][]" ng-value="dance.id" />
+                            </span>
+                            <span ng-if="!Picker.allSelected() && !Picker.noneSelected()">
+                                <?= Yii::t('app', "Only {{Picker.getSelectedDanceNames().join(', ')}}") ?>
+                                <input type="hidden" ng-repeat="dance in Picker.getSelectedDances()" name="MapForm[danceIds][]" ng-value="dance.id" />
+                            </span>
         </div>
-        <div class="col-xs-12 collapse" id="more-options">
+        <?php AngularDancePicker::end() ?>
+    </div>
+    <?php AngularToggleMore::begin(['isOpen'=> $mapForm->maxPrice || $mapForm->address || $mapForm->groupIds]) ?>
+    <div class="col-xs-12">
+
+        <div class="col-xs-12" ng-show="Toggle.open" class="filter-dropdown" ng-class="{'dropdown-open': Toggle.open}">
             <?= $form->field($mapForm, 'maxPrice')->widget(PriceInput::className(), [
                 'options' => ['placeholder' => $mapForm->getAttributeLabel('maxPrice')],
             ]) ?>
@@ -86,18 +92,18 @@ use yii\helpers\Url;
                 ],
             ]) ?>
         </div>
-        <?php AngularDancePicker::end() ?>
-    </div>
-    <div class="col-xs-12">
+
         <div class="more-filters-link pull-right">
-            <a data-toggle="collapse" role="button" href="#" data-target="#more-options" onclick="$(this).children().toggleClass('hidden')">
-                <small><span class="glyphicon glyphicon-chevron-down"></span><?= Yii::t('app', 'More options')?></small>
-                <small class="hidden"><span class="glyphicon glyphicon-chevron-up"></span><?= Yii::t('app', 'Less options')?></small>
+            <a role="button" href="#" ng-click="Toggle.toggle()">
+                <small ng-hide="Toggle.open"><span class="glyphicon glyphicon-chevron-down"></span><?= Yii::t('app', 'More options')?></small>
+                <small ng-show="Toggle.open"><span class="glyphicon glyphicon-chevron-up"></span><?= Yii::t('app', 'Less options')?></small>
             </a>
         </div>
         <?= Html::submitButton(Yii::t('app', 'Search'), [
             'class' => 'btn btn-sm btn-default'
         ]) ?>
+
     </div>
+    <?php AngularToggleMore::end() ?>
     <?php ActiveForm::end() ?>
 </div>

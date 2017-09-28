@@ -7,7 +7,6 @@ use app\models\Dance;
 use app\models\Group;
 use Yii;
 use yii\base\Model;
-use yii\helpers\Json;
 
 /**
  * Represents the data in the user filters and other inputs that control the events shown in the main Map.
@@ -112,7 +111,7 @@ class MapForm extends Model
     }
 
     /**
-     * Whether any attributes have been changed from their default value.
+     * Whether any attributes have been changed from their default value. The currency attribute is ignored.
      * @return boolean
      */
     public function isDirty()

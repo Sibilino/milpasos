@@ -24,6 +24,7 @@ $features = array_map(function (Event $e) {
 
 <div class="row content">
     <div class="col-lg-4 col-sm-6" ng-app="<?= AngularJsAsset::ANGULAR_APP_NAME ?>">
+        
         <?= $this->render('_eventFilters', array(
             'mapForm' => $mapForm,
         )) ?>
