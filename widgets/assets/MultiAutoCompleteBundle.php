@@ -4,6 +4,7 @@ namespace app\widgets\assets;
 
 
 use yii\web\AssetBundle;
+use yii\web\View;
 
 /**
  * To register the necessary JavaScript code for the MultiAutoComplete widget.
@@ -14,6 +15,9 @@ class MultiAutoCompleteBundle extends AssetBundle
     public $baseUrl = '@web';
     public $js = [
         'js/multiAutoComplete.js',
+    ];
+    public $jsOptions = [
+        'position' => View::POS_HEAD,
     ];
     public $css = [
         'css/MultiAutoComplete.css',

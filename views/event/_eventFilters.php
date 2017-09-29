@@ -1,5 +1,6 @@
 <?php
 
+/* @var $this yii\web\View */
 /* @var $mapForm MapForm */
 
 use app\models\Dance;
@@ -7,6 +8,7 @@ use app\models\forms\MapForm;
 use app\models\Group;
 use app\widgets\AngularDancePicker;
 use app\widgets\AngularToggleMore;
+use app\widgets\assets\MultiAutoCompleteBundle;
 use app\widgets\DateRangePicker;
 use app\widgets\GeoSearch;
 use app\widgets\MultiAutoComplete;
@@ -15,7 +17,6 @@ use yii\bootstrap\ActiveForm;
 use yii\bootstrap\Html;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
-
 
 ?>
 
@@ -73,7 +74,10 @@ use yii\helpers\Url;
         </div>
         <?php AngularDancePicker::end() ?>
     </div>
-    <?php AngularToggleMore::begin(['isOpen'=> $mapForm->maxPrice || $mapForm->address || $mapForm->groupIds]) ?>
+    <?php
+    AngularToggleMore::begin([
+        'isOpen'=> $mapForm->maxPrice || $mapForm->address || $mapForm->groupIds,
+    ]) ?>
     <div class="col-xs-12">
 
         <div class="col-xs-12 filter-dropdown" ng-class="{'filter-open': Toggle.open}">
@@ -101,7 +105,7 @@ use yii\helpers\Url;
         </div>
 
         <div class="more-filters-link pull-right">
-            <a role="button" href="#" ng-click="Toggle.toggle()">
+            <a role="button" href="#" ng-click="Toggle.toggle()" onclick="milpasos.multiAutoComplete.reset()" ng-cloak>
                 <small ng-hide="Toggle.open"><span class="glyphicon glyphicon-chevron-down"></span><?= Yii::t('app', 'More options')?></small>
                 <small ng-show="Toggle.open"><span class="glyphicon glyphicon-chevron-up"></span><?= Yii::t('app', 'Less options')?></small>
             </a>
