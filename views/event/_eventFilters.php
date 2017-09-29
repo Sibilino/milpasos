@@ -62,14 +62,14 @@ use yii\helpers\Url;
             <span ng-repeat="dance in Picker.dances" ng-class="{'dance-btn-selected': dance.selected}" class="dance-btn" ng-click="dance.toggle()" title="{{dance.name}}">{{dance.getInitial()}}</span>
         </div>
         <div class="col-xs-6 text-left dance-picker">
-                            <span ng-if="Picker.allSelected() || Picker.noneSelected()">
-                            <?= Yii::t('app', "All dance styles") ?>
-                                <input type="hidden" ng-repeat="dance in Picker.dances" name="MapForm[danceIds][]" ng-value="dance.id" />
-                            </span>
-                            <span ng-if="!Picker.allSelected() && !Picker.noneSelected()">
-                                <?= Yii::t('app', "Only {{Picker.getSelectedDanceNames().join(', ')}}") ?>
-                                <input type="hidden" ng-repeat="dance in Picker.getSelectedDances()" name="MapForm[danceIds][]" ng-value="dance.id" />
-                            </span>
+                <span ng-if="Picker.allSelected() || Picker.noneSelected()">
+                <?= Yii::t('app', "All dance styles") ?>
+                    <input type="hidden" ng-repeat="dance in Picker.dances" name="MapForm[danceIds][]" ng-value="dance.id" />
+                </span>
+                <span ng-if="!Picker.allSelected() && !Picker.noneSelected()">
+                    <?= Yii::t('app', "Only {{Picker.getSelectedDanceNames().join(', ')}}") ?>
+                    <input type="hidden" ng-repeat="dance in Picker.getSelectedDances()" name="MapForm[danceIds][]" ng-value="dance.id" />
+                </span>
         </div>
         <?php AngularDancePicker::end() ?>
     </div>
@@ -78,9 +78,16 @@ use yii\helpers\Url;
 
         <div class="col-xs-12 filter-dropdown" ng-class="{'filter-open': Toggle.open}">
             <?= $form->field($mapForm, 'maxPrice')->widget(PriceInput::className(), [
-                'options' => ['placeholder' => $mapForm->getAttributeLabel('maxPrice')],
+                'options' => [
+                    'placeholder' => $mapForm->getAttributeLabel('maxPrice'),
+                    'ng-disabled' => '!Toggle.open',
+                ],
             ]) ?>
-            <?= $form->field($mapForm, 'address')->widget(GeoSearch::className(), ['currentLocationButton' => true]) ?>
+            <?= $form->field($mapForm, 'address')->widget(GeoSearch::className(), [
+                'currentLocationButton' => true,
+                'lonInputOptions' => ['ng-disabled' => '!Toggle.open'],
+                'latInputOptions' => ['ng-disabled' => '!Toggle.open'],
+            ]) ?>
             <?= $form->field($mapForm, 'groupIds')->widget(MultiAutoComplete::className(), [
                 'data' => ArrayHelper::map(Group::find()->orderBy('name')->all(), 'id', 'name'),
                 'listBelow' => true,

@@ -22,7 +22,6 @@ milpasos.multiAutoComplete = (function ($) {
         activate: function (id, inputName, initialValues) {
 
             var autoComplete = $('#'+id);
-            var ul = autoComplete.siblings('ul');
 
             /**
              * Adds an item with label and value to the Autocomplete source items.
@@ -85,7 +84,7 @@ milpasos.multiAutoComplete = (function ($) {
                         $(this).remove();
                     })
                     .append(input);
-                ul.append(li);
+                autoComplete.siblings('ul').append(li);
                 removeFromSource(value);
             };
 
