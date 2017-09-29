@@ -7,7 +7,6 @@ use app\models\Dance;
 use app\models\Group;
 use Yii;
 use yii\base\Model;
-use yii\helpers\Json;
 
 /**
  * Represents the data in the user filters and other inputs that control the events shown in the main Map.
@@ -58,6 +57,15 @@ class MapForm extends Model
      **/
     private $_events;
 
+    public static function createDefault()
+    {
+        return new MapForm([
+            'from_date' => date('Y-m-d'),
+            'danceIds' => [],
+            'groupIds' => [],
+        ]);
+    }
+
     public function rules()
     {
         return [
@@ -90,8 +98,8 @@ class MapForm extends Model
     public function attributeLabels()
     {
         return [
-            'from_date' => Yii::t('app', 'From date'),
-            'to_date' => Yii::t('app', 'To date'),
+            'from_date' => Yii::t('app', 'Show events from'),
+            'to_date' => Yii::t('app', 'Show events until'),
             'danceIds' => Yii::t('app', 'Dance Styles'),
             'groupIds' => Yii::t('app', 'Performers'),
             'maxPrice' => Yii::t('app', 'Max price'),
@@ -100,6 +108,27 @@ class MapForm extends Model
             'lon' => Yii::t('app', 'Lon'),
             'lat' => Yii::t('app', 'Lat'),
         ];
+    }
+
+    /**
+     * Whether any attributes have been changed from their default value. The currency attribute is ignored.
+     * @return boolean
+     */
+    public function isDirty()
+    {
+        $default = static::createDefault();
+        foreach ($this->attributes as $name => $value) {
+            if ($name == 'currency') {
+                continue;
+            }
+            if ($name != "danceIds" && $default[$name] != $value) {
+                return true;
+            }
+            if ($name == "danceIds" && !empty($value) && count($value) != Dance::find()->count()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

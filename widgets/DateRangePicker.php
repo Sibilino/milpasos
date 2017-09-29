@@ -57,7 +57,7 @@ class DateRangePicker extends Widget
      */
     public $mask = "9999-99-99";
     /**
-     * @var string The placeholder to be used for the date inputs (before translation). Defaults to "yyyy-MM-dd".
+     * @var string The placeholder to be used for the date input masks (before translation). Defaults to "yyyy-MM-dd".
      */
     public $placeholder = "yyyy-mm-dd";
 
@@ -98,7 +98,13 @@ class DateRangePicker extends Widget
         $this->addMask($fromOptions);
 
         echo $this->form->field($this->model, $this->fromAttr, $this->fieldOptions)->widget(DatePicker::className(), ArrayHelper::merge(
-            $this->pickerConfig, ['clientOptions' => $fromOptions]
+            $this->pickerConfig, [
+                'clientOptions' => $fromOptions,
+                'options' => [
+                    'placeholder' => $this->model->getAttributeLabel($this->fromAttr),
+                    'title' => $this->model->getAttributeLabel($this->fromAttr),
+                ]
+            ]
         ));
 
         $defaults = [
@@ -111,7 +117,13 @@ class DateRangePicker extends Widget
         $this->addMask($toOptions);
 
         echo $this->form->field($this->model, $this->toAttr, $this->fieldOptions)->widget(DatePicker::className(), ArrayHelper::merge(
-            $this->pickerConfig, ['clientOptions' => $toOptions]
+            $this->pickerConfig, [
+                'clientOptions' => $toOptions,
+                'options' => [
+                    'placeholder' => $this->model->getAttributeLabel($this->toAttr),
+                    'title' => $this->model->getAttributeLabel($this->toAttr),
+                ]
+            ]
         ));
     }
 

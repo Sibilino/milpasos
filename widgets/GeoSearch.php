@@ -39,6 +39,14 @@ class GeoSearch extends LocationWidget
      * @var string Optional. The attribute that will receive the country name of the selected location.
      */
     public $countryAttribute;
+    /**
+     * @var array Html options to be applied to the Longitude hidden input.
+     */
+    public $lonInputOptions = [];
+    /**
+     * @var array Html options to be applied to the Latitude hidden input.
+     */
+    public $latInputOptions = [];
     
     /**
      * Whether to also show a button that set the user's current location in the lon lat fields.
@@ -123,8 +131,8 @@ class GeoSearch extends LocationWidget
     {
         GMapsLibrary::register($this->view);
 
-        $html = Html::activeHiddenInput($this->model, $this->lonAttribute);
-        $html .= Html::activeHiddenInput($this->model, $this->latAttribute);
+        $html = Html::activeHiddenInput($this->model, $this->lonAttribute, $this->lonInputOptions);
+        $html .= Html::activeHiddenInput($this->model, $this->latAttribute, $this->latInputOptions);
         if ($this->cityAttribute) {
             $html .= Html::activeHiddenInput($this->model, $this->cityAttribute);
         }

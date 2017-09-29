@@ -79,6 +79,7 @@ $this->title = Yii::t('app', 'Update {modelClass}: ', [
                                         <?= $this->render('/pass/_fields', [
                                             'model' => $pass,
                                             'form' => $form,
+                                            'newLink' => $newLink,
                                         ]) ?>
 
                                 <?php endif; ?>

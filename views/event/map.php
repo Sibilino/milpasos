@@ -3,6 +3,7 @@
 /* @var $this yii\web\View */
 /* @var $mapForm app\models\forms\MapForm */
 
+use app\assets\AngularJsAsset;
 use app\models\Event;
 use app\widgets\AngularEventViewer;
 use sibilino\yii2\openlayers\OL;
@@ -22,12 +23,23 @@ $features = array_map(function (Event $e) {
 ?>
 
 <div class="row content">
+    <div class="col-lg-4 col-sm-6" ng-app="<?= AngularJsAsset::ANGULAR_APP_NAME ?>">
+        
+        <?= $this->render('_eventFilters', array(
+            'mapForm' => $mapForm,
+        )) ?>
 
-    <div class="col-lg-4 col-sm-6 map-list">
-        <?= AngularEventViewer::widget([
-            'events' => $mapForm->events,
-            'onSelect' => 'milpasos.eventMap.onSelect',
-        ]) ?>
+        <div class="row map-list">
+            <?= AngularEventViewer::widget([
+                'events' => $mapForm->events,
+                'onSelect' => 'milpasos.eventMap.onSelect',
+            ]) ?>
+        </div>
+
+        <div class="list-footer">
+            &copy; Luis Hernández 2017
+        </div>
+
     </div>
     <div class="col-lg-8 col-sm-6 hidden-xs map">
         <?= OpenLayers::widget([

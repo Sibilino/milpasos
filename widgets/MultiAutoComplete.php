@@ -30,6 +30,11 @@ class MultiAutoComplete extends InputWidget
     public $autoCompleteConfig = [];
 
     /**
+     * @var bool Whether to show the selected items below the autocomplete input (true) or above it (false, default).
+     */
+    public $listBelow = false;
+
+    /**
      * @var array The values stored in the given model's attribute.
      */
     private $_modelValue;
@@ -75,8 +80,13 @@ class MultiAutoComplete extends InputWidget
     {
         $html = '<div>';
         $html .= Html::hiddenInput($this->getInputName()); // To allow saving empty selection
-        $html .= Html::ul([], $this->options);
+        if (!$this->listBelow) {
+            $html .= Html::ul([], $this->options);
+        }
         $html .= AutoComplete::widget($this->autoCompleteConfig);
+        if ($this->listBelow) {
+            $html .= Html::ul([], $this->options);
+        }
         $html .= '</div>';
 
         MultiAutoCompleteBundle::register($this->view);

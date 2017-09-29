@@ -1,9 +1,7 @@
 (function () {
     /**
      * External dependency may be needed, see EventSource and MapSelector services.
-     * @type {angular.Module}
      */
-    var app = angular.module('EventViewerApp', ['ngRoute']);
 
     /**
      * Service that provides events through the getEvents() method.
@@ -129,7 +127,7 @@
         $scope.eventClick = function ($event) {
             var element = angular.element($event.target);
             if (!element.is('a')) {
-                window.location.href = '#!/'; // Go back to root route
+                $location.path('/');
             }
         };
         
