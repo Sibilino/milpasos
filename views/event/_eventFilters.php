@@ -76,7 +76,7 @@ use yii\helpers\Url;
     <?php AngularToggleMore::begin(['isOpen'=> $mapForm->maxPrice || $mapForm->address || $mapForm->groupIds]) ?>
     <div class="col-xs-12">
 
-        <div class="col-xs-12" ng-show="Toggle.open" class="filter-dropdown" ng-class="{'dropdown-open': Toggle.open}">
+        <div class="col-xs-12 filter-dropdown" ng-class="{'filter-open': Toggle.open}">
             <?= $form->field($mapForm, 'maxPrice')->widget(PriceInput::className(), [
                 'options' => ['placeholder' => $mapForm->getAttributeLabel('maxPrice')],
             ]) ?>
