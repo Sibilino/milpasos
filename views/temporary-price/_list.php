@@ -24,6 +24,11 @@ use yii\bootstrap\Html;
             'model' => $price,
             'fromAttr' => "[$i]available_from",
             'toAttr' => "[$i]available_to",
+            'pickerConfig' => [
+                'options' => [
+                    'class' => 'form-control',
+                ],
+            ],
         ]) ?>
     </div>
 
