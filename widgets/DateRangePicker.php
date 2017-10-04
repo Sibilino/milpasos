@@ -101,8 +101,8 @@ class DateRangePicker extends Widget
             $this->pickerConfig, [
                 'clientOptions' => $fromOptions,
                 'options' => [
-                    'placeholder' => $this->model->getAttributeLabel($this->fromAttr),
-                    'title' => $this->model->getAttributeLabel($this->fromAttr),
+                    'placeholder' => $this->model->getAttributeLabel(Html::getAttributeName($this->fromAttr)),
+                    'title' => $this->model->getAttributeLabel(Html::getAttributeName($this->fromAttr)),
                 ]
             ]
         ));
@@ -120,8 +120,8 @@ class DateRangePicker extends Widget
             $this->pickerConfig, [
                 'clientOptions' => $toOptions,
                 'options' => [
-                    'placeholder' => $this->model->getAttributeLabel($this->toAttr),
-                    'title' => $this->model->getAttributeLabel($this->toAttr),
+                    'placeholder' => $this->model->getAttributeLabel(Html::getAttributeName($this->toAttr)),
+                    'title' => $this->model->getAttributeLabel(Html::getAttributeName($this->toAttr)),
                 ]
             ]
         ));
