@@ -1,8 +1,7 @@
-if (typeof milpasos.multiAutoComplete === "undefined") {
-    milpasos.multiAutoComplete = {};
-}
 milpasos.multiAutoComplete = (function ($) {
     return {
+        instances: [],
+
         /**
          * Activates the MultiAutoComplete functionality.
          * @param {string} id The id of the base Autocomplete widget input.
@@ -111,10 +110,12 @@ milpasos.multiAutoComplete = (function ($) {
                     autoComplete.val(''); // Clear input if menu is closed (for example, after a selection)
                 })
             ;
-        },
-        reset: function () {
-            $.each(autoComplete.siblings('ul').find('li'), unselectItem);
-        }
-    };
 
+            this.instances[id] = {
+                reset: function () {
+                    $.each(autoComplete.siblings('ul').find('li'), unselectItem);
+                }
+            };
+        },
+    };
 })(jQuery);

@@ -93,6 +93,7 @@ use yii\helpers\Url;
                 'latInputOptions' => ['ng-disabled' => '!Toggle.open'],
             ]) ?>
             <?= $form->field($mapForm, 'groupIds')->widget(MultiAutoComplete::className(), [
+                'id' => 'groups',
                 'data' => ArrayHelper::map(Group::find()->orderBy('name')->all(), 'id', 'name'),
                 'listBelow' => true,
                 'autoCompleteConfig' => [
@@ -105,7 +106,7 @@ use yii\helpers\Url;
         </div>
 
         <div class="more-filters-link pull-right">
-            <a role="button" href="" ng-click="Toggle.toggle()" onclick="milpasos.multiAutoComplete.reset()" ng-cloak>
+            <a role="button" href="" ng-click="Toggle.toggle()" onclick="milpasos.multiAutoComplete.instances['groups-autocomplete-input'].reset()" ng-cloak>
                 <small ng-hide="Toggle.open"><span class="glyphicon glyphicon-chevron-down"></span><?= Yii::t('app', 'More options')?></small>
                 <small ng-show="Toggle.open"><span class="glyphicon glyphicon-chevron-up"></span><?= Yii::t('app', 'Less options')?></small>
             </a>
