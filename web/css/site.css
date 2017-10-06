@@ -91,12 +91,14 @@ body {
 .filter-dropdown {
     max-height: 0;
     opacity: 0;
+    visibility: hidden;
     -webkit-transition: max-height 0.25s ease;
     transition: max-height 0.25s ease;
 }
 .filter-dropdown.filter-open {
     max-height: 120px;
     opacity: 1;
+    visibility: visible;
     -webkit-transition: max-height 1s ease, opacity 0.5s ease 0.25s;
     transition: max-height 1s ease, opacity 0.5s ease 0.25s;
 }

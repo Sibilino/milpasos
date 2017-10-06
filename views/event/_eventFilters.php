@@ -8,7 +8,6 @@ use app\models\forms\MapForm;
 use app\models\Group;
 use app\widgets\AngularDancePicker;
 use app\widgets\AngularToggleMore;
-use app\widgets\assets\MultiAutoCompleteBundle;
 use app\widgets\DateRangePicker;
 use app\widgets\GeoSearch;
 use app\widgets\MultiAutoComplete;
